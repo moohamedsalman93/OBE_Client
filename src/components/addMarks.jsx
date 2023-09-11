@@ -42,19 +42,21 @@ const TextField = ({ text, type, name, value, handleChange }) => {
   );
 };
 
-const addMarks = () => {
+const AddMarks = () => {
   //#region  Variables
   const [courseCode, setCourseCode] = useState("");
+  const [deparment, setdepartment] = useState("");
   const [classSection, setClassSection] = useState("");
   const [regNo, setRegNo] = useState("");
   const [section, setSection] = useState("");
   const [examType, setExamType] = useState("CIA 1");
   const [isLoading, setIsLoading] = useState(false);
-  const [markType, setMarkType] = useState('que');
+  const [markType, setMarkType] = useState("que");
   const [marks, setMarks] = useState({});
   const [marksget, setMarksget] = useState({});
   const [regNoget, setRegNoget] = useState("");
   const [examTypeget, setExamTypeget] = useState("CIA 1");
+  const [selectedOption, setSelectedOption] = useState("Present");
   const navigate = useNavigate();
   const questions = [
     "Q1",
@@ -170,7 +172,7 @@ const addMarks = () => {
         [question]: value,
       }));
     } else {
-      const numericValue = value // Convert the input value to a number
+      const numericValue = value; // Convert the input value to a number
       const markLimitsForQuestion = markLimits[question];
 
       if (
@@ -190,19 +192,16 @@ const addMarks = () => {
         // Show a toast message for invalid input
         toast.error(
           "Please enter a mark between " +
-          markLimitsForQuestion.min +
-          " and " +
-          markLimitsForQuestion.max,
+            markLimitsForQuestion.min +
+            " and " +
+            markLimitsForQuestion.max,
           { duration: 1500 }
         );
 
         // Highlight the input box dynamically using Tailwind CSS classes
         const inputElement = document.getElementById(question);
         if (inputElement) {
-          inputElement.classList.add(
-            "border-2",
-            "border-red-500",
-          );
+          inputElement.classList.add("border-2", "border-red-500");
           setTimeout(() => {
             inputElement.classList.remove("border-red-500");
           }, 1500); // Remove the highlight after 3 seconds
@@ -277,12 +276,12 @@ const addMarks = () => {
       // newData.append('code', courseCode)
       // newData.append(examType === 'CIA 1' ? 'Q1' : 'Q2', value);
 
-      const AssignType = examType === 'CIA 1' ? 'Q1' : 'Q2'
+      const AssignType = examType === "CIA 1" ? "Q1" : "Q2";
 
       const newData = {
         reg: regNo,
         code: courseCode,
-        exam: 'ASG',
+        exam: "ASG",
         [AssignType]: parseInt(value),
       };
 
@@ -307,7 +306,6 @@ const addMarks = () => {
   };
   //#endregion
 
-
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
     if (inputValue === "" || (inputValue >= 0 && inputValue <= 3)) {
@@ -317,33 +315,30 @@ const addMarks = () => {
     }
   };
 
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
   return (
     <div className=" w-screen h-screen flex flex-row space-x-4  justify-center items-start p-10 bg-gradient-to-r from-blue-500 to-green-500">
       <div className=" w-fit space-y-4">
-
         <div className="flex flex-col justify-center items-center shadow-md bg-white rounded-lg ">
-          <div className=" w-full flex justify-between items-end px-5 pb-5">
-
-            <select
-              value={markType}
-              onChange={(e) => setMarkType(e.target.value)}
-
-              className={`shadow-sm border dark:shadow-none dark:border-none dark:bg-[#2F383D] h-10 w-[10rem] rounded px-2   placeholder-[#414956] dark:placeholder-[#768795] text-black dark:text-white`}
-            >
-              <option value="que">Question Mark</option>
-              <option value="ass">Assignment Mark</option>
-              <option value="pos">Course POS</option>
-            </select>
-
+          <div className=" w-full flex justify-between items-end px-5">
             <div>
-              <div className="flex mb-2 space-x-1">
+              <div className="flex mb-2 space-x-1 mt-2">
                 <h1 className="text-base font-normal text-[#676060]">
-                  Exam Type:
+                  OB components :
                 </h1>
               </div>
 
-              <div className="flex space-x-4">
-                <label className={`transition-all duration-300 ${examType === 'CIA 1' ? 'bg-blue-500' : 'bg-gray-300'} hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}>
+              <div className="flex items-center space-x-4">
+                <label
+                  className={`transition-all duration-300 ${
+                    examType === "CIA 1"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-300"
+                  } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                >
                   <input
                     type="radio"
                     value={"CIA 1"}
@@ -351,9 +346,15 @@ const addMarks = () => {
                     onChange={(e) => setExamType(e.target.value)}
                     className="sr-only" // Hide the actual radio button
                   />
-                  {markType === 'que' ? 'CIA 1' : 'Ass 1 '}
+                  {markType === "que" ? "CIA 1" : "Ass 1 "}
                 </label>
-                <label className={`transition-all duration-300 ${examType === 'CIA 2' ? 'bg-blue-500' : 'bg-gray-300'} hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}>
+                <label
+                  className={`transition-all duration-300 ${
+                    examType === "CIA 2"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-300"
+                  } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                >
                   <input
                     type="radio"
                     value={"CIA 2"}
@@ -361,24 +362,64 @@ const addMarks = () => {
                     onChange={(e) => setExamType(e.target.value)}
                     className="sr-only"
                   />
-                  {markType === 'que' ? 'CIA 2' : 'Ass 2'}
+                  CIA 2
                 </label>
-                {markType == 'que' && (
-                  <label className={`transition-all duration-300 opacity-0 ${markType === 'que' ? 'opacity-100' : ''} ${examType === 'ESE' ? 'bg-blue-500' : 'bg-gray-300'} hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}>
-                    <input
-                      type="radio"
-                      value={"ESE"}
-                      checked={examType === "ESE"}
-                      onChange={(e) => setExamType(e.target.value)}
-                      className="sr-only"
-                    />
-                    ESE
-                  </label>
-                )}
+                <label
+                  className={`transition-all duration-300 opacity-100 ${
+                    examType === "ESE"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-300"
+                  } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                >
+                  <input
+                    type="radio"
+                    value={"ESE"}
+                    checked={examType === "ESE"}
+                    onChange={(e) => setExamType(e.target.value)}
+                    className="sr-only"
+                  />
+                  ESE
+                </label>
+                <label
+                  className={`transition-all duration-300  opacity-100 ${
+                    examType === "ASS 1"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-300"
+                  } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                >
+                  <input
+                    type="radio"
+                    value={"ASS 1"}
+                    checked={examType === "ASS 1"}
+                    onChange={(e) => setExamType(e.target.value)}
+                    className="sr-only"
+                  />
+                  ASS 1
+                </label>
+                <label
+                  className={`transition-all duration-300 opacity-100 ${
+                    examType === "ASS 2"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-300"
+                  } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                >
+                  <input
+                    type="radio"
+                    value={"ASS 2"}
+                    checked={examType === "ASS 2"}
+                    onChange={(e) => setExamType(e.target.value)}
+                    className="sr-only"
+                  />
+                  ASS 2
+                </label>
+                <TextField
+                  text={"Department"}
+                  name={"Enter the Course Code"}
+                  value={deparment}
+                  handleChange={setdepartment}
+                />
               </div>
             </div>
-
-
           </div>
 
           <div className=" w-full grid gap-4 grid-cols-2 p-6 rounded-md border-1 border-black">
@@ -389,23 +430,52 @@ const addMarks = () => {
               handleChange={setCourseCode}
             />
             <TextField
-              text={"Class "}
-              name={"Enter the Class"}
-              value={classSection}
-              handleChange={setClassSection}
-            />
-            <TextField
-              text={"Section "}
-              name={"Enter the Section"}
-              value={section}
-              handleChange={setSection}
-            />
-            <TextField
               text={"Reg No "}
               name={"Enter the Reg"}
               value={regNo}
               handleChange={setRegNo}
             />
+            {/* <TextField
+              text={"Section "}
+              name={"Enter the Section"}
+              value={section}
+              handleChange={setSection}
+            /> */}
+               {/* <TextField
+              text={"Class "}
+              name={"Enter the Class"}
+              value={classSection}
+              handleChange={setClassSection}
+            /> */}
+            <div className=" space-x-3">
+            <input type="text" value={section} onChange={(e)=>setSection(e)} placeholder="Section" className="bg-[#F8FCFF] shadow-sm border h-10 w-[8rem] xl:w-[8rem] rounded px-2 text-black"/>
+            <input type="text" value={section} onChange={(e)=>setSection(e)} placeholder="Section" className="bg-[#F8FCFF] shadow-sm border h-10 w-[8rem] xl:w-[8rem] rounded px-2 text-black"/>
+            </div>
+            <div className="flex items-center space-x-3">
+              <RadioButton
+                value="Present"
+                checked={selectedOption === "Present"}
+                onChange={handleOptionChange}
+              />
+
+              <RadioButton
+                value="Absent"
+                checked={selectedOption === "Absent"}
+                onChange={handleOptionChange}
+              />
+
+              <RadioButton
+                value="Not on Roll"
+                checked={selectedOption === "Not on Roll"}
+                onChange={handleOptionChange}
+              />
+            </div>
+            {/* <TextField
+              text={"Reg No "}
+              name={"Enter the Reg"}
+              value={regNo}
+              handleChange={setRegNo}
+            /> */}
 
             {/* <div className=" flex justify-center items-center bg-white">
             <label className='relative cursor-pointer'>
@@ -415,13 +485,12 @@ const addMarks = () => {
           </div> */}
           </div>
 
-
-
-          {markType == 'ass' &&
+          {markType == "ass" && (
             <div className=" w-full flex justify-between items-end px-5 pb-5">
-
               <div className="flex flex-col space-y-2">
-                <h1 className="text-base font-normal text-[#676060]">Assignment Mark :</h1>
+                <h1 className="text-base font-normal text-[#676060]">
+                  Assignment Mark :
+                </h1>
                 <input
                   type="number"
                   className="w-[10rem] h-10 pl-2 text-center bg-[#F8FCFF] shadow-md border rounded-md"
@@ -433,113 +502,115 @@ const addMarks = () => {
                 />
               </div>
 
-              <button className="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center" onClick={handleSumbitAssignment}>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center"
+                onClick={handleSumbitAssignment}
+              >
                 Next
               </button>
             </div>
-          }
-
+          )}
         </div>
 
-        {markType == 'que' && <div className="w-fit bg-white rounded-lg p-3 shadow-md">
-          <table className="border-collapse border">
-            <thead>
-              <tr className="bg-gray-200 text-center">
-                <th className="border p-2">Question</th>
-                <th className="border p-2">Marks</th>
-                <th className="border p-2">Question</th>
-                <th className="border p-2">Marks</th>
-                <th className="border p-2">Question</th>
-                <th className="border p-2">Marks</th>
-                <th className="border p-2">Question</th>
-                <th className="border p-2">Marks</th>
-              </tr>
-            </thead>
-            <tbody>
-              {questionRows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {row.map((question, columnIndex) => (
-                    <React.Fragment key={question}>
-                      <td className="border p-2 text-center">
-                        {question}
-                      </td>
-                      <td className="border p-2">
-                        <input
-                          id={question}
-                          type="number"
-                          value={marks[question] || ""}
-                          onChange={(e) =>
-                            handleMarkChange(question, e.target.value)
-                          }
-                          className={`w-[4rem] pl-2 text-center border transition duration-300 ease-in-out focus:outline-none ${marks[question] &&
-                            (parseInt(marks[question], 10) >
-                              markLimits[question].max ||
-                              parseInt(marks[question], 10) <
-                              markLimits[question].min)
-                            ? "border-red-500 border-4"
-                            : ""
-                            }`}
-                        />
-                      </td>
-                    </React.Fragment>
-                  ))}
+        {markType == "que" && (
+          <div className="w-fit bg-white rounded-lg p-3 shadow-md">
+            <table className="border-collapse border">
+              <thead>
+                <tr className="bg-gray-200 text-center">
+                  <th className="border p-2">Question</th>
+                  <th className="border p-2">Marks</th>
+                  <th className="border p-2">Question</th>
+                  <th className="border p-2">Marks</th>
+                  <th className="border p-2">Question</th>
+                  <th className="border p-2">Marks</th>
+                  <th className="border p-2">Question</th>
+                  <th className="border p-2">Marks</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        }
-
-        {markType == 'pos' && <div className="w-fit bg-white rounded-lg p-3 shadow-md">
-          <table className="border-collapse border">
-            <thead>
-              <tr className="bg-gray-200 text-center">
-                <th className="border p-2">Question</th>
-                <th className="border p-2">Marks</th>
-                <th className="border p-2">Question</th>
-                <th className="border p-2">Marks</th>
-                <th className="border p-2">Question</th>
-                <th className="border p-2">Marks</th>
-                <th className="border p-2">Question</th>
-                <th className="border p-2">Marks</th>
-              </tr>
-            </thead>
-            <tbody>
-              {questionRows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {row.map((question, columnIndex) => (
-                    <React.Fragment key={question}>
-                      <td className="border p-2 text-center">
-                        {question}
-                      </td>
-                      <td className="border p-2">
-                        <input
-                          id={question}
-                          type="number"
-                          value={marks[question] || ""}
-                          onChange={(e) =>
-                            handleMarkChange(question, e.target.value)
-                          }
-                          className={`w-[4rem] pl-2 text-center border transition duration-300 ease-in-out focus:outline-none ${marks[question] &&
-                            (parseInt(marks[question], 10) >
-                              markLimits[question].max ||
-                              parseInt(marks[question], 10) <
-                              markLimits[question].min)
-                            ? "border-red-500 border-4"
-                            : ""
+              </thead>
+              <tbody>
+                {questionRows.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {row.map((question, columnIndex) => (
+                      <React.Fragment key={question}>
+                        <td className="border p-2 text-center">{question}</td>
+                        <td className="border p-2">
+                          <input
+                            id={question}
+                            type="number"
+                            value={marks[question] || ""}
+                            onChange={(e) =>
+                              handleMarkChange(question, e.target.value)
+                            }
+                            className={`w-[4rem] pl-2 text-center border transition duration-300 ease-in-out focus:outline-none ${
+                              marks[question] &&
+                              (parseInt(marks[question], 10) >
+                                markLimits[question].max ||
+                                parseInt(marks[question], 10) <
+                                  markLimits[question].min)
+                                ? "border-red-500 border-4"
+                                : ""
                             }`}
-                        />
-                      </td>
-                    </React.Fragment>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        }
+                          />
+                        </td>
+                      </React.Fragment>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-        {markType == 'que' &&
+        {markType == "pos" && (
+          <div className="w-fit bg-white rounded-lg p-3 shadow-md">
+            <table className="border-collapse border">
+              <thead>
+                <tr className="bg-gray-200 text-center">
+                  <th className="border p-2">Question</th>
+                  <th className="border p-2">Marks</th>
+                  <th className="border p-2">Question</th>
+                  <th className="border p-2">Marks</th>
+                  <th className="border p-2">Question</th>
+                  <th className="border p-2">Marks</th>
+                  <th className="border p-2">Question</th>
+                  <th className="border p-2">Marks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {questionRows.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {row.map((question, columnIndex) => (
+                      <React.Fragment key={question}>
+                        <td className="border p-2 text-center">{question}</td>
+                        <td className="border p-2">
+                          <input
+                            id={question}
+                            type="number"
+                            value={marks[question] || ""}
+                            onChange={(e) =>
+                              handleMarkChange(question, e.target.value)
+                            }
+                            className={`w-[4rem] pl-2 text-center border transition duration-300 ease-in-out focus:outline-none ${
+                              marks[question] &&
+                              (parseInt(marks[question], 10) >
+                                markLimits[question].max ||
+                                parseInt(marks[question], 10) <
+                                  markLimits[question].min)
+                                ? "border-red-500 border-4"
+                                : ""
+                            }`}
+                          />
+                        </td>
+                      </React.Fragment>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {markType == "que" && (
           <div className=" flex justify-end w-[43rem] ">
             <button
               onClick={handleClear}
@@ -563,7 +634,7 @@ const addMarks = () => {
               )}
             </button>
           </div>
-        }
+        )}
 
         <button
           disabled={isLoading}
@@ -580,13 +651,9 @@ const addMarks = () => {
             "get Result"
           )}
         </button>
-
-
-
       </div>
-
     </div>
   );
 };
 
-export default addMarks;
+export default AddMarks;
