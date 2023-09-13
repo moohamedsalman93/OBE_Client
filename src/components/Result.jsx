@@ -6,33 +6,33 @@ export const Result = () => {
   return (
     <div className="w-screen h-screen p-5 bg-gradient-to-r from-blue-500 to-green-500 ">
       <div className="w-full bg-white  rounded-lg p-5">
+        <div className=" cursor-pointer">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </div>
         <div>
           <button
-            className={`p-2  ${
-              selectedOption === "Students"
+            className={`p-2  ${selectedOption === "Students"
                 ? "bg-[#3b84f4] text-white rounded-md"
                 : "bg-slate-200"
-            }`}
+              }`}
             onClick={() => setselectedOption("Students")}
           >
             Students
           </button>
           <button
-            className={`p-2  ${
-              selectedOption === "Courses"
+            className={`p-2  ${selectedOption === "Courses"
                 ? "bg-[#3b84f4] text-white rounded-md"
                 : "bg-slate-200"
-            }`}
+              }`}
             onClick={() => setselectedOption("Courses")}
           >
             Courses
           </button>
           <button
-            className={`p-2  ${
-              selectedOption === "Programs"
+            className={`p-2  ${selectedOption === "Programs"
                 ? "bg-[#3b84f4] text-white rounded-md"
                 : "bg-slate-200"
-            }`}
+              }`}
             onClick={() => setselectedOption("Programs")}
           >
             Programs

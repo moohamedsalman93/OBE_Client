@@ -29,24 +29,31 @@ function Home() {
           </div>
         </div>  
         <div className=" w-full py-[150px] flex justify-center items-center space-x-10">
-          <div className="flex flex-col justify-center items-center space-y-3 cursor-pointer" onClick={()=>Navigate("/result")}>
-            <div className="w-[100px] h-[100px] bg-[#3b84f4] rounded-lg p-2">
+
+          <div className="flex flex-col justify-center items-center space-y-3 cursor-pointer " onClick={()=>Navigate("/result")}>
+            
+            <div className="w-[100px] h-[100px] bg-[#3b84f4] rounded-lg p-2 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
               <img src={results} alt="no img" />
             </div>
+            
             <h1 className=" font-medium ">Results</h1>
+
           </div>
+
           <div className="flex flex-col justify-center items-center space-y-3 cursor-pointer" onClick={()=>Navigate("/addmarks")}>
-            <div className="w-[100px] h-[100px] bg-[#3b84f4] rounded-lg p-2">
+            <div className="w-[100px] h-[100px] bg-[#3b84f4] rounded-lg p-2 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
               <img src={marks} alt="no img" />
             </div>
             <h1 className=" font-medium ">Add Marks</h1>
           </div>
+
           <div className="flex flex-col justify-center items-center space-y-3 cursor-pointer">
-            <div className="w-[100px] h-[100px] bg-[#3b84f4] rounded-lg p-2">
+            <div className="w-[100px] h-[100px] bg-[#3b84f4] rounded-lg p-2 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
               <img src={course} alt="no img" />
             </div>
             <h1 className=" font-medium ">Add course</h1>
           </div>
+
         </div>
       </div>
     </div>
