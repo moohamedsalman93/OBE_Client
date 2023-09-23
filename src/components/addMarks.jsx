@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../App.css";
 import loading from "../assets/loading.svg";
-import { ReactComponent as BackArrow} from "../assets/ionicons/arrow-back-outline.svg";
+import studentMarksImg from "../assets/studentMark.png";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { getApi, searchData } from "../api/api";
 import { debounce } from 'lodash';
+import { useNavigate } from "react-router-dom";
 
 
 const AddMarks = () => {
   //#region  Variables
   const dropdownRef2 = useRef(null);
+  const Navigate = useNavigate();
   const [focusedOptionIndex, setFocusedOptionIndex] = useState(0);
   const [isOpen2, setIsOpen2] = useState(false);
   const [CourseData, setCourseData] = useState([]);
@@ -28,6 +29,8 @@ const AddMarks = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
+  const [isLoading3, setIsLoading3] = useState(false);
+  const [existingData, setExistingData] = useState([]);
   const [markType, setMarkType] = useState("que");
   const [marks, setMarks] = useState({});
 
@@ -103,7 +106,7 @@ const AddMarks = () => {
   //#region  Create an array of arrays
   const questionRows = [];
   for (let i = 0; i < numRows; i++) {
-    questionRows.push(questions.slice(i * 4, (i + 1) * 4));
+    questionRows.push(questions.slice(i * 5, (i + 1) * 5));
   }
   //#endregion
 
@@ -206,16 +209,20 @@ const AddMarks = () => {
         marksAsNumbers[examType + question] = parseInt(marks[question] || 0, 10);
       }
 
-      const statusStudent = studentStatus == '' ? 'present' : studentStatus
+      const sStatus = examType + 'STATUS'
+      const StaffIn = examType + 'STAFF'
+
+      const statusStudent = studentStatus === '' ? 'present' : studentStatus
 
       const newData = {
-
         regNo: regNo,
         department: deparment,
         code: courseCode,
         claass: deparment,
         section: section,
         status: statusStudent,
+        [sStatus]: statusStudent,
+        [StaffIn]: staffIntial,
         exam: examType,
         ...marksAsNumbers,
       };
@@ -382,227 +389,238 @@ const AddMarks = () => {
   }, [marks]);
   //#endregion
 
+  //#region getExistingMarks
+  const getExistingMarks = (cc) => {
+    getApi(`staff/getMarkByCode?code=${cc}&department=${deparment}`, setExistingData, setIsLoading3)
+  }
+  //#endregion
+
+
   return (
-    <div className=" w-screen h-screen flex flex-row justify-between items-start px-10 bg-gradient-to-r from-blue-500 to-green-500">
+    <div className=" w-screen h-screen  flex items-center p-6  bg-gradient-to-r from-blue-500 to-green-500">
 
-      <BackArrow className="w-6 h-6 text-white"/>
+      <div className="flex flex-row w-full h-full gap-3 justify-between">
+        <div className="flex flex-col  space-y-4 bg-white p-2 rounded-lg w-3/4">
+          <div onClick={() => Navigate("../")} className=" cursor-pointer w-fit px-3 py-2 border-2 border-blue-700  hover:bg-blue-700 hover:text-white hover:scale-110 transition rounded-xl flex items-center space-x-2">
+            <ion-icon name="home"></ion-icon>
+            <p className=" text-base">Home</p>
+          </div>
 
-      <div className="flex flex-col  space-y-4 bg-white p-2 rounded-lg">
+          <div className="flex flex-col justify-center  items-center border-b ">
 
-        <div className="flex flex-col justify-center  items-center border-b w-[43rem]  ">
+            <div className=" w-full flex justify-between items-end px-5">
 
-          <div className=" w-full flex justify-between items-end px-5">
+              <div className=" w-full">
 
-            <div className=" w-full">
+                <div className="flex items-end justify-between w-full h-fit ">
 
-              <div className="flex items-end justify-between w-full h-fit ">
+                  <div className=" space-y-2">
+                    <h1 className="text-base font-normal text-[#676060]">
+                      OB components :
+                    </h1>
+                    <div className=" flex space-x-4 items-end ">
+                      <label
+                        className={`transition-all duration-300 ${examType === "C1"
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-300"
+                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                      >
+                        <input
+                          type="radio"
+                          value={"C1"}
+                          checked={examType === "C1"}
+                          onChange={(e) => setExamType(e.target.value)}
+                          className="sr-only" // Hide the actual radio button
+                        />
+                        {markType === "que" ? "CIA 1" : "Ass 1 "}
+                      </label>
 
-                <div className=" space-y-2">
-                  <h1 className="text-base font-normal text-[#676060]">
-                    OB components :
-                  </h1>
-                  <div className=" flex space-x-4 items-end ">
-                    <label
-                      className={`transition-all duration-300 ${examType === "C1"
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-300"
-                        } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                    >
-                      <input
-                        type="radio"
-                        value={"C1"}
-                        checked={examType === "C1"}
-                        onChange={(e) => setExamType(e.target.value)}
-                        className="sr-only" // Hide the actual radio button
-                      />
-                      {markType === "que" ? "CIA 1" : "Ass 1 "}
-                    </label>
+                      <label
+                        className={`transition-all duration-300 ${examType === "C2"
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-300"
+                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                      >
+                        <input
+                          type="radio"
+                          value={"CIA 2"}
+                          checked={examType === "C2"}
+                          onChange={(e) => setExamType(e.target.value)}
+                          className="sr-only"
+                        />
+                        CIA 2
+                      </label>
 
-                    <label
-                      className={`transition-all duration-300 ${examType === "C2"
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-300"
-                        } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                    >
-                      <input
-                        type="radio"
-                        value={"CIA 2"}
-                        checked={examType === "C2"}
-                        onChange={(e) => setExamType(e.target.value)}
-                        className="sr-only"
-                      />
-                      CIA 2
-                    </label>
+                      <label
+                        className={`transition-all duration-300 opacity-100 ${examType === "ESE"
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-300"
+                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                      >
+                        <input
+                          type="radio"
+                          value={"ESE"}
+                          checked={examType === "ESE"}
+                          onChange={(e) => setExamType(e.target.value)}
+                          className="sr-only"
+                        />
+                        ESE
+                      </label>
 
-                    <label
-                      className={`transition-all duration-300 opacity-100 ${examType === "ESE"
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-300"
-                        } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                    >
-                      <input
-                        type="radio"
-                        value={"ESE"}
-                        checked={examType === "ESE"}
-                        onChange={(e) => setExamType(e.target.value)}
-                        className="sr-only"
-                      />
-                      ESE
-                    </label>
+                      <label
+                        className={`transition-all duration-300  opacity-100 ${examType === "ASS 1"
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-300"
+                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                      >
+                        <input
+                          type="radio"
+                          value={"ASS 1"}
+                          checked={examType === "ASS 1"}
+                          onChange={(e) => setExamType(e.target.value)}
+                          className="sr-only"
+                        />
+                        ASS 1
+                      </label>
 
-                    <label
-                      className={`transition-all duration-300  opacity-100 ${examType === "ASS 1"
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-300"
-                        } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                    >
-                      <input
-                        type="radio"
-                        value={"ASS 1"}
-                        checked={examType === "ASS 1"}
-                        onChange={(e) => setExamType(e.target.value)}
-                        className="sr-only"
-                      />
-                      ASS 1
-                    </label>
-
-                    <label
-                      className={`transition-all duration-300 opacity-100 ${examType === "ASS 2"
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-300"
-                        } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                    >
-                      <input
-                        type="radio"
-                        value={"ASS 2"}
-                        checked={examType === "ASS 2"}
-                        onChange={(e) => setExamType(e.target.value)}
-                        className="sr-only"
-                      />
-                      ASS 2
-                    </label>
+                      <label
+                        className={`transition-all duration-300 opacity-100 ${examType === "ASS 2"
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-300"
+                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                      >
+                        <input
+                          type="radio"
+                          value={"ASS 2"}
+                          checked={examType === "ASS 2"}
+                          onChange={(e) => setExamType(e.target.value)}
+                          className="sr-only"
+                        />
+                        ASS 2
+                      </label>
+                    </div>
                   </div>
+
+                  <div className=" space-x-2 items-center flex">
+                    <h1 className="text-[#676060]">Staff's Initial :</h1>
+
+                    <input
+                      type="text"
+                      placeholder="Name Or Intial"
+                      value={staffIntial}
+                      onChange={(event) => setStaffIntial(event.target.value)}
+                      maxLength={3}
+                      required
+                      className="bg-[#F8FCFF] shadow-sm border   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                    />
+
+                  </div>
+
                 </div>
 
-                <div className=" space-x-2 items-center flex">
-                  <h1 className="text-[#676060]">Staff's Initial :</h1>
+              </div>
 
+            </div>
+
+            <div className=" w-full grid gap-3 xl:grid-cols-3 2xl:grid-cols-6 p-4 rounded-md border-1 border-black">
+
+              <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
+                <h1 className="text-[#676060]">Department :</h1>
+                <input
+                  type="text"
+                  value={deparment}
+                  // onBlur={() => !optionSelected && setdepartment('')} // Modify this line
+                  onChange={departmentOnChange}
+                  onFocus={handleDropdownToggle2}
+                  placeholder="Eg: MCA"
+                  className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-black'
+                />
+                {isOpen2 && (
+                  <ul className="absolute z-20 mt-2 w-[9rem] xl:w-[9rem] flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
+                    {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-black" />) :
+                      (searchValue.length === 0 ? (
+                        <li className="py-1 px-4 text-gray-400">{deparment.length === 0 ? "Type..." : "No Department found"}</li>
+                      ) : (
+                        searchValue.map((item, index) => (
+                          <li
+                            key={item.id}
+                            onClick={() => departmentOnSelect(item)}
+                            className={`py-1 px-4 cursor-pointer ${index === focusedOptionIndex ? 'bg-blue-200 w-full' : ''}`}
+                          >
+                            {item.departmentCode}
+                          </li>
+                        ))
+                      ))
+                    }
+                  </ul>
+                )}
+              </div>
+
+
+              <div className=" space-y-2">
+                <h1 className="text-[#676060]">Course Code :</h1>
+                <select
+                  value={courseCode}
+                  onChange={(e) => {
+                    setCourseCode(e.target.value)
+                    getExistingMarks(e.target.value)
+                  }}
+                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] relative rounded px-2 ${courseCode === '' ? 'text-gray-400' : 'text-black'}`}
+                >
+                  <option value=''>
+                    Select Code
+                  </option>
+
+                  {CourseData.map((course) => (
+                    <option key={course.id} value={course.code}>
+                      {course.code}
+                    </option>
+                  ))}
+                  {/* Add your dropdown options here */}
+                </select>
+              </div>
+
+              <div className=" space-y-2">
+                <h1 className="text-[#676060]">Register No:</h1>
+                <div className=" flex relative items-center">
+                  <h1 className=" absolute left-1 font-medium">21{deparment !== '' ? deparment : 'MCA'}</h1>
                   <input
                     type="text"
-                    placeholder="Name Or Intial"
-                    value={staffIntial}
-                    onChange={(event) => setStaffIntial(event.target.value)}
+                    placeholder="XXX"
+                    value={regNo}
+                    onChange={(event) => setRegNo(event.target.value)}
                     maxLength={3}
                     required
-                    className="bg-[#F8FCFF] shadow-sm border   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                    className="bg-[#F8FCFF] shadow-sm border pl-[3.5rem]   h-10 w-[9rem] xl:w-[9rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
                   />
 
                 </div>
 
               </div>
 
-            </div>
+              <div className=" space-y-2">
+                <h1 className="text-[#676060]">Section :</h1>
 
-          </div>
-
-          <div className=" w-full grid gap-3 xl:grid-cols-3 2xl:grid-cols-4 p-6 rounded-md border-1 border-black">
-
-            <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
-              <h1 className="text-[#676060]">Department :</h1>
-              <input
-                type="text"
-                value={deparment}
-                // onBlur={() => !optionSelected && setdepartment('')} // Modify this line
-                onChange={departmentOnChange}
-                onFocus={handleDropdownToggle2}
-                placeholder="Eg: MCA"
-                className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-black'
-              />
-              {isOpen2 && (
-                <ul className="absolute z-20 mt-2 w-[9rem] xl:w-[9rem] flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
-                  {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-black" />) :
-                    (searchValue.length === 0 ? (
-                      <li className="py-1 px-4 text-gray-400">{deparment.length === 0 ? "Type..." : "No Department found"}</li>
-                    ) : (
-                      searchValue.map((item, index) => (
-                        <li
-                          key={item.id}
-                          onClick={() => departmentOnSelect(item)}
-                          className={`py-1 px-4 cursor-pointer ${index === focusedOptionIndex ? 'bg-blue-200 w-full' : ''}`}
-                        >
-                          {item.departmentCode}
-                        </li>
-                      ))
-                    ))
-                  }
-                </ul>
-              )}
-            </div>
-
-
-            <div className=" space-y-2">
-              <h1 className="text-[#676060]">Course Code :</h1>
-              <select
-                value={courseCode}
-                onChange={(e) => setCourseCode(e.target.value)}
-                className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] relative rounded px-2 ${courseCode == '' ? 'text-gray-400' : 'text-black'}`}
-              >
-                <option value=''>
-                  Select Code
-                </option>
-
-                {CourseData.map((course) => (
-                  <option key={course.id} value={course.code}>
-                    {course.code}
-                  </option>
-                ))}
-                {/* Add your dropdown options here */}
-              </select>
-            </div>
-
-            <div className=" space-y-2">
-              <h1 className="text-[#676060]">Register No:</h1>
-              <div className=" flex relative items-center">
-                <h1 className=" absolute left-1 font-medium">21{deparment != '' ? deparment : 'MCA'}</h1>
                 <input
                   type="text"
-                  placeholder="XXX"
-                  value={regNo}
-                  onChange={(event) => setRegNo(event.target.value)}
-                  maxLength={3}
+                  placeholder="Eg: A"
+                  value={section}
+                  onChange={(event) => setSection(event.target.value)}
+                  maxLength={1}
                   required
-                  className="bg-[#F8FCFF] shadow-sm border pl-[3.5rem]   h-10 w-[9rem] xl:w-[9rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                  className="bg-[#F8FCFF] shadow-sm border   h-10 w-[9rem] xl:w-[9rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
                 />
 
               </div>
 
-            </div>
-
-            <div className=" space-y-2">
-              <h1 className="text-[#676060]">Section :</h1>
-
-              <input
-                type="text"
-                placeholder="Eg: A"
-                value={section}
-                onChange={(event) => setSection(event.target.value)}
-                maxLength={1}
-                required
-                className="bg-[#F8FCFF] shadow-sm border   h-10 w-[9rem] xl:w-[9rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
-              />
-
-            </div>
-
-            <div className="xl:col-span-2 2xl:col-span-3 h-full w-full  flex justify-end items-center">
-
-              <div className=" bg-slate-200 py-2 space-x-2 flex items-center shadow-md border justify-center rounded-md  px-3 w-fit">
+              <div className=" bg-slate-200 py-2 col-span-2 space-x-2 flex items-center shadow-md border justify-center rounded-md  px-3 w-fit">
 
                 <h1 className="">Student Status :</h1>
 
                 <button
                   className={`bg-[#F8FCFF] shadow-sm border h-10 w-fit rounded-md px-2 ${studentStatus === 'absent' ? 'bg-blue-500 text-white' : 'text-black'}`}
                   onClick={() => {
-                    if (studentStatus == 'absent') {
+                    if (studentStatus === 'absent') {
                       setStudentStatus('');
                     }
                     else {
@@ -616,7 +634,7 @@ const AddMarks = () => {
                 <button
                   className={`bg-[#F8FCFF] shadow-sm border h-10 w-[6.5rem] rounded-md  px-2 ${studentStatus === 'notOnrole' ? 'bg-blue-500 text-white' : 'text-black'}`}
                   onClick={() => {
-                    if (studentStatus == 'notOnrole') {
+                    if (studentStatus === 'notOnrole') {
                       setStudentStatus('');
                     }
                     else {
@@ -633,98 +651,136 @@ const AddMarks = () => {
 
           </div>
 
-        </div>
+          <div className="w-full flex justify-center grow  p-3 border-b ">
+            {examType === 'ASS 1' || examType === 'ASS 2' ?
+              (<div className="flex items-center space-x-2 ">
+                <h1 className="text-[#676060]">Assignment :</h1>
 
-        <div className="w-[43rem]  p-3 border-b ">
-          {examType === 'ASS 1' || examType === 'ASS 2' ?
-            (<div className="flex items-center space-x-2 ">
-              <h1 className="text-[#676060]">Assignment :</h1>
-
-              <input
-                type="text"
-                placeholder="0"
-                value={staffIntial}
-                onChange={(event) => setStaffIntial(event.target.value)}
-                maxLength={1}
-                required
-                className="bg-[#F8FCFF] shadow-sm border   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
-              />
-            </div>) :
-            (<table className="border-collapse border">
-              <thead>
-                <tr className="bg-gray-200 text-center">
-                  <th className="border p-2">Question</th>
-                  <th className="border p-2">Marks</th>
-                  <th className="border p-2">Question</th>
-                  <th className="border p-2">Marks</th>
-                  <th className="border p-2">Question</th>
-                  <th className="border p-2">Marks</th>
-                  <th className="border p-2">Question</th>
-                  <th className="border p-2">Marks</th>
-                </tr>
-              </thead>
-              <tbody>
-                {questionRows.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {row.map((question, columnIndex) => (
-                      <React.Fragment key={question}>
-                        <td className="border p-2 text-center">{question}</td>
-                        <td className="border p-2">
-                          <input
-                            id={question}
-                            type="number"
-                            value={marks[question] || ""}
-                            onChange={(e) =>
-                              handleMarkChange(question, e.target.value)
-                            }
-                            className={`w-[4rem] pl-2 text-center border transition duration-300 ease-in-out focus:outline-none ${marks[question] &&
-                              (parseInt(marks[question], 10) >
-                                markLimits[question].max ||
-                                parseInt(marks[question], 10) <
-                                markLimits[question].min)
-                              ? "border-red-500 border-4"
-                              : ""
-                              }`}
-                          />
-                        </td>
-                      </React.Fragment>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>)
-          }
-        </div>
-
-        <div className=" flex justify-between items-center w-[43rem] ">
-
-          <div>
-            Total Marks: {totalMarks}
-          </div>
-
-          <div className=" flex space-x-2">
-            <button
-              onClick={handleClear}
-              className=" bg-slate-400 hover:bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
-            >
-              Clear All
-            </button>
-            <button
-              disabled={isLoading}
-              onClick={handleSubmit}
-              className="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center"
-            >
-              {isLoading ? (
-                <img
-                  src={loading}
-                  alt=""
-                  className=" w-8 h-8 animate-spin text-white"
+                <input
+                  type="text"
+                  placeholder="0"
+                  value={staffIntial}
+                  onChange={(event) => setStaffIntial(event.target.value)}
+                  maxLength={1}
+                  required
+                  className="bg-[#F8FCFF] shadow-sm border   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
                 />
-              ) : (
-                "Save"
-              )}
-            </button>
+              </div>) :
+              (<table className="border-collapse border">
+                <thead>
+                  <tr className="bg-gray-200 text-center">
+                    <th className="border p-2">Question</th>
+                    <th className="border p-2">Marks</th>
+                    <th className="border p-2">Question</th>
+                    <th className="border p-2">Marks</th>
+                    <th className="border p-2">Question</th>
+                    <th className="border p-2">Marks</th>
+                    <th className="border p-2">Question</th>
+                    <th className="border p-2">Marks</th>
+                    <th className="border p-2">Question</th>
+                    <th className="border p-2">Marks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {questionRows.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                      {row.map((question, columnIndex) => (
+                        <React.Fragment key={question}>
+                          <td className="border p-2 text-center">{question}</td>
+                          <td className="border p-2">
+                            <input
+                              id={question}
+                              type="number"
+                              value={marks[question] || ""}
+                              onChange={(e) =>
+                                handleMarkChange(question, e.target.value)
+                              }
+                              className={`w-[4rem] pl-2 text-center border transition duration-300 ease-in-out focus:outline-none ${marks[question] &&
+                                (parseInt(marks[question], 10) >
+                                  markLimits[question].max ||
+                                  parseInt(marks[question], 10) <
+                                  markLimits[question].min)
+                                ? "border-red-500 border-4"
+                                : ""
+                                }`}
+                            />
+                          </td>
+                        </React.Fragment>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>)
+            }
           </div>
+
+          <div className=" flex justify-between items-center ">
+
+            <div>
+              Total Marks: {totalMarks}
+            </div>
+
+            <div className=" flex space-x-2">
+              <button
+                onClick={handleClear}
+                className=" bg-slate-400 hover:bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
+              >
+                Clear All
+              </button>
+              <button
+                disabled={isLoading}
+                onClick={handleSubmit}
+                className="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center"
+              >
+                {isLoading ? (
+                  <img
+                    src={loading}
+                    alt=""
+                    className=" w-8 h-8 animate-spin text-white"
+                  />
+                ) : (
+                  "Save"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-2 flex flex-col rounded h-full w-3/12">
+          <div className=" h-10 border-b  flex justify-center items-center font-semibold">
+            <p>Student Marks</p>
+          </div>
+          <div className=" w-full grow flex flex-col justify-center items-center">
+            {isLoading3 ? <img src={loading} alt="" className=" w-10 h-10" /> :
+              (
+                !courseCode ?
+                  <div className="h-full w-full flex flex-col items-center justify-center text-base font-semibold">
+                    <div className="w-fit h-fit relative">
+                      <img src={studentMarksImg} alt="" className=" w-[20rem] " />
+                      <div className=" absolute bottom-[9rem] text-center">
+                        <p>Enter Department and Course code to get</p>
+                        <p>Existing Students Marks</p>
+                      </div>
+                    </div>
+                  </div> : (
+                    existingData?.length === 0 ?
+
+                      (<div className=" w-full h-full ">
+                        <div className=" h-10 m-2 rounded-md bg-slate-400"></div>
+                      </div>) : (<div className="h-full w-full flex flex-col items-center justify-center text-base font-semibold">
+                        <div className="w-fit h-fit relative">
+                          <img src={studentMarksImg} alt="" className=" w-[20rem] " />
+                          <div className=" absolute bottom-[9rem] text-center w-full">
+                            <p>There is No Existing Students</p>
+                          </div>
+                        </div>
+                      </div>)
+
+                  )
+              )
+            }
+          </div>
+
         </div>
       </div>
 

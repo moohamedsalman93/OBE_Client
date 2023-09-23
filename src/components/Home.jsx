@@ -11,7 +11,7 @@ function Home() {
 
   return (
     <div className=" w-screen h-screen p-10 bg-gradient-to-r from-blue-500 to-green-500">
-      <div className="w-full bg-white  rounded-lg">
+      <div className="w-full bg-white  rounded-lg ">
 
         <div className=" bg-[#D7EAFF] flex justify-between items-center p-5 rounded-t-lg">
           <div className=" flex">
