@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import "../App.css";
-import loading from "../assets/loading.svg";
-import studentMarksImg from "../assets/studentMark.png";
+import "../../App.css";
+import loading from "../../assets/loading.svg";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { getApi, searchData } from "../api/api";
+import { getApi, searchData } from "../../api/api";
 import { debounce } from 'lodash';
 import { useNavigate } from "react-router-dom";
+import ObComponents from "./obComponents";
+import ExistingStudent from "./ExistingStudent";
 
 
 const AddMarks = () => {
@@ -22,6 +23,7 @@ const AddMarks = () => {
   const [deparment, setdepartment] = useState("");
   const [regNo, setRegNo] = useState("");
   const [section, setSection] = useState("");
+  const [Assignment, setAssignment] = useState('')
   const [examType, setExamType] = useState("C1");
   const [staffIntial, setStaffIntial] = useState('');
   const [studentStatus, setStudentStatus] = useState('');
@@ -31,8 +33,9 @@ const AddMarks = () => {
   const [isLoading2, setIsLoading2] = useState(false);
   const [isLoading3, setIsLoading3] = useState(false);
   const [existingData, setExistingData] = useState([]);
-  const [markType, setMarkType] = useState("que");
   const [marks, setMarks] = useState({});
+  const [typeData, setTypeData] = useState([]);
+  const [editStudent, setEditstudent] = useState(-1);
 
   const questions = [
     "Q1",
@@ -189,6 +192,8 @@ const AddMarks = () => {
 
   //#region  clearMarks
   const handleClear = () => {
+    setEditstudent(-1);
+
     const clearedMarks = {};
     for (const question of questions) {
       clearedMarks[question] = "";
@@ -200,9 +205,24 @@ const AddMarks = () => {
   //#region  HandleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (examType === 'C1' || examType === 'C2' || examType === 'ESE') {
+      for (const question of questions) {
+        if (!marks[question]) {
+          toast.error("Please fill marks in all box", { duration: 1500 });
+          return;
+        }
+      }
+    }
+
+    if (!deparment || !courseCode || !regNo || !section || !staffIntial) {
+      toast.error("Please fill all detail first", { duration: 1500 });
+      return;
+    }
+
 
     const addData = async () => {
       setIsLoading(true);
+
 
       const marksAsNumbers = {};
       for (const question of questions) {
@@ -213,9 +233,10 @@ const AddMarks = () => {
       const StaffIn = examType + 'STAFF'
 
       const statusStudent = studentStatus === '' ? 'present' : studentStatus
+      var typeDe = examType
 
-      const newData = {
-        regNo: regNo,
+      const newDataforMark = {
+        regNo: '23' + deparment + regNo,
         department: deparment,
         code: courseCode,
         claass: deparment,
@@ -227,14 +248,42 @@ const AddMarks = () => {
         ...marksAsNumbers,
       };
 
+      const newDataforAss = {
+        regNo: regNo,
+        department: deparment,
+        code: courseCode,
+        claass: deparment,
+        section: section,
+        status: statusStudent,
+        exam: "ASG",
+        [typeDe]: parseInt(Assignment, 10),
+      };
+
+      var newData = newDataforMark
+
+      if (examType === 'ASG1' || examType === 'ASG2') {
+        newData = newDataforAss
+      }
+      else {
+        newData = newDataforMark
+      }
+
       try {
         await axios
           .post("http://localhost:3000/staff/addMarks", newData)
           .then((res) => {
             console.log(res);
-            if (res.status === 201) {
+            if (res.status === 200) {
               setIsLoading(false);
-              alert("success");
+              setMarks({});
+              setRegNo('')
+              toast.success("Mark saved successfully", { duration: 1500 });
+              getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
+              const last3Digits = parseInt(regNo, 10);
+              const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
+
+              // Update the state with the new value
+              setRegNo(newLast3Digits);
             } else {
               setIsLoading(false);
             }
@@ -261,7 +310,7 @@ const AddMarks = () => {
       // newData.append('code', courseCode)
       // newData.append(examType === 'CIA 1' ? 'Q1' : 'Q2', value);
 
-      const AssignType = examType === "CIA 1" ? "Q1" : "Q2";
+      const AssignType = examType === "ASS1" ? "ASG1" : "ASG2";
 
       const newData = {
         reg: regNo,
@@ -301,7 +350,6 @@ const AddMarks = () => {
     }
   };
   //#endregion
-
 
   //#region Handle Outside Click
   const handleOutsideClick2 = event => {
@@ -357,7 +405,6 @@ const AddMarks = () => {
     setdepartment(item.departmentCode);
     setIsOpen2(false);
     getApi(`staff/searchCode?question=${item.departmentCode}`, setCourseData, setIsLoading2)
-    console.log(courseCode)
   };
   //#endregion
 
@@ -389,140 +436,150 @@ const AddMarks = () => {
   }, [marks]);
   //#endregion
 
-  //#region getExistingMarks
-  const getExistingMarks = (cc) => {
-    getApi(`staff/getMarkByCode?code=${cc}&department=${deparment}`, setExistingData, setIsLoading3)
+  //#region hanledOnselectCource
+  const handleCourseOnslect = (e) => {
+    setCourseCode(e.target.value)
+    getApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}`, setExistingData, setIsLoading3)
   }
   //#endregion
 
+  //#region typeStudent
+  useEffect(() => {
+    setIsLoading3(true)
+    if (courseCode && deparment) {
+      const sData = existingData?.filter((item) => item.marks[0][examType + 'STAFF'] !== null);
+      setTypeData(sData)
+    }
+    setIsLoading3(false)
+  }, [existingData, examType])
+  //#endregion
+
+  //#region examType onChange useffect for trigger api
+  // useEffect(() => {
+
+  //   if (courseCode && deparment) {
+  //     getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
+  //   }
+  // }, [examType])
+  //#endregion
+
+  //#region handleEditClick
+  const handleEditClick = (index) => {
+    let temp = {}
+    setEditstudent(index)
+    setSection(typeData[index].section)
+    setStaffIntial(typeData[index].marks[0][examType + 'STAFF'])
+    setRegNo(typeData[index].regNo.slice(-3))
+    for (let m in questions) {
+      temp[questions[m]] = typeData[index].marks[0][examType + questions[m]]
+    }
+    setMarks(temp)
+  }
+  //#endregion
+
+  //#region setExamtype
+  const handleSetExamtype = (e) => {
+    setEditstudent(-1)
+    setMarks({})
+    setdepartment('');
+    setCourseCode('')
+    setRegNo('')
+    setSection('')
+    setExamType(e.target.value)
+  }
+  //#endregion
+
+  //#region handleAssignment
+  const handleAssignment = (e) => {
+    if (e.target.value >= 0 && e.target.value <= 3) {
+      setAssignment(e.target.value);
+    }
+    else {
+      toast.error('Value Should be between 0 and 3 only')
+    }
+  }
+  //#endregion
+
+  //#region handleFillmark
+  const handleFillmark = () => {
+    setMarks({
+      Q1: "1",
+      Q2: "1",
+      Q3: "1",
+      Q4: "1",
+      Q5: "1",
+      Q6: "1",
+      Q7: "1",
+      Q8: "1",
+      Q9: "1",
+      Q10: "1",
+      Q11: "1",
+      Q12: "1",
+      Q13: "1",
+      Q14: "1",
+      Q15: "1",
+      Q16: "1",
+      Q17: "1",
+      Q18: "1",
+      Q19: "1",
+      Q20: "1",
+      Q21: "1",
+      Q22: "1",
+      Q23: "1",
+      Q24: "1",
+      Q25: "1",
+      Q26: "1",
+      Q27: "1",
+      Q28: "1",
+    })
+  }
+  //#endregion
 
   return (
     <div className=" w-screen h-screen  flex items-center p-6  bg-gradient-to-r from-blue-500 to-green-500">
 
       <div className="flex flex-row w-full h-full gap-3 justify-between">
         <div className="flex flex-col  space-y-4 bg-white p-2 rounded-lg w-3/4">
-          <div onClick={() => Navigate("../")} className=" cursor-pointer w-fit px-3 py-2 border-2 border-blue-700  hover:bg-blue-700 hover:text-white hover:scale-110 transition rounded-xl flex items-center space-x-2">
+          <div onClick={() => Navigate("/home")} className=" cursor-pointer w-fit px-3 py-2 border-2 border-blue-700  :bg-blue-700 hover:text-white hover:scale-110 transition rounded-xl flex items-center space-x-2">
             <ion-icon name="home"></ion-icon>
             <p className=" text-base">Home</p>
           </div>
 
           <div className="flex flex-col justify-center  items-center border-b ">
 
-            <div className=" w-full flex justify-between items-end px-5">
+            <div className="flex items-end justify-between w-full h-fit px-5">
 
-              <div className=" w-full">
-
-                <div className="flex items-end justify-between w-full h-fit ">
-
-                  <div className=" space-y-2">
-                    <h1 className="text-base font-normal text-[#676060]">
-                      OB components :
-                    </h1>
-                    <div className=" flex space-x-4 items-end ">
-                      <label
-                        className={`transition-all duration-300 ${examType === "C1"
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-300"
-                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                      >
-                        <input
-                          type="radio"
-                          value={"C1"}
-                          checked={examType === "C1"}
-                          onChange={(e) => setExamType(e.target.value)}
-                          className="sr-only" // Hide the actual radio button
-                        />
-                        {markType === "que" ? "CIA 1" : "Ass 1 "}
-                      </label>
-
-                      <label
-                        className={`transition-all duration-300 ${examType === "C2"
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-300"
-                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                      >
-                        <input
-                          type="radio"
-                          value={"CIA 2"}
-                          checked={examType === "C2"}
-                          onChange={(e) => setExamType(e.target.value)}
-                          className="sr-only"
-                        />
-                        CIA 2
-                      </label>
-
-                      <label
-                        className={`transition-all duration-300 opacity-100 ${examType === "ESE"
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-300"
-                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                      >
-                        <input
-                          type="radio"
-                          value={"ESE"}
-                          checked={examType === "ESE"}
-                          onChange={(e) => setExamType(e.target.value)}
-                          className="sr-only"
-                        />
-                        ESE
-                      </label>
-
-                      <label
-                        className={`transition-all duration-300  opacity-100 ${examType === "ASS 1"
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-300"
-                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                      >
-                        <input
-                          type="radio"
-                          value={"ASS 1"}
-                          checked={examType === "ASS 1"}
-                          onChange={(e) => setExamType(e.target.value)}
-                          className="sr-only"
-                        />
-                        ASS 1
-                      </label>
-
-                      <label
-                        className={`transition-all duration-300 opacity-100 ${examType === "ASS 2"
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-300"
-                          } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
-                      >
-                        <input
-                          type="radio"
-                          value={"ASS 2"}
-                          checked={examType === "ASS 2"}
-                          onChange={(e) => setExamType(e.target.value)}
-                          className="sr-only"
-                        />
-                        ASS 2
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className=" space-x-2 items-center flex">
-                    <h1 className="text-[#676060]">Staff's Initial :</h1>
-
-                    <input
-                      type="text"
-                      placeholder="Name Or Intial"
-                      value={staffIntial}
-                      onChange={(event) => setStaffIntial(event.target.value)}
-                      maxLength={3}
-                      required
-                      className="bg-[#F8FCFF] shadow-sm border   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
-                    />
-
-                  </div>
-
+              <div className=" space-y-2">
+                <h1 className="text-base font-normal text-[#676060]">
+                  OB components :
+                </h1>
+                <div className=" flex space-x-4 items-end ">
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C1'} textlabel={'CIA-1'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C2'} textlabel={'CIA-2'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ESE'} textlabel={'ESE'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG1'} textlabel={'ASS-1'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG2'} textlabel={'ASS-2'} />
                 </div>
+              </div>
+
+              <div className=" space-x-2 items-center flex">
+                <h1 className="text-[#676060]">Staff's Initial :</h1>
+
+                <input
+                  type="text"
+                  placeholder="Name Or Intial"
+                  value={staffIntial}
+                  onChange={(event) => setStaffIntial(event.target.value)}
+                  maxLength={3}
+                  required
+                  className="bg-[#F8FCFF] shadow-sm border   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                />
 
               </div>
 
             </div>
 
-            <div className=" w-full grid gap-3 xl:grid-cols-3 2xl:grid-cols-6 p-4 rounded-md border-1 border-black">
+            <div className=" w-full h-fit relative grid gap-3 grid-cols-6 p-4 rounded-md border-1 border-black">
 
               <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
                 <h1 className="text-[#676060]">Department :</h1>
@@ -545,7 +602,7 @@ const AddMarks = () => {
                           <li
                             key={item.id}
                             onClick={() => departmentOnSelect(item)}
-                            className={`py-1 px-4 cursor-pointer ${index === focusedOptionIndex ? 'bg-blue-200 w-full' : ''}`}
+                            className={`py-1 px-4 cursor-pointer ${index === focusedOptionIndex ? 'bg-blue-200 w-full flex justify-center' : ''}`}
                           >
                             {item.departmentCode}
                           </li>
@@ -557,15 +614,12 @@ const AddMarks = () => {
               </div>
 
 
-              <div className=" space-y-2">
+              <div className=" space-y-2 ">
                 <h1 className="text-[#676060]">Course Code :</h1>
                 <select
                   value={courseCode}
-                  onChange={(e) => {
-                    setCourseCode(e.target.value)
-                    getExistingMarks(e.target.value)
-                  }}
-                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] relative rounded px-2 ${courseCode === '' ? 'text-gray-400' : 'text-black'}`}
+                  onChange={handleCourseOnslect}
+                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem]   rounded px-2 ${courseCode === '' ? 'text-gray-400' : 'text-black'}`}
                 >
                   <option value=''>
                     Select Code
@@ -576,20 +630,21 @@ const AddMarks = () => {
                       {course.code}
                     </option>
                   ))}
-                  {/* Add your dropdown options here */}
                 </select>
               </div>
 
               <div className=" space-y-2">
                 <h1 className="text-[#676060]">Register No:</h1>
                 <div className=" flex relative items-center">
-                  <h1 className=" absolute left-1 font-medium">21{deparment !== '' ? deparment : 'MCA'}</h1>
+                  <h1 className=" absolute left-1 font-medium">23{deparment !== '' ? deparment : 'MCA'}</h1>
                   <input
-                    type="text"
+                    type="tel"
                     placeholder="XXX"
                     value={regNo}
                     onChange={(event) => setRegNo(event.target.value)}
                     maxLength={3}
+                    max={3}
+
                     required
                     className="bg-[#F8FCFF] shadow-sm border pl-[3.5rem]   h-10 w-[9rem] xl:w-[9rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
                   />
@@ -615,7 +670,7 @@ const AddMarks = () => {
 
               <div className=" bg-slate-200 py-2 col-span-2 space-x-2 flex items-center shadow-md border justify-center rounded-md  px-3 w-fit">
 
-                <h1 className="">Student Status :</h1>
+                <h1 className="">Status :</h1>
 
                 <button
                   className={`bg-[#F8FCFF] shadow-sm border h-10 w-fit rounded-md px-2 ${studentStatus === 'absent' ? 'bg-blue-500 text-white' : 'text-black'}`}
@@ -651,81 +706,89 @@ const AddMarks = () => {
 
           </div>
 
-          <div className="w-full flex justify-center grow  p-3 border-b ">
-            {examType === 'ASS 1' || examType === 'ASS 2' ?
+          <div className="w-full flex  relative justify-center grow  p-3 border-b ">
+            {examType === 'ASG1' || examType === 'ASG2' ?
               (<div className="flex items-center space-x-2 ">
                 <h1 className="text-[#676060]">Assignment :</h1>
 
                 <input
                   type="text"
                   placeholder="0"
-                  value={staffIntial}
-                  onChange={(event) => setStaffIntial(event.target.value)}
+                  value={Assignment}
+                  onChange={handleAssignment}
                   maxLength={1}
                   required
                   className="bg-[#F8FCFF] shadow-sm border   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
                 />
               </div>) :
-              (<table className="border-collapse border">
-                <thead>
-                  <tr className="bg-gray-200 text-center">
-                    <th className="border p-2">Question</th>
-                    <th className="border p-2">Marks</th>
-                    <th className="border p-2">Question</th>
-                    <th className="border p-2">Marks</th>
-                    <th className="border p-2">Question</th>
-                    <th className="border p-2">Marks</th>
-                    <th className="border p-2">Question</th>
-                    <th className="border p-2">Marks</th>
-                    <th className="border p-2">Question</th>
-                    <th className="border p-2">Marks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {questionRows.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                      {row.map((question, columnIndex) => (
-                        <React.Fragment key={question}>
-                          <td className="border p-2 text-center">{question}</td>
-                          <td className="border p-2">
-                            <input
-                              id={question}
-                              type="number"
-                              value={marks[question] || ""}
-                              onChange={(e) =>
-                                handleMarkChange(question, e.target.value)
-                              }
-                              className={`w-[4rem] pl-2 text-center border transition duration-300 ease-in-out focus:outline-none ${marks[question] &&
-                                (parseInt(marks[question], 10) >
-                                  markLimits[question].max ||
-                                  parseInt(marks[question], 10) <
-                                  markLimits[question].min)
-                                ? "border-red-500 border-4"
-                                : ""
-                                }`}
-                            />
-                          </td>
-                        </React.Fragment>
-                      ))}
+              (
+                <table className="border-collapse border">
+                  <thead>
+                    <tr className="bg-gray-200 text-center">
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>)
+                  </thead>
+                  <tbody>
+                    {questionRows.map((row, rowIndex) => (
+                      <tr key={rowIndex}>
+                        {row.map((question, columnIndex) => (
+                          <React.Fragment key={question}>
+                            <td className="border p-2 text-center">{question}</td>
+                            <td className="border p-2">
+                              <input
+                                id={question}
+                                type="number"
+                                value={marks[question] || ""}
+                                onChange={(e) =>
+                                  handleMarkChange(question, e.target.value)
+                                }
+                                className={`w-[4rem] pl-2 text-center border transition duration-300 ease-in-out focus:outline-none ${marks[question] &&
+                                  (parseInt(marks[question], 10) >
+                                    markLimits[question].max ||
+                                    parseInt(marks[question], 10) <
+                                    markLimits[question].min)
+                                  ? "border-red-500 border-4"
+                                  : ""
+                                  }`}
+                              />
+                            </td>
+                          </React.Fragment>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )
+            }
+            {studentStatus !== '' &&
+              <div className=" bg-slate-500 opacity-25 cursor-not-allowed absolute  w-full h-full top-0"></div>
             }
           </div>
 
           <div className=" flex justify-between items-center ">
-
-            <div>
-              Total Marks: {totalMarks}
-            </div>
+            {
+              examType === 'ASG1' || examType === 'ASG2' ? <div></div> :
+                <div className="flex space-x-2 items-center">
+                  <div className=" h-10 px-4 bg-slate-800 flex items-center justify-center rounded-lg text-white" onClick={handleFillmark}> Fill marks</div>
+                  <p>Total Marks: {totalMarks}</p>
+                </div>
+            }
 
             <div className=" flex space-x-2">
               <button
                 onClick={handleClear}
                 className=" bg-slate-400 hover:bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
               >
-                Clear All
+                {editStudent === -1 ? 'Clear All' : 'Cancel'}
               </button>
               <button
                 disabled={isLoading}
@@ -736,52 +799,19 @@ const AddMarks = () => {
                   <img
                     src={loading}
                     alt=""
-                    className=" w-8 h-8 animate-spin text-white"
+                    className=" w-6 h-6 animate-spin text-white"
                   />
                 ) : (
-                  "Save"
+                  editStudent === -1 ? "Save" : "Edit"
                 )}
               </button>
             </div>
           </div>
-        </div>
-
-        <div className="bg-white p-2 flex flex-col rounded h-full w-3/12">
-          <div className=" h-10 border-b  flex justify-center items-center font-semibold">
-            <p>Student Marks</p>
-          </div>
-          <div className=" w-full grow flex flex-col justify-center items-center">
-            {isLoading3 ? <img src={loading} alt="" className=" w-10 h-10" /> :
-              (
-                !courseCode ?
-                  <div className="h-full w-full flex flex-col items-center justify-center text-base font-semibold">
-                    <div className="w-fit h-fit relative">
-                      <img src={studentMarksImg} alt="" className=" w-[20rem] " />
-                      <div className=" absolute bottom-[9rem] text-center">
-                        <p>Enter Department and Course code to get</p>
-                        <p>Existing Students Marks</p>
-                      </div>
-                    </div>
-                  </div> : (
-                    existingData?.length === 0 ?
-
-                      (<div className=" w-full h-full ">
-                        <div className=" h-10 m-2 rounded-md bg-slate-400"></div>
-                      </div>) : (<div className="h-full w-full flex flex-col items-center justify-center text-base font-semibold">
-                        <div className="w-fit h-fit relative">
-                          <img src={studentMarksImg} alt="" className=" w-[20rem] " />
-                          <div className=" absolute bottom-[9rem] text-center w-full">
-                            <p>There is No Existing Students</p>
-                          </div>
-                        </div>
-                      </div>)
-
-                  )
-              )
-            }
-          </div>
 
         </div>
+
+        <ExistingStudent isLoading3={isLoading3} courseCode={courseCode} typeData={typeData} editStudent={editStudent} handleEditClick={handleEditClick} examType={examType} />
+
       </div>
 
     </div>
