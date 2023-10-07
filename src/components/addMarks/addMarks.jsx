@@ -3,7 +3,7 @@ import "../../App.css";
 import loading from "../../assets/loading.svg";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { getApi, searchData } from "../../api/api";
+import { DeleteApi, getApi, searchData } from "../../api/api";
 import { debounce } from 'lodash';
 import { useNavigate } from "react-router-dom";
 import ObComponents from "./obComponents";
@@ -249,7 +249,7 @@ const AddMarks = () => {
       };
 
       const newDataforAss = {
-        regNo: regNo,
+        regNo: '23UCA' + regNo,
         department: deparment,
         code: courseCode,
         claass: deparment,
@@ -259,7 +259,7 @@ const AddMarks = () => {
         [typeDe]: parseInt(Assignment, 10),
       };
 
-      var newData = newDataforMark
+      var newData;
 
       if (examType === 'ASG1' || examType === 'ASG2') {
         newData = newDataforAss
@@ -276,14 +276,19 @@ const AddMarks = () => {
             if (res.status === 200) {
               setIsLoading(false);
               setMarks({});
-              setRegNo('')
+
               toast.success("Mark saved successfully", { duration: 1500 });
               getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
-              const last3Digits = parseInt(regNo, 10);
-              const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
+              if (editStudent !== -1) {
+                const last3Digits = parseInt(regNo, 10);
+                const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
+                // Update the state with the new value
+                setRegNo(newLast3Digits);
+              }
+              else {
+                setRegNo('')
+              }
 
-              // Update the state with the new value
-              setRegNo(newLast3Digits);
             } else {
               setIsLoading(false);
             }
@@ -445,9 +450,10 @@ const AddMarks = () => {
 
   //#region typeStudent
   useEffect(() => {
+    const ex = examType + 'STAFF'
     setIsLoading3(true)
     if (courseCode && deparment) {
-      const sData = existingData?.filter((item) => item.marks[0][examType + 'STAFF'] !== null);
+      const sData = existingData?.filter((item) => item.marks.length !== 0 ? item?.marks[0]?.ex !== null : null);
       setTypeData(sData)
     }
     setIsLoading3(false)
@@ -470,10 +476,20 @@ const AddMarks = () => {
     setSection(typeData[index].section)
     setStaffIntial(typeData[index].marks[0][examType + 'STAFF'])
     setRegNo(typeData[index].regNo.slice(-3))
-    for (let m in questions) {
-      temp[questions[m]] = typeData[index].marks[0][examType + questions[m]]
+    console.log(examType)
+    if (examType === 'ASG1') {
+      setAssignment(typeData[index].marks[0].ASG1)  
     }
-    setMarks(temp)
+    else if (examType === 'ASG2'){
+      setAssignment(typeData[index].marks[0].ASG2)
+    }  
+    else {
+      for (let m in questions) {
+        temp[questions[m]] = typeData[index].marks[0][examType + questions[m]]
+      }
+      setMarks(temp)
+    }
+
   }
   //#endregion
 
@@ -532,6 +548,21 @@ const AddMarks = () => {
       Q27: "1",
       Q28: "1",
     })
+  }
+  //#endregion
+
+  //#region handleDelete
+  const handleDelete = () => {
+    const markId = existingData[editStudent]?.marks[0]?.id
+    console.log(markId)
+
+    DeleteApi('staff/deleteMark', { id: markId, exam: examType }, setIsLoading).then(res => {
+      if (res.status === 200) {
+        toast.success('mark deleted successfully')
+        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
+      }
+    })
+
   }
   //#endregion
 
@@ -747,7 +778,7 @@ const AddMarks = () => {
                               <input
                                 id={question}
                                 type="number"
-                                value={marks[question] || ""}
+                                value={marks[question]}
                                 onChange={(e) =>
                                   handleMarkChange(question, e.target.value)
                                 }
@@ -784,6 +815,15 @@ const AddMarks = () => {
             }
 
             <div className=" flex space-x-2">
+              {editStudent !== -1
+                && <button
+                  onClick={handleDelete}
+                  className=" bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
+                >
+                  Delete
+                </button>
+              }
+
               <button
                 onClick={handleClear}
                 className=" bg-slate-400 hover:bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"

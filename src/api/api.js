@@ -56,3 +56,17 @@ export const loginApi = async (path, data, setisLoading) => {
   }
 };
 
+export const DeleteApi = async (path, data, setisLoading) => {
+  setisLoading(true);
+  console.log(data)
+  try {
+    const res = await axios.post(api + path, data);
+    setisLoading(false);
+    return res
+  } catch (err) {
+    console.log(err)
+    toast.error(err.message)
+    setisLoading(false);
+  }
+};
+

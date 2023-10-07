@@ -35,8 +35,8 @@ function ExistingStudent({isLoading3,courseCode,typeData,editStudent,handleEditC
                                             <div className=" w-full grow">
                                                 {typeData?.map((item, index) =>
                                                     <div key={index} className={` h-10 mx-2  grid grid-cols-2 px-2 items-center text-center font-normal border-b hover:border-blue-700 hover:text-blue-600 cursor-pointer ${editStudent === index && 'font-semibold text-blue-600'}`} onClick={() => handleEditClick(index)}>
-                                                        <p>{item.regNo}</p>
-                                                        <p>{item.marks[0][examType + 'STAFF']}</p>
+                                                        <p>{item?.regNo}</p>
+                                                        <p>{item?.marks[0][examType + 'STAFF']||'g'}</p>
                                                     </div>
                                                 )
                                                 }
