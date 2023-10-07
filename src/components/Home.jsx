@@ -7,12 +7,22 @@ import { useNavigate } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
 import { toast } from "react-hot-toast";
 
-function Home({Role,setRole}) {
+function Home({ Role, setRole }) {
 
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const [userName, setuserName] = useState('');
-  
+  const [logOutBtn, setlogOutBtn] = useState(false);
+
+  const handleLogOutbtn = () => {
+
+    if (logOutBtn == true) {
+      setlogOutBtn(false)
+    }
+    else {
+      setlogOutBtn(true)
+    }
+  }
 
   useEffect(() => {
     if (!token) {
@@ -58,11 +68,22 @@ function Home({Role,setRole}) {
             </h1>
           </div>
 
-          <div className=" space-y-2 flex flex-col items-center">
+          {/* <div className=" space-y-2 flex flex-col items-center">
             <div className=" text-black font-medium">{userName}</div>
             <div className="flex justify-center items-center w-[80px] h-[40px] rounded-lg bg-[#3b84f4] text-white font-medium cursor-pointer" onClick={handleLogOut}>
               Log Out
             </div>
+          </div> */}
+
+          <div className="relative space-y-2 flex flex-col items-center mr-4">
+            <div className=" bg-blue-200 rounded-full px-5 py-3 cursor-pointer" onClick={handleLogOutbtn}>
+              <p className=" font-medium cursor-pointer">{userName[0]}</p>
+            </div>
+            {logOutBtn === true && (
+              <div className=" absolute top-12 flex justify-center items-center w-[80px] h-[40px] rounded-lg bg-[#3b84f4] text-white font-medium cursor-pointer" onClick={handleLogOut}>
+                Log Out
+              </div>
+            )}
           </div>
 
         </div>
