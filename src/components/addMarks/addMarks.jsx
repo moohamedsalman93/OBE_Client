@@ -3,12 +3,15 @@ import "../../App.css";
 import loading from "../../assets/loading.svg";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { DeleteApi, getApi, searchData } from "../../api/api";
+import { DeleteApi, getApi, getRegMarksApi, putApi, searchData } from "../../api/api";
 import { debounce } from 'lodash';
 import { useNavigate } from "react-router-dom";
 import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
+import jwtDecode from "jwt-decode";
 
+const token = localStorage.getItem('token');
+const decodedToken = jwtDecode(token);
 
 const AddMarks = () => {
   //#region  Variables
@@ -25,7 +28,7 @@ const AddMarks = () => {
   const [section, setSection] = useState("");
   const [Assignment, setAssignment] = useState('')
   const [examType, setExamType] = useState("C1");
-  const [staffIntial, setStaffIntial] = useState('');
+  const [staffIntial, setStaffIntial] = useState(decodedToken.name);
   const [studentStatus, setStudentStatus] = useState('');
   const [totalMarks, setTotalMarks] = useState(0);
 
@@ -36,6 +39,7 @@ const AddMarks = () => {
   const [marks, setMarks] = useState({});
   const [typeData, setTypeData] = useState([]);
   const [editStudent, setEditstudent] = useState(-1);
+  const [regData, setRegData] = useState({});
 
   const questions = [
     "Q1",
@@ -199,6 +203,7 @@ const AddMarks = () => {
       clearedMarks[question] = "";
     }
     setMarks(clearedMarks);
+    setAssignment('')
   };
   //#endregion
 
@@ -214,7 +219,7 @@ const AddMarks = () => {
       }
     }
 
-    if (!deparment || !courseCode || !regNo || !section || !staffIntial) {
+    if (!deparment || !courseCode || !regNo || !section) {
       toast.error("Please fill all detail first", { duration: 1500 });
       return;
     }
@@ -222,7 +227,6 @@ const AddMarks = () => {
 
     const addData = async () => {
       setIsLoading(true);
-
 
       const marksAsNumbers = {};
       for (const question of questions) {
@@ -249,13 +253,14 @@ const AddMarks = () => {
       };
 
       const newDataforAss = {
-        regNo: '23UCA' + regNo,
+        regNo: '23' + deparment + regNo,
         department: deparment,
         code: courseCode,
         claass: deparment,
         section: section,
         status: statusStudent,
         exam: "ASG",
+        [StaffIn]: staffIntial,
         [typeDe]: parseInt(Assignment, 10),
       };
 
@@ -275,63 +280,22 @@ const AddMarks = () => {
             console.log(res);
             if (res.status === 200) {
               setIsLoading(false);
-              setMarks({});
 
               toast.success("Mark saved successfully", { duration: 1500 });
               getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
-              if (editStudent !== -1) {
+              if (editStudent === -1) {
                 const last3Digits = parseInt(regNo, 10);
                 const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
                 // Update the state with the new value
                 setRegNo(newLast3Digits);
+                handleClear()
               }
               else {
                 setRegNo('')
+                handleClear('')
+                setEditstudent(-1)
               }
 
-            } else {
-              setIsLoading(false);
-            }
-          });
-      } catch (err) {
-        setIsLoading(false);
-      }
-    };
-
-    addData();
-  };
-  //#endregion
-
-  //#region  handleSumbitAssignment
-  const handleSumbitAssignment = (e) => {
-    e.preventDefault();
-
-    const addData = async () => {
-      setIsLoading(true);
-
-      // const newData = new FormData();
-      // newData.append('reg', regNo);
-      // newData.append('exam', 'ASG');
-      // newData.append('code', courseCode)
-      // newData.append(examType === 'CIA 1' ? 'Q1' : 'Q2', value);
-
-      const AssignType = examType === "ASS1" ? "ASG1" : "ASG2";
-
-      const newData = {
-        reg: regNo,
-        code: courseCode,
-        exam: "ASG",
-        [AssignType]: parseInt(value),
-      };
-
-      try {
-        await axios
-          .post("http://localhost:3005/user//cia", newData)
-          .then((res) => {
-            console.log(res);
-            if (res.status === 201) {
-              setIsLoading(false);
-              alert("success");
             } else {
               setIsLoading(false);
             }
@@ -409,7 +373,7 @@ const AddMarks = () => {
   const departmentOnSelect = item => {
     setdepartment(item.departmentCode);
     setIsOpen2(false);
-    getApi(`staff/searchCode?question=${item.departmentCode}`, setCourseData, setIsLoading2)
+    getApi(`staff/searchCode?question=${item.departmentCode}&uname=${decodedToken.uname}`, setCourseData, setIsLoading2)
   };
   //#endregion
 
@@ -428,8 +392,10 @@ const AddMarks = () => {
 
   //#region departmentOnChange
   const departmentOnChange = event => {
+    setEditstudent(-1)
     setdepartment(event.target.value);
     handleDepSearch(event.target.value);
+    setMarks({})
   };
   //#endregion
 
@@ -453,20 +419,11 @@ const AddMarks = () => {
     const ex = examType + 'STAFF'
     setIsLoading3(true)
     if (courseCode && deparment) {
-      const sData = existingData?.filter((item) => item.marks.length !== 0 ? item?.marks[0]?.ex !== null : null);
+      const sData = existingData?.filter((item) => item.marks.length !== 0 ? item?.marks[0][ex] !== null : null);
       setTypeData(sData)
     }
     setIsLoading3(false)
   }, [existingData, examType])
-  //#endregion
-
-  //#region examType onChange useffect for trigger api
-  // useEffect(() => {
-
-  //   if (courseCode && deparment) {
-  //     getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
-  //   }
-  // }, [examType])
   //#endregion
 
   //#region handleEditClick
@@ -474,15 +431,16 @@ const AddMarks = () => {
     let temp = {}
     setEditstudent(index)
     setSection(typeData[index].section)
-    setStaffIntial(typeData[index].marks[0][examType + 'STAFF'])
+    // setStaffIntial(typeData[index].marks[0][examType + 'STAFF'])
     setRegNo(typeData[index].regNo.slice(-3))
     console.log(examType)
     if (examType === 'ASG1') {
-      setAssignment(typeData[index].marks[0].ASG1)  
+      setAssignment(typeData[index].marks[0].ASG1)
+      console.log(typeData[index].marks[0].ASG1)
     }
-    else if (examType === 'ASG2'){
+    else if (examType === 'ASG2') {
       setAssignment(typeData[index].marks[0].ASG2)
-    }  
+    }
     else {
       for (let m in questions) {
         temp[questions[m]] = typeData[index].marks[0][examType + questions[m]]
@@ -502,6 +460,7 @@ const AddMarks = () => {
     setRegNo('')
     setSection('')
     setExamType(e.target.value)
+    setAssignment('')
   }
   //#endregion
 
@@ -553,25 +512,90 @@ const AddMarks = () => {
 
   //#region handleDelete
   const handleDelete = () => {
-    const markId = existingData[editStudent]?.marks[0]?.id
-    console.log(markId)
-
+    const markId = typeData[editStudent]?.marks[0]?.id
     DeleteApi('staff/deleteMark', { id: markId, exam: examType }, setIsLoading).then(res => {
       if (res.status === 200) {
         toast.success('mark deleted successfully')
         getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
+        handleClear()
+        setRegNo('')
       }
     })
 
   }
   //#endregion
 
+  //#region handleReg
+  const handleReg = (e) => {
+    setRegNo(e.target.value)
+    if (editStudent !== -1) {
+      setEditstudent(-1)
+      handleClear()
+    }
+  }
+  //#endregion
+
+  //#region handleGetreg
+  const handleGetreg = () => {
+
+    const params = {
+      code: courseCode,
+      department: deparment,
+      regNo: '23' + deparment + regNo
+    }
+
+    let temp = {}
+
+    if (regNo && deparment && courseCode) {
+      const temp = {}
+      getRegMarksApi('staff/byCode', setRegData, params, setIsLoading).then((res) => {
+        if (res.data.success) {
+          if (examType === 'ASG1') {
+            if (res.data.marks[0].ASG1STAFF !== null) {
+              toast.success('marks Already exist in reg No')
+              setAssignment(res.data.marks[0].ASG1)
+            }
+
+          }
+          else if (examType === 'ASG2') {
+            if (res.data.marks[0].ASG2STAFF !== null) {
+              toast.success('marks Already exist in reg No')
+              setAssignment(res.data.marks[0].ASG2)
+            }
+
+          }
+          else {
+            if (res.data.marks[0][examType + 'STAFF'] === null) {
+              
+            } else {
+              for (let m in questions) {
+                temp[questions[m]] = res.data.marks[0][examType + questions[m]]
+              }
+              toast.success('marks Already exist in reg No')
+              setMarks(temp)
+            }
+
+          }
+        }
+        else {
+          for (let m in questions) {
+            temp[questions[m]] = ''
+          }
+          setMarks(temp)
+        }
+      })
+    }
+
+  }
+  //#endregion
+
+
   return (
     <div className=" w-screen h-screen  flex items-center p-6  bg-gradient-to-r from-blue-500 to-green-500">
 
       <div className="flex flex-row w-full h-full gap-3 justify-between">
         <div className="flex flex-col  space-y-4 bg-white p-2 rounded-lg w-3/4">
-          <div onClick={() => Navigate("/home")} className=" cursor-pointer w-fit px-3 py-2 border-2 border-blue-700  :bg-blue-700 hover:text-white hover:scale-110 transition rounded-xl flex items-center space-x-2">
+          <div onClick={() => Navigate("/")} className=" cursor-pointer w-fit px-3 py-2 border-2 border-blue-700  :bg-blue-700 hover:text-blue-600 hover:scale-110 transition rounded-xl flex items-center space-x-2">
             <ion-icon name="home"></ion-icon>
             <p className=" text-base">Home</p>
           </div>
@@ -594,17 +618,9 @@ const AddMarks = () => {
               </div>
 
               <div className=" space-x-2 items-center flex">
-                <h1 className="text-[#676060]">Staff's Initial :</h1>
+                <h1 className="text-[#676060]">Staff's Name :</h1>
+                <h1>{staffIntial}</h1>
 
-                <input
-                  type="text"
-                  placeholder="Name Or Intial"
-                  value={staffIntial}
-                  onChange={(event) => setStaffIntial(event.target.value)}
-                  maxLength={3}
-                  required
-                  className="bg-[#F8FCFF] shadow-sm border   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
-                />
 
               </div>
 
@@ -672,7 +688,8 @@ const AddMarks = () => {
                     type="tel"
                     placeholder="XXX"
                     value={regNo}
-                    onChange={(event) => setRegNo(event.target.value)}
+                    onBlur={handleGetreg}
+                    onChange={handleReg}
                     maxLength={3}
                     max={3}
 
@@ -806,46 +823,52 @@ const AddMarks = () => {
           </div>
 
           <div className=" flex justify-between items-center ">
+            <div className=" space-x-2 flex">
+              {editStudent !== -1
+                && <div
+                  onClick={handleDelete}
+                  className=" bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
+                >
+                  Delete
+                </div>
+              }
+
+              <div
+                onClick={handleClear}
+                className=" bg-slate-400 hover:bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
+              >
+                {editStudent === -1 ? 'Clear All' : 'Cancel'}
+              </div>
+            </div>
+
+
+
+
             {
               examType === 'ASG1' || examType === 'ASG2' ? <div></div> :
                 <div className="flex space-x-2 items-center">
+
                   <div className=" h-10 px-4 bg-slate-800 flex items-center justify-center rounded-lg text-white" onClick={handleFillmark}> Fill marks</div>
                   <p>Total Marks: {totalMarks}</p>
                 </div>
             }
 
-            <div className=" flex space-x-2">
-              {editStudent !== -1
-                && <button
-                  onClick={handleDelete}
-                  className=" bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
-                >
-                  Delete
-                </button>
-              }
+            <button
+              disabled={isLoading}
+              onClick={handleSubmit}
+              className="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center"
+            >
+              {isLoading ? (
+                <img
+                  src={loading}
+                  alt=""
+                  className=" w-6 h-6 animate-spin text-white"
+                />
+              ) : (
+                editStudent === -1 ? "Save" : "Update"
+              )}
+            </button>
 
-              <button
-                onClick={handleClear}
-                className=" bg-slate-400 hover:bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
-              >
-                {editStudent === -1 ? 'Clear All' : 'Cancel'}
-              </button>
-              <button
-                disabled={isLoading}
-                onClick={handleSubmit}
-                className="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center"
-              >
-                {isLoading ? (
-                  <img
-                    src={loading}
-                    alt=""
-                    className=" w-6 h-6 animate-spin text-white"
-                  />
-                ) : (
-                  editStudent === -1 ? "Save" : "Edit"
-                )}
-              </button>
-            </div>
           </div>
 
         </div>

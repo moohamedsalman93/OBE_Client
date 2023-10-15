@@ -30,7 +30,7 @@ function ExistingStudent({isLoading3,courseCode,typeData,editStudent,handleEditC
                                         <div className=" w-full h-full flex flex-col">
                                             <div className=" h-10 m-2  grid grid-cols-2 px-2 items-center text-center font-medium  rounded-md bg-slate-400">
                                                 <p>Register No</p>
-                                                <p>staff Intial</p>
+                                                <p>staff's Name</p>
                                             </div>
                                             <div className=" w-full grow">
                                                 {typeData?.map((item, index) =>

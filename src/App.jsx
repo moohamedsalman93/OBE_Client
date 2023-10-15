@@ -9,13 +9,14 @@ import { useState } from 'react';
 
 function App() {
   const [Role, setRole] = useState('');
+  const [userName,setuserName]=useState('')
 
   return (
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home Role={Role} setRole={setRole}/>} />
+      <Route path="/" element={<Home Role={Role} setRole={setRole} setuserName={setuserName} userName={userName}/>} />
       <Route path="/result" element={<Result/>} /> 
-      <Route path="/addmarks" element={<AddMarks/>} /> 
+      <Route path="/addmarks" element={<AddMarks uName={userName}/>} /> 
 
       <Route path="/login" exact element={<LoginPage/>} />
     </Routes>

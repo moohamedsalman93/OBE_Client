@@ -43,6 +43,28 @@ export const putApi = async (path, setData, data, setisLoading) => {
   }
 };
 
+export const getRegMarksApi = async (path, setData, data, setisLoading) => {
+  console.log(api)
+  setisLoading(true);
+  try {
+    const res = await axios.put(api + path, data);
+    if(res.data.msg){
+      setData({});
+      toast.error('No existing for this reg no')
+    }
+    else{
+      
+      setData(res.data.marks[0]);
+    }
+    
+    setisLoading(false);
+    return res
+  } catch (err) {
+    setData({});
+    setisLoading(false);
+  }
+};
+
 export const loginApi = async (path, data, setisLoading) => {
   setisLoading(true);
   try {

@@ -7,11 +7,10 @@ import { useNavigate } from "react-router-dom";
 import jwtDecode from 'jwt-decode';
 import { toast } from "react-hot-toast";
 
-function Home({ Role, setRole }) {
+function Home({ Role, setRole,setuserName,userName }) {
 
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const [userName, setuserName] = useState('');
   const [logOutBtn, setlogOutBtn] = useState(false);
 
   const handleLogOutbtn = () => {
@@ -34,8 +33,9 @@ function Home({ Role, setRole }) {
     const currentTime = Date.now() / 1000;
 
     console.log(decodedToken)
+
     setRole(decodedToken.role)
-    setuserName(decodedToken.email)
+    setuserName(decodedToken.name)
 
     if (decodedToken.exp < currentTime) {
       toast.error("Token Expired Directing To Login!", { theme: 'colored', autoclose: 1 });
