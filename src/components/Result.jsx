@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CourseOutcome from "./Course/CourseOutcome";
 import StudentsOutcomes from "./Students/StudentsOutcomes";
+import Arts from "./Arts/Arts";
+import Programs from "./Programs/Programs";
+import Science from "./Science/Science";
 
 
 const TabBar = ({name,selectedOption,setselectedOption}) => {
@@ -40,11 +43,10 @@ export const Result = () => {
         </div>
 
         {selectedOption === "Students" && <StudentsOutcomes/>}
-
         {selectedOption === "Courses" && <CourseOutcome />}
-        {selectedOption === "Programs" && <div>Programs</div>}
-        {selectedOption === "Science" && <div>Science</div>}
-        {selectedOption === "Arts" && <div>Arts</div>}
+        {selectedOption === "Programs" && <Programs/>}
+        {selectedOption === "Science" && <Science/>}
+        {selectedOption === "Arts" && <Arts/>}
       </div>
     </div>
   );

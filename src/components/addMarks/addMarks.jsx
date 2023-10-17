@@ -10,10 +10,18 @@ import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
 
-const token = localStorage.getItem('token');
-const decodedToken = jwtDecode(token);
 
 const AddMarks = () => {
+
+
+  let token = localStorage.getItem('token');
+  let decodedToken = null;
+
+  if (token) {
+    decodedToken = jwtDecode(token);
+  }
+
+
   //#region  Variables
   const dropdownRef2 = useRef(null);
   const Navigate = useNavigate();
@@ -28,7 +36,7 @@ const AddMarks = () => {
   const [section, setSection] = useState("");
   const [Assignment, setAssignment] = useState('')
   const [examType, setExamType] = useState("C1");
-  const [staffIntial, setStaffIntial] = useState(decodedToken.name);
+  const [staffIntial, setStaffIntial] = useState(decodedToken?.name);
   const [studentStatus, setStudentStatus] = useState('');
   const [totalMarks, setTotalMarks] = useState(0);
 
@@ -212,7 +220,7 @@ const AddMarks = () => {
     e.preventDefault();
     if (examType === 'C1' || examType === 'C2' || examType === 'ESE') {
       for (const question of questions) {
-        if (!marks[question]) {
+        if (marks[question] !== null) {
           toast.error("Please fill marks in all box", { duration: 1500 });
           return;
         }
@@ -373,7 +381,7 @@ const AddMarks = () => {
   const departmentOnSelect = item => {
     setdepartment(item.departmentCode);
     setIsOpen2(false);
-    getApi(`staff/searchCode?question=${item.departmentCode}&uname=${decodedToken.uname}`, setCourseData, setIsLoading2)
+    getApi(`staff/searchCode?question=${item.departmentCode}&uname=${decodedToken?.uname}`, setCourseData, setIsLoading2)
   };
   //#endregion
 
@@ -566,7 +574,7 @@ const AddMarks = () => {
           }
           else {
             if (res.data.marks[0][examType + 'STAFF'] === null) {
-              
+
             } else {
               for (let m in questions) {
                 temp[questions[m]] = res.data.marks[0][examType + questions[m]]
@@ -619,8 +627,7 @@ const AddMarks = () => {
 
               <div className=" space-x-2 items-center flex">
                 <h1 className="text-[#676060]">Staff's Name :</h1>
-                <h1>{staffIntial}</h1>
-
+                <h1>{decodedToken?.name}</h1>
 
               </div>
 

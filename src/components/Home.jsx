@@ -4,13 +4,13 @@ import marks from "../assets/add marks.png";
 import course from "../assets/add cources.png";
 import logo from "../assets/Logo.png";
 import { useNavigate } from "react-router-dom";
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 import { toast } from "react-hot-toast";
 
-function Home({ Role, setRole,setuserName,userName }) {
+function Home({ Role, setRole, setuserName, userName }) {
 
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  let token = localStorage.getItem('token');
   const [logOutBtn, setlogOutBtn] = useState(false);
 
   const handleLogOutbtn = () => {
@@ -29,22 +29,28 @@ function Home({ Role, setRole,setuserName,userName }) {
       return;
     }
 
-    const decodedToken = jwtDecode(token);
-    const currentTime = Date.now() / 1000;
+    try {
 
-    console.log(decodedToken)
+      let decodedToken = jwtDecode(token);
+      let currentTime = Date.now() / 1000;
 
-    setRole(decodedToken.role)
-    setuserName(decodedToken.name)
+      console.log(decodedToken)
 
-    if (decodedToken.exp < currentTime) {
-      toast.error("Token Expired Directing To Login!", { theme: 'colored', autoclose: 1 });
-      localStorage.removeItem('token');
-      navigate('/login');
+      setRole(decodedToken.role)
+      setuserName(decodedToken.name)
+
+      if (decodedToken.exp < currentTime) {
+        toast.error("Token Expired Directing To Login!", { theme: 'colored', autoclose: 1 });
+        localStorage.removeItem('token');
+        navigate('/login');
+      }
+
+    } catch (error) {
+      console.error('Error decoding token:', error);
+
     }
-    else {
 
-    }
+
   }, [token, navigate]);
 
   const handleLogOut = () => {

@@ -43,6 +43,35 @@ export const putApi = async (path, setData, data, setisLoading) => {
   }
 };
 
+
+export const getDepOut = async (path, setData, data, setisLoading) => {
+  console.log(api)
+  setisLoading(true);
+  try {
+    const res = await axios.put(api + path, data);
+    setData(res.data.returnData);
+    setisLoading(false);
+    return res
+  } catch (err) {
+    setData([]);
+    setisLoading(false);
+  }
+};
+
+export const getCatagoryOut = async (path, setData, data, setisLoading) => {
+  console.log(api)
+  setisLoading(true);
+  try {
+    const res = await axios.put(api + path, data);
+    setData(res.data.returnDepData);
+    setisLoading(false);
+    return res
+  } catch (err) {
+    setData([]);
+    setisLoading(false);
+  }
+};
+
 export const getRegMarksApi = async (path, setData, data, setisLoading) => {
   console.log(api)
   setisLoading(true);
@@ -73,7 +102,7 @@ export const loginApi = async (path, data, setisLoading) => {
     return res
   } catch (err) {
     console.log(err)
-    toast.error(err.message)
+    toast.error(err.response.data.warning.message)
     setisLoading(false);
   }
 };
@@ -82,7 +111,7 @@ export const DeleteApi = async (path, data, setisLoading) => {
   setisLoading(true);
   console.log(data)
   try {
-    const res = await axios.post(api + path, data);
+    const res = await axios.put(api + path, data);
     setisLoading(false);
     return res
   } catch (err) {

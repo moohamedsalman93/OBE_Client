@@ -107,9 +107,6 @@ function CourseOutcome() {
     }
     //#endregion
 
-    const handleSas = () => {
-        outComeData?.above40TCO?.map((item) => console.log(item))
-    }
 
     return (
         <div className=''>
@@ -298,7 +295,7 @@ function CourseOutcome() {
                 </div>)
                 :
                 (
-                    <div className='' onClick={handleSas}>
+                    <div className=''>
                         <div className="h-full w-full flex flex-col items-center justify-center text-base font-semibold">
                             <div className="w-fit h-fit relative">
                                 <img src={studentMarksImg} alt="" className=" w-[20rem] " />

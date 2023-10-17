@@ -3,6 +3,7 @@ import illustrate from '../assets/illustrate.svg'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { loginApi } from '../api/api';
+import loading from "../assets/loading.svg";
 
 function LoginPage() {
     const Navigate = useNavigate();
@@ -32,7 +33,7 @@ function LoginPage() {
 
                 if (res.status === 200) {
                     toast.success('login success')
-                    localStorage.setItem('token',res.data.success.data.token)
+                    localStorage.setItem('token', res.data.success.data.token)
                     Navigate('/')
                 } else {
                     toast.error('Wrong credentials please check')
@@ -72,7 +73,7 @@ function LoginPage() {
                             maxLength={30}
                         />
 
-                        <button onClick={handleSumbit} className=' h-11 w-[20rem] bg-blue-500 rounded-lg text-lg font-medium text-white hover:scale-[0.95] transition'>Log In</button>
+                        <button disabled={isLoading} onClick={handleSumbit} className=' h-11 w-[20rem] flex justify-center items-center bg-blue-500 rounded-lg text-lg font-medium text-white hover:scale-[0.95] transition'>{isLoading ? <img src={loading} alt="" className=' w-8' /> : 'Log In'}</button>
 
                     </div>
                 </div>
