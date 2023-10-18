@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import studentMarksImg from "../../assets/studentMark.png";
 
 import { putApi } from "../../api/api";
+import toast from "react-hot-toast";
 
 function StudentsOutcomes() {
     const [regNo, setRegNo] = useState("");

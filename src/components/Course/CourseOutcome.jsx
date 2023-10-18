@@ -190,7 +190,7 @@ function CourseOutcome() {
                                     <tbody>
                                         <tr>
 
-                                            <th className="border px-4 py-2 bg-[#e2e8f0]">Above 40%</th>
+                                            <th className="border px-4 py-2 bg-[#e2e8f0]">No of student above 60%</th>
 
                                             <td className="border px-4 py-2">{outComeData?.above40TCO?.TCO1}</td>
                                             <td className="border px-4 py-2">{outComeData?.above40TCO?.TCO2}</td>
@@ -236,7 +236,7 @@ function CourseOutcome() {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th className="border px-4 py-2 bg-[#e2e8f0]">Above 40%</th>
+                                            <th className="border px-4 py-2 bg-[#e2e8f0]">No of student above 60%</th>
                                             <td className="border px-4 py-2">{outComeData?.above40ESECO?.ESECO1}</td>
                                             <td className="border px-4 py-2">{outComeData?.above40ESECO?.ESECO2}</td>
                                             <td className="border px-4 py-2">{outComeData?.above40ESECO?.ESECO3}</td>
@@ -288,8 +288,9 @@ function CourseOutcome() {
                                 </tr>
                             </tbody>
                         </table>
-                        <h1 className=" px-4 py-5 "><span className=' font-medium text-[18px]'>Course Attainment Level :</span> {outComeData?.averageAttainLevel}</h1>
-                        <h1 className=" px-4 py-2 "><span className=' font-medium text-[18px]'>Course Attainment Level - Direct Method (80%) :</span> {outComeData?.direct80}</h1>
+                        <h1 className=" px-4 pt-5 "><span className=' font-medium text-[18px]'>Total no of student :</span> {outComeData?.totalStudents}</h1>
+                        <h1 className=" px-4 py-2 "><span className=' font-medium text-[18px]'>Course Attainment Level :</span> {outComeData?.averageAttainLevel}</h1>
+                        <h1 className=" px-4 py- "><span className=' font-medium text-[18px]'>Course Attainment Level - Direct Method (80%) :</span> {outComeData?.direct80}</h1>
                     </div>
 
                 </div>)
