@@ -38,6 +38,9 @@ export const putApi = async (path, setData, data, setisLoading) => {
     setisLoading(false);
     return res
   } catch (err) {
+    console.log(err)
+    console.log(err.response.data.error)
+    toast.error(err.response.data.error)
     setData([]);
     setisLoading(false);
   }
