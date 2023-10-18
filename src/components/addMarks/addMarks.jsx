@@ -229,7 +229,7 @@ const AddMarks = () => {
       }
     }
 
-    if (!deparment || !courseCode || !regNo ) {
+    if (!deparment || !courseCode || !regNo) {
       toast.error("Please fill all detail first", { duration: 1500 });
       return;
     }
@@ -445,18 +445,16 @@ const AddMarks = () => {
   const handleEditClick = (index) => {
     let temp = {}
     setEditstudent(index)
-    setSection(typeData[index].section)
-    // setStaffIntial(typeData[index].marks[0][examType + 'STAFF'])
     setRegNo(typeData[index].regNo.slice(-3))
     console.log(examType)
     if (examType === 'ASG1') {
       setAssignment(typeData[index].marks[0].ASG1)
-      console.log(typeData[index].marks[0].ASG1)
     }
     else if (examType === 'ASG2') {
       setAssignment(typeData[index].marks[0].ASG2)
     }
     else {
+      setStudentStatus(typeData[index].marks[0][examType + 'STATUS'] === 'present' ? '' : typeData[index].marks[0][examType + 'STATUS'])
       for (let m in questions) {
         temp[questions[m]] = typeData[index].marks[0][examType + questions[m]]
       }
@@ -709,7 +707,7 @@ const AddMarks = () => {
                     required
                     className="bg-[#F8FCFF] shadow-sm border  h-10 w-[2rem] xl:w-[2rem] rounded  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
                     style={{ border: 'none', outline: 'none' }}
-                    
+
                   />
 
                 </div>
@@ -759,7 +757,7 @@ const AddMarks = () => {
                   onClick={() => {
                     if (studentStatus === 'notOnrole') {
                       setStudentStatus('');
-                      
+
                     }
                     else {
                       setStudentStatus('notOnrole');
