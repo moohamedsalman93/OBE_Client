@@ -79,7 +79,6 @@ export const getRegMarksApi = async (path, setData, data, setisLoading) => {
     const res = await axios.put(api + path, data);
     if(res.data.msg){
       setData({});
-      toast.error('No existing for this reg no')
     }
     else{
       

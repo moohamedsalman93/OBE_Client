@@ -6,7 +6,7 @@ function ObComponents({examType,handleSetExamtype,value,textlabel}) {
             className={`transition-all duration-300 ${examType === value
                 ? "bg-blue-500 text-white"
                 : "bg-gray-300"
-                } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer`}
+                } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer font-medium`}
         >
             <input
                 type="radio"

@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
+import { Select, Option } from "@material-tailwind/react";
 
 
 const AddMarks = () => {
@@ -217,17 +218,18 @@ const AddMarks = () => {
 
   //#region  HandleSubmit
   const handleSubmit = (e) => {
+    console.log('asd')
     e.preventDefault();
     if (examType === 'C1' || examType === 'C2' || examType === 'ESE') {
       for (const question of questions) {
-        if (marks[question] !== null) {
-          toast.error("Please fill marks in all box", { duration: 1500 });
+        if (marks[question] === '') {
+          toast.error(`Please fill ${question} Field`, { duration: 1500 });
           return;
         }
       }
     }
 
-    if (!deparment || !courseCode || !regNo || !section) {
+    if (!deparment || !courseCode || !regNo ) {
       toast.error("Please fill all detail first", { duration: 1500 });
       return;
     }
@@ -252,7 +254,7 @@ const AddMarks = () => {
         department: deparment,
         code: courseCode,
         claass: deparment,
-        section: section,
+        section: "A",
         status: statusStudent,
         [sStatus]: statusStudent,
         [StaffIn]: staffIntial,
@@ -265,7 +267,7 @@ const AddMarks = () => {
         department: deparment,
         code: courseCode,
         claass: deparment,
-        section: section,
+        section: "A",
         status: statusStudent,
         exam: "ASG",
         [StaffIn]: staffIntial,
@@ -285,7 +287,6 @@ const AddMarks = () => {
         await axios
           .post("http://localhost:3000/staff/addMarks", newData)
           .then((res) => {
-            console.log(res);
             if (res.status === 200) {
               setIsLoading(false);
 
@@ -297,18 +298,22 @@ const AddMarks = () => {
                 // Update the state with the new value
                 setRegNo(newLast3Digits);
                 handleClear()
+                setStudentStatus('')
               }
               else {
                 setRegNo('')
                 handleClear('')
                 setEditstudent(-1)
+                setStudentStatus('')
               }
 
             } else {
+              toast.error(res.data.error.message, { duration: 1500 });
               setIsLoading(false);
             }
           });
       } catch (err) {
+        toast.error(err.response.data.error.message, { duration: 1500 });
         setIsLoading(false);
       }
     };
@@ -387,8 +392,10 @@ const AddMarks = () => {
 
   //#region search
   const handleDepSearch = debounce(async (val) => {
-    console.log('searching..')
-    searchData('staff/searchDepartment/?question=' + val, setSearchValue, setIsLoading2)
+    if (val.length > 0) {
+      searchData('staff/searchDepartment/?question=' + val, setSearchValue, setIsLoading2)
+    }
+
   }, 500);
   //#endregion
 
@@ -401,8 +408,8 @@ const AddMarks = () => {
   //#region departmentOnChange
   const departmentOnChange = event => {
     setEditstudent(-1)
-    setdepartment(event.target.value);
-    handleDepSearch(event.target.value);
+    setdepartment(event.target.value.toUpperCase());
+    handleDepSearch(event.target.value.toUpperCase());
     setMarks({})
   };
   //#endregion
@@ -620,14 +627,14 @@ const AddMarks = () => {
                   <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C1'} textlabel={'CIA-1'} />
                   <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C2'} textlabel={'CIA-2'} />
                   <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ESE'} textlabel={'ESE'} />
-                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG1'} textlabel={'ASS-1'} />
-                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG2'} textlabel={'ASS-2'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG1'} textlabel={'OC-1'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG2'} textlabel={'OC-2'} />
                 </div>
               </div>
 
               <div className=" space-x-2 items-center flex">
                 <h1 className="text-[#676060]">Staff's Name :</h1>
-                <h1>{decodedToken?.name}</h1>
+                <h1 className=" font-medium">{decodedToken?.name}</h1>
 
               </div>
 
@@ -644,7 +651,7 @@ const AddMarks = () => {
                   onChange={departmentOnChange}
                   onFocus={handleDropdownToggle2}
                   placeholder="Eg: MCA"
-                  className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-black'
+                  className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-black font-medium'
                 />
                 {isOpen2 && (
                   <ul className="absolute z-20 mt-2 w-[9rem] xl:w-[9rem] flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
@@ -675,12 +682,12 @@ const AddMarks = () => {
                   onChange={handleCourseOnslect}
                   className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem]   rounded px-2 ${courseCode === '' ? 'text-gray-400' : 'text-black'}`}
                 >
-                  <option value=''>
+                  <option value='' className="rounded mt-10">
                     Select Code
                   </option>
 
                   {CourseData.map((course) => (
-                    <option key={course.id} value={course.code}>
+                    <option key={course.id} value={course.code} className="rounded">
                       {course.code}
                     </option>
                   ))}
@@ -689,8 +696,8 @@ const AddMarks = () => {
 
               <div className=" space-y-2">
                 <h1 className="text-[#676060]">Register No:</h1>
-                <div className=" flex relative items-center">
-                  <h1 className=" absolute left-1 font-medium">23{deparment !== '' ? deparment : 'MCA'}</h1>
+                <div className=" flex bg-[#F8FCFF] border rounded px-2 items-center w-fit space-x-1">
+                  <h1 className=" font-medium">23{deparment !== '' ? deparment : 'MCA'}</h1>
                   <input
                     type="tel"
                     placeholder="XXX"
@@ -699,16 +706,17 @@ const AddMarks = () => {
                     onChange={handleReg}
                     maxLength={3}
                     max={3}
-
                     required
-                    className="bg-[#F8FCFF] shadow-sm border pl-[3.5rem]   h-10 w-[9rem] xl:w-[9rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                    className="bg-[#F8FCFF] shadow-sm border  h-10 w-[2rem] xl:w-[2rem] rounded  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                    style={{ border: 'none', outline: 'none' }}
+                    
                   />
 
                 </div>
 
               </div>
 
-              <div className=" space-y-2">
+              {/* <div className=" space-y-2">
                 <h1 className="text-[#676060]">Section :</h1>
 
                 <input
@@ -721,20 +729,25 @@ const AddMarks = () => {
                   className="bg-[#F8FCFF] shadow-sm border   h-10 w-[9rem] xl:w-[9rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
                 />
 
-              </div>
+              </div> */}
 
               <div className=" bg-slate-200 py-2 col-span-2 space-x-2 flex items-center shadow-md border justify-center rounded-md  px-3 w-fit">
 
                 <h1 className="">Status :</h1>
 
                 <button
-                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-fit rounded-md px-2 ${studentStatus === 'absent' ? 'bg-blue-500 text-white' : 'text-black'}`}
+                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? 'bg-blue-500 text-white' : 'text-black'}`}
                   onClick={() => {
                     if (studentStatus === 'absent') {
                       setStudentStatus('');
+                      handleClear()
                     }
                     else {
                       setStudentStatus('absent');
+                      setMarks({
+                        ...marks,
+                        ...Object.fromEntries(questions.map(q => [q, 0]))
+                      });
                     }
                   }}
                 >
@@ -742,13 +755,15 @@ const AddMarks = () => {
                 </button>
 
                 <button
-                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-[6.5rem] rounded-md  px-2 ${studentStatus === 'notOnrole' ? 'bg-blue-500 text-white' : 'text-black'}`}
+                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-[6.5rem] font-medium rounded-md  px-2 ${studentStatus === 'notOnrole' ? 'bg-blue-500 text-white' : 'text-black'}`}
                   onClick={() => {
                     if (studentStatus === 'notOnrole') {
                       setStudentStatus('');
+                      
                     }
                     else {
                       setStudentStatus('notOnrole');
+                      handleClear()
                     }
                   }}
                 >
@@ -797,7 +812,7 @@ const AddMarks = () => {
                       <tr key={rowIndex}>
                         {row.map((question, columnIndex) => (
                           <React.Fragment key={question}>
-                            <td className="border p-2 text-center">{question}</td>
+                            <td className="border p-2 text-center font-medium">{question}</td>
                             <td className="border p-2">
                               <input
                                 id={question}
@@ -842,7 +857,7 @@ const AddMarks = () => {
 
               <div
                 onClick={handleClear}
-                className=" bg-slate-400 hover:bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
+                className=" bg-slate-400 hover:bg-red-700 cursor-pointer text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
               >
                 {editStudent === -1 ? 'Clear All' : 'Cancel'}
               </div>
