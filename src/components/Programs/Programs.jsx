@@ -110,16 +110,20 @@ function Programs() {
     const addAttain = () => {
 
         let i = 0.00
+        let l = 0
         outComeData.map((item) => {
-            i += parseFloat(item.overAtain)
+            if(item.overAtain > 0){
+                l += 1
+                i += parseFloat(item.overAtain)
+            }
         })
 
         console.log(i)
-        return i.toFixed(2)
+        return i/l.toFixed(2)
     }
 
     return (
-        <div className=' w-full grow flex flex-col space-y-10'>
+        <div className=' w-full grow flex flex-col space-y-10 overflow-y-auto py-2'>
 
             <div className=' flex space-x-2 w-full justify-end'>
 
@@ -163,7 +167,11 @@ function Programs() {
             </div>
 
             {outComeData.length !== 0 ?
-                (<div className=' w-full flex grow'>
+                (<div className=' w-full flex flex-col justify-center items-center  grow'>
+                    <div className=' grow p-5 space-x-3 text-xl flex items-center'>
+                        <p className=' font-medium  '>Attain Level for {departmentName}</p>
+                        <p className=' text-blue-500 font-medium'>{addAttain()}</p>
+                    </div>
                     <div className=' w-[70%]  grow'>
                         <table>
                             <thead>
@@ -183,9 +191,15 @@ function Programs() {
                                         <td className="px-4 py-2" >{index + 1}</td>
                                         <td className="px-4 py-2" >{item.courseCode}</td>
                                         <td className="px-4 py-2" >{item.courseTitle}</td>
-                                        <td className="px-4 py-2" >{item.ciaAttain}</td>
-                                        <td className="px-4 py-2" >{item.eseAtain}</td>
-                                        <td className="px-4 py-2" >{item.overAtain}</td>
+                                        <td className="px-4 py-2">
+                                            {item.ciaAttain == 0 && item.eseAtain == 0  ? "-" : (item.ciaAttain)}
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            {item.ciaAttain == 0 && item.eseAtain == 0  ? "-" : (item.eseAtain)}
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            {item.ciaAttain == 0 && item.eseAtain == 0  ? "-" : (item.overAtain)}
+                                        </td>
                                     </tr>))
                                 }
                             </tbody>
@@ -194,13 +208,7 @@ function Programs() {
 
                     </div>
 
-                    <div className=' h-full grow p-5 space-y-5 flex flex-col items-center'>
-                        <p className=' font-bold  text-xl underline'>Average Department Attain Level</p>
-                        <div className=' flex space-x-4'>
-                            <p className=' font-semibold'>{departmentName} :</p>
-                            <p className=' text-blue-500 font-medium'>{addAttain()}</p>
-                        </div>
-                    </div>
+
 
                 </div>) :
 

@@ -29,6 +29,19 @@ export const getApi = async (path, setData, setisLoading) => {
   }
 };
 
+export const getStaffCourse = async (path, setData, setisLoading) => {
+  console.log(api)
+  setisLoading(true);
+  try {
+    const res = await axios.get(api + path);
+    setData(res.data.codeInfo);
+    setisLoading(false);
+  } catch (err) {
+    setData([]);
+    setisLoading(false);
+  }
+};
+
 export const putApi = async (path, setData, data, setisLoading) => {
   console.log(api)
   setisLoading(true);

@@ -3,7 +3,7 @@ import "../../App.css";
 import loading from "../../assets/loading.svg";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { DeleteApi, getApi, getRegMarksApi, putApi, searchData } from "../../api/api";
+import { DeleteApi, getApi, getRegMarksApi, getStaffCourse, putApi, searchData } from "../../api/api";
 import { debounce } from 'lodash';
 import { useNavigate } from "react-router-dom";
 import ObComponents from "./obComponents";
@@ -15,12 +15,8 @@ import { Select, Option } from "@material-tailwind/react";
 const AddMarks = () => {
 
 
-  let token = localStorage.getItem('token');
-  let decodedToken = null;
 
-  if (token) {
-    decodedToken = jwtDecode(token);
-  }
+
 
 
   //#region  Variables
@@ -37,7 +33,8 @@ const AddMarks = () => {
   const [section, setSection] = useState("");
   const [Assignment, setAssignment] = useState('')
   const [examType, setExamType] = useState("C1");
-  const [staffIntial, setStaffIntial] = useState(decodedToken?.name);
+  const [staffIntial, setStaffIntial] = useState('');
+  const [Uname, setUname] = useState('');
   const [studentStatus, setStudentStatus] = useState('');
   const [totalMarks, setTotalMarks] = useState(0);
 
@@ -84,6 +81,17 @@ const AddMarks = () => {
 
   const numRows = Math.ceil(questions.length / 4);
   //#endregion
+
+  useEffect(() => {
+    let token = localStorage.getItem('token');
+
+
+    if (token) {
+      const decode = jwtDecode(token);
+      setStaffIntial(decode?.name)
+      setUname(decode.uname)
+    }
+  }, [])
 
   //#region max mark:
   const markLimits = {
@@ -386,7 +394,7 @@ const AddMarks = () => {
   const departmentOnSelect = item => {
     setdepartment(item.departmentCode);
     setIsOpen2(false);
-    getApi(`staff/searchCode?question=${item.departmentCode}&uname=${decodedToken?.uname}`, setCourseData, setIsLoading2)
+    getStaffCourse(`staff/getStaff?department=${item.departmentCode}&uname=${Uname}`, setCourseData, setIsLoading2)
   };
   //#endregion
 
@@ -604,7 +612,7 @@ const AddMarks = () => {
 
 
   return (
-    <div className=" w-screen h-screen  flex items-center p-6  bg-gradient-to-r from-blue-500 to-green-500">
+    <div className=" w-screen h-screen relative  flex justify-center items-center p-6  bg-gradient-to-r from-blue-500 to-green-500">
 
       <div className="flex flex-row w-full h-full gap-3 justify-between">
         <div className="flex flex-col  space-y-4 bg-white p-2 rounded-lg w-3/4">
@@ -632,7 +640,7 @@ const AddMarks = () => {
 
               <div className=" space-x-2 items-center flex">
                 <h1 className="text-[#676060]">Staff's Name :</h1>
-                <h1 className=" font-medium">{decodedToken?.name}</h1>
+                <h1 className=" font-medium">{staffIntial}</h1>
 
               </div>
 
@@ -684,9 +692,9 @@ const AddMarks = () => {
                     Select Code
                   </option>
 
-                  {CourseData.map((course) => (
-                    <option key={course.id} value={course.code} className="rounded">
-                      {course.code}
+                  {CourseData.map((course, index) => (
+                    <option key={index} value={course.courseCode} className="rounded">
+                      {course.courseCode}
                     </option>
                   ))}
                 </select>
@@ -896,6 +904,14 @@ const AddMarks = () => {
         <ExistingStudent isLoading3={isLoading3} courseCode={courseCode} typeData={typeData} editStudent={editStudent} handleEditClick={handleEditClick} examType={examType} />
 
       </div>
+
+      {true &&
+        <div className=" absolute  top-[5rem]">
+
+          <img src={loading} alt="" className=" h-10 w-10" />
+
+        </div>
+      }
 
     </div>
   );

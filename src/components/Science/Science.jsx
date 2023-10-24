@@ -23,13 +23,23 @@ function Science() {
     }, [])
 
 
+    const avgAttain = () => {
+
+        let i
+
+        outComeData?.map((item) => { i += parseFloat(item.overAtain) })
+        let s = i / parseFloat(outComeData?.length)
+        return s
+    }
+
+
     return (
         <div className=' w-full h-full overflow-y-auto space-y-4 flex flex-col items-center'>
             <h1 className=' text-center font-medium mt-3 text-[18px]'>Program Outcome for Science</h1>
 
             {isLoading ? <div className=' w-full flex items-center justify-center h-full'>
                 <img src={loading} alt="" className=' w-12' />
-            </div> :(outComeData.length !== 0 ? <div className=' w-full space-y-4 flex flex-col items-center'>
+            </div> : (outComeData.length !== 0 ? <div className=' w-full space-y-4 flex flex-col items-center'>
                 <table className=" table-auto border-collapse border text-center mt-4 w-[60rem]">
                     <thead className=' bg-[#3b84f4]  text-white'>
                         <tr>
@@ -44,12 +54,17 @@ function Science() {
                             <tr key={index}>
                                 <td className="border p-2">{index + 1}</td>
                                 <td className="border p-2">{item.depTitle}</td>
-                                <td className="border p-2">{item.overAtain}</td>
-                                <td className="border p-2">High</td>
+                                <td className="border p-2">{item.overAtain < 1 ? '-' : item.overAtain}</td>
+                                <td className="border p-2"></td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+
+                <div className=' w-full h-12 flex items-center justify-center space-x-2'>
+                    <h1>Average AttainLevel for Science :</h1>
+                    <h1>{avgAttain() }</h1>
+                </div>
 
                 <div className=" mt-4 w-full font-medium text-[#3b84f4]  py-3 text-center flex justify-center">
                     <BarChart
@@ -85,13 +100,13 @@ function Science() {
                         <img src={studentMarksImg} alt="" className=" w-[20rem] " />
                         <div className=" absolute bottom-[18rem] text-center w-[20rem]">
                             <p>No Data Found</p>
-                            
+
                         </div>
                     </div>
                 </div>
             </div>
             )}
-            
+
         </div>
     )
 }

@@ -22,10 +22,19 @@ function Arts() {
     getCatagoryOut('staff/getByCategory', setCourseData, data, setIsloading)
   }, [])
 
+  const avgAttain = () => {
+
+    let i
+
+    outComeData?.map((item) => { i += parseFloat(item.overAtain || 0) })
+    let s = outComeData?.length > 0 ? i / parseFloat(outComeData?.length) : 0
+    return s
+  }
+
 
   return (
     <div className=' w-full h-full overflow-y-auto space-y-4 flex flex-col items-center'>
-      <h1 className=' text-center font-medium mt-3 text-[18px]'>Program Outcome for Science</h1>
+      <h1 className=' text-center font-medium mt-3 text-[18px]'>Program Outcome for Arts</h1>
 
       {isLoading ? <div className=' w-full flex items-center justify-center h-full'>
         <img src={loading} alt="" className=' w-12' />
@@ -44,12 +53,17 @@ function Arts() {
               <tr key={index}>
                 <td className="border p-2">{index + 1}</td>
                 <td className="border p-2">{item.depTitle}</td>
-                <td className="border p-2">{item.overAtain}</td>
-                <td className="border p-2">High</td>
+                <td className="border p-2">{item.overAtain < 1 ? '-' : item.overAtain}</td>
+                <td className="border p-2"></td>
               </tr>
             ))}
           </tbody>
         </table>
+
+        <div className=' w-full h-12 flex items-center justify-center space-x-2'>
+          <h1>Average AttainLevel for Arts :</h1>
+          <h1>{avgAttain()}</h1>
+        </div>
 
         <div className=" mt-4 w-full font-medium text-[#3b84f4]  py-3 text-center flex justify-center">
           <BarChart
