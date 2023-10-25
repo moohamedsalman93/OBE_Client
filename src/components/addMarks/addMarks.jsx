@@ -905,13 +905,6 @@ const AddMarks = () => {
 
       </div>
 
-      {true &&
-        <div className=" absolute  top-[5rem]">
-
-          <img src={loading} alt="" className=" h-10 w-10" />
-
-        </div>
-      }
 
     </div>
   );

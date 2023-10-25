@@ -207,7 +207,7 @@ function CourseOutcome() {
                                             <td className="border px-4 py-2">{outComeData?.percentages?.TCO5}</td>
                                         </tr>
                                         <tr>
-                                            <th className="border px-4 py-2 bg-[#e2e8f0]">Attain level</th>
+                                            <th className="border px-4 py-2 bg-[#e2e8f0]">Attainment level</th>
                                             <td className="border px-4 py-2">{outComeData?.attainLevels?.TCO1}</td>
                                             <td className="border px-4 py-2">{outComeData?.attainLevels?.TCO2}</td>
                                             <td className="border px-4 py-2">{outComeData?.attainLevels?.TCO3}</td>
@@ -252,7 +252,7 @@ function CourseOutcome() {
                                             <td className="border px-4 py-2">{outComeData?.percentagesESECO?.ESECO5}</td>
                                         </tr>
                                         <tr>
-                                            <th className="border px-4 py-2 bg-[#e2e8f0]">Attain level</th>
+                                            <th className="border px-4 py-2 bg-[#e2e8f0]">Attainment level</th>
                                             <td className="border px-4 py-2">{outComeData?.attainLevelsESECO?.ESECO1}</td>
                                             <td className="border px-4 py-2">{outComeData?.attainLevelsESECO?.ESECO2}</td>
                                             <td className="border px-4 py-2">{outComeData?.attainLevelsESECO?.ESECO3}</td>

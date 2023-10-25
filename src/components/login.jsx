@@ -50,7 +50,7 @@ function LoginPage() {
             <div className=" w-full grow bg-white rounded-lg flex">
                 <div className=' w-3/5 h-full flex flex-col justify-center items-start mx-10'>
                     <p className=' text-6xl font-semibold'>Hello! Welcome</p>
-                    <p className=' text-3xl text-neutral-500 font-medium'>JMC Marks Management System</p>
+                    <p className=' text-3xl text-neutral-500 font-medium'>OBE</p>
 
                     <div className='w-[25rem] ml-6 space-y-5 mt-10 h-fit flex flex-col items-center border-2 py-6 rounded-lg'>
                         <input
