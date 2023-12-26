@@ -4,9 +4,9 @@ function ObComponents({examType,handleSetExamtype,value,textlabel}) {
     return (
         <label
             className={`transition-all duration-300 ${examType === value
-                ? "bg-blue-500 text-white"
-                : "bg-gray-300"
-                } hover:bg-blue-400 px-2 py-1 rounded-md cursor-pointer font-medium`}
+                ? "bg-[#4f72cc] text-white"
+                : "bg-slate-200"
+                } hover:bg-[#4f72cc] hover:text-white px-2 py-1 rounded-md cursor-pointer font-medium`}
         >
             <input
                 type="radio"

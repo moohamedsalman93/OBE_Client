@@ -3,14 +3,21 @@ import "../../App.css";
 import loading from "../../assets/loading.svg";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { DeleteApi, getApi, getCourseApi, getRegMarksApi, getStaffCourse, searchData } from "../../api/api";
+import { DeleteApi, getApi, getRegMarksApi, getStaffCourse, putApi, searchData } from "../../api/api";
 import { debounce } from 'lodash';
 import { useNavigate } from "react-router-dom";
 import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
+import { Select, Option } from "@material-tailwind/react";
+
 
 const AddMarks = () => {
+
+
+
+
+
 
   //#region  Variables
   const dropdownRef2 = useRef(null);
@@ -39,16 +46,36 @@ const AddMarks = () => {
   const [typeData, setTypeData] = useState([]);
   const [editStudent, setEditstudent] = useState(-1);
   const [regData, setRegData] = useState({});
-  const [SortBy, setSortby] = useState(true)
-  const [active, setActive] = useState(1)
-  const [total, setTotal] = useState(1)
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(!open);
 
   const questions = [
-    "LOT",
-    "MOT",
-    "HOT",
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q5",
+    "Q6",
+    "Q7",
+    "Q8",
+    "Q9",
+    "Q10",
+    "Q11",
+    "Q12",
+    "Q13",
+    "Q14",
+    "Q15",
+    "Q16",
+    "Q17",
+    "Q18",
+    "Q19",
+    "Q20",
+    "Q21",
+    "Q22",
+    "Q23",
+    "Q24",
+    "Q25",
+    "Q26",
+    "Q27",
+    "Q28",
   ];
   const [value, setValue] = useState("");
 
@@ -68,15 +95,43 @@ const AddMarks = () => {
 
   //#region max mark:
   const markLimits = {
-    LOT: { min: 0, max: 34 },
-    MOT: { min: 0, max: 36 },
-    HOT: { min: 0, max: 10 },
+    Q1: { min: 0, max: 1 },
+    Q2: { min: 0, max: 1 },
+    Q3: { min: 0, max: 1 },
+    Q4: { min: 0, max: 1 },
+    Q5: { min: 0, max: 1 },
+    Q6: { min: 0, max: 1 },
+    Q7: { min: 0, max: 1 },
+    Q8: { min: 0, max: 1 },
+    Q9: { min: 0, max: 1 },
+    Q10: { min: 0, max: 1 },
+    Q11: { min: 0, max: 1 },
+    Q12: { min: 0, max: 1 },
+    Q13: { min: 0, max: 1 },
+    Q14: { min: 0, max: 1 },
+    Q15: { min: 0, max: 1 },
+    Q16: { min: 0, max: 2 },
+    Q17: { min: 0, max: 2 },
+    Q18: { min: 0, max: 2 },
+    Q19: { min: 0, max: 2 },
+    Q20: { min: 0, max: 2 },
+    Q21: { min: 0, max: 4 },
+    Q22: { min: 0, max: 4 },
+    Q23: { min: 0, max: 4 },
+    Q24: { min: 0, max: 4 },
+    Q25: { min: 0, max: 4 },
+    Q26: { min: 0, max: 10 },
+    Q27: { min: 0, max: 10 },
+    Q28: { min: 0, max: 10 },
   };
 
   //#endregion
 
   //#region  Create an array of arrays
-
+  const questionRows = [];
+  for (let i = 0; i < numRows; i++) {
+    questionRows.push(questions.slice(i * 5, (i + 1) * 5));
+  }
   //#endregion
 
   //#region  markChange
@@ -171,7 +226,7 @@ const AddMarks = () => {
 
   //#region  HandleSubmit
   const handleSubmit = (e) => {
-
+    console.log('asd')
     e.preventDefault();
     if (examType === 'C1' || examType === 'C2' || examType === 'ESE') {
       for (const question of questions) {
@@ -378,7 +433,7 @@ const AddMarks = () => {
   //#region hanledOnselectCource
   const handleCourseOnslect = (e) => {
     setCourseCode(e.target.value)
-    getCourseApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}&sortby=${SortBy}`, setExistingData, setTotal, setIsLoading3)
+    getApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}`, setExistingData, setIsLoading3)
   }
   //#endregion
 
@@ -482,7 +537,7 @@ const AddMarks = () => {
     DeleteApi('staff/deleteMark', { id: markId, exam: examType }, setIsLoading).then(res => {
       if (res.status === 200) {
         toast.success('mark deleted successfully')
-        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}`, setExistingData, setIsLoading3)
+        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
         handleClear()
         setRegNo('')
       }
@@ -555,50 +610,49 @@ const AddMarks = () => {
   }
   //#endregion
 
-  //#region sortBy
-  useEffect(() => {
-    setActive(1)
-    if (courseCode && deparment) {
-      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}`, setExistingData, setTotal, setIsLoading3)
-    }
-
-  }, [SortBy])
-  //#endregion
-
-  //#region useEffect paginationChange
-  useEffect(() => {
-    getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}`, setExistingData, setTotal, setIsLoading3)
-  }, [active])
-  //#endregion
 
   return (
-    <div className=" w-full h-full  relative  flex justify-center items-center ">
+    <div className=" w-screen h-screen relative  flex justify-center items-center p-6 ">
 
       <div className="flex flex-row w-full h-full gap-3 justify-between">
-        <div className="flex flex-col  space-y-4 bg-white p-2 rounded-lg w-[72%] border-r shadow-md">
+        <div className="flex flex-col  space-y-4 bg-white p-2 rounded-lg w-3/4">
+          <div onClick={() => Navigate("/")} className=" cursor-pointer w-fit px-3 py-2 border-2 border-blue-700  :bg-blue-700 hover:text-blue-600 hover:scale-110 transition rounded-xl flex items-center space-x-2">
+            <ion-icon name="home"></ion-icon>
+            <p className=" text-base">Home</p>
+          </div>
 
-          <div className="flex flex-wrap gap-4 pt-20 w-full h-fit px-5">
+          <div className="flex flex-col justify-center  items-center border-b ">
 
-            <div className=" space-y-2">
-              <h1 className="text-base font-normal text-[#676060]">
-                OB components :
-              </h1>
-              <div className=" flex space-x-4 items-end ">
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C1'} textlabel={'CIA-1'} />
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C2'} textlabel={'CIA-2'} />
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ESE'} textlabel={'ESE'} />
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG1'} textlabel={'OC-1'} />
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG2'} textlabel={'OC-2'} />
+            <div className="flex items-end justify-between w-full h-fit px-5">
+
+              <div className=" space-y-2">
+                <h1 className="text-base font-normal text-[#676060]">
+                  OB components :
+                </h1>
+                <div className=" flex space-x-4 items-end ">
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C1'} textlabel={'CIA-1'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C2'} textlabel={'CIA-2'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ESE'} textlabel={'ESE'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG1'} textlabel={'OC-1'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG2'} textlabel={'OC-2'} />
+                </div>
               </div>
+
+              <div className=" space-x-2 items-center flex">
+                <h1 className="text-[#676060]">Staff's Name :</h1>
+                <h1 className=" font-medium">{staffIntial}</h1>
+
+              </div>
+
             </div>
 
-            <div className=" flex justify-between w-full">
+            <div className=" w-full h-fit relative grid gap-3 grid-cols-6 p-4 rounded-md border-1 border-black">
+
               <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
                 <h1 className="text-[#676060]">Department :</h1>
                 <input
                   type="text"
                   value={deparment}
-                  maxLength={3}
                   // onBlur={() => !optionSelected && setdepartment('')} // Modify this line
                   onChange={departmentOnChange}
                   onFocus={handleDropdownToggle2}
@@ -626,6 +680,7 @@ const AddMarks = () => {
                 )}
               </div>
 
+
               <div className=" space-y-2 ">
                 <h1 className="text-[#676060]">Course Code :</h1>
                 <select
@@ -647,7 +702,7 @@ const AddMarks = () => {
 
               <div className=" space-y-2">
                 <h1 className="text-[#676060]">Register No:</h1>
-                <div className=" flex bg-[#F8FCFF] border rounded px-2 items-center min-w-[100px] max-w-fit space-x-1">
+                <div className=" flex bg-[#F8FCFF] border rounded px-2 items-center w-fit space-x-1">
                   <h1 className=" font-medium">23{deparment !== '' ? deparment : 'MCA'}</h1>
                   <input
                     type="tel"
@@ -660,20 +715,34 @@ const AddMarks = () => {
                     required
                     className="bg-[#F8FCFF] shadow-sm border  h-10 w-[2rem] xl:w-[2rem] rounded  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
                     style={{ border: 'none', outline: 'none' }}
-                    tabIndex={1}
+
                   />
 
                 </div>
 
               </div>
 
+              {/* <div className=" space-y-2">
+                <h1 className="text-[#676060]">Section :</h1>
+
+                <input
+                  type="text"
+                  placeholder="Eg: A"
+                  value={section}
+                  onChange={(event) => setSection(event.target.value)}
+                  maxLength={1}
+                  required
+                  className="bg-[#F8FCFF] shadow-sm border   h-10 w-[9rem] xl:w-[9rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                />
+
+              </div> */}
+
               <div className=" bg-slate-200 py-2 col-span-2 space-x-2 flex items-center shadow-md border justify-center rounded-md  px-3 w-fit">
 
                 <h1 className="">Status :</h1>
 
                 <button
-                  tabIndex={3}
-                  className={`transition-all duration-300 bg-[#F8FCFF] shadow-sm border h-10 w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? 'bg-[#4f72cc] text-white' : 'text-black'}`}
+                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? 'bg-blue-500 text-white' : 'text-black'}`}
                   onClick={() => {
                     if (studentStatus === 'absent') {
                       setStudentStatus('');
@@ -692,8 +761,7 @@ const AddMarks = () => {
                 </button>
 
                 <button
-                  tabIndex={2}
-                  className={`transition-all duration-300 bg-[#F8FCFF] shadow-sm border h-10 w-[6.5rem] font-medium rounded-md  px-2 ${studentStatus === 'notOnrole' ? 'bg-[#4f72cc] text-white' : 'text-black'}`}
+                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-[6.5rem] font-medium rounded-md  px-2 ${studentStatus === 'notOnrole' ? 'bg-blue-500 text-white' : 'text-black'}`}
                   onClick={() => {
                     if (studentStatus === 'notOnrole') {
                       setStudentStatus('');
@@ -709,6 +777,7 @@ const AddMarks = () => {
                 </button>
 
               </div>
+
             </div>
 
           </div>
@@ -716,7 +785,7 @@ const AddMarks = () => {
           <div className="w-full flex  relative justify-center grow  p-3 border-b ">
             {examType === 'ASG1' || examType === 'ASG2' ?
               (<div className="flex items-center space-x-2 ">
-                <h1 className="text-[#676060] font-semibold">{examType === 'ASG1' ? 'OC1' : 'OC2'} :</h1>
+                <h1 className="text-[#676060]">Assignment :</h1>
 
                 <input
                   type="text"
@@ -725,49 +794,59 @@ const AddMarks = () => {
                   onChange={handleAssignment}
                   maxLength={1}
                   required
-                  className="bg-[#F8FCFF] shadow-sm border border-black   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                  className="bg-[#F8FCFF] shadow-sm border   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
                 />
               </div>) :
               (
-                <div className=" flex space-x-5">
-
-                  <div className=" space-x-2 flex items-center">
-                    <h1 className="text-[#df6363] font-semibold">LOT :</h1>
-                    <input
-                      type="text"
-                      placeholder="0"
-                      value={marks['LOT']}
-                      onChange={(e) => handleMarkChange('LOT', e.target.value)}
-                      className='bg-[#F8FCFF] shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium'
-                    />
-                  </div>
-
-                  <div className=" space-x-2 flex items-center">
-                    <h1 className="text-[#dfa563] font-semibold">MOT :</h1>
-                    <input
-                      type="text"
-                      placeholder="0"
-                      value={marks['MOT']}
-                      onChange={(e) => handleMarkChange('MOT', e.target.value)}
-                      className='bg-[#F8FCFF] shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium'
-                    />
-                  </div>
-
-                  <div className=" space-x-2 flex items-center">
-                    <h1 className="text-[#6bdf63] font-semibold">HOT :</h1>
-                    <input
-                      type="text"
-                      placeholder="0"
-                      value={marks['HOT']}
-                      onChange={(e) => handleMarkChange('HOT', e.target.value)}
-                      className='bg-[#F8FCFF] shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium'
-                    />
-                  </div>
-                </div>
+                <table className="border-collapse border">
+                  <thead>
+                    <tr className="bg-gray-200 text-center">
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
+                      <th className="border p-2">Question</th>
+                      <th className="border p-2">Marks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {questionRows.map((row, rowIndex) => (
+                      <tr key={rowIndex}>
+                        {row.map((question, columnIndex) => (
+                          <React.Fragment key={question}>
+                            <td className="border p-2 text-center font-medium">{question}</td>
+                            <td className="border p-2">
+                              <input
+                                id={question}
+                                type="number"
+                                value={marks[question]}
+                                onChange={(e) =>
+                                  handleMarkChange(question, e.target.value)
+                                }
+                                className={`w-[4rem] pl-2 text-center border transition duration-300 ease-in-out focus:outline-none ${marks[question] &&
+                                  (parseInt(marks[question], 10) >
+                                    markLimits[question].max ||
+                                    parseInt(marks[question], 10) <
+                                    markLimits[question].min)
+                                  ? "border-red-500 border-4"
+                                  : ""
+                                  }`}
+                              />
+                            </td>
+                          </React.Fragment>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               )
             }
             {studentStatus !== '' &&
-              <div className=" bg-slate-500 transition-all duration-300 opacity-25 cursor-not-allowed absolute  w-full h-full top-0"></div>
+              <div className=" bg-slate-500 opacity-25 cursor-not-allowed absolute  w-full h-full top-0"></div>
             }
           </div>
 
@@ -775,7 +854,7 @@ const AddMarks = () => {
             <div className=" space-x-2 flex">
               {editStudent !== -1
                 && <div
-                  onClick={handleOpen}
+                  onClick={handleDelete}
                   className=" bg-red-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
                 >
                   Delete
@@ -784,7 +863,7 @@ const AddMarks = () => {
 
               <div
                 onClick={handleClear}
-                className=" bg-black hover:bg-red-700 transition-all duration-300 cursor-pointer text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
+                className=" bg-slate-400 hover:bg-red-700 cursor-pointer text-white p-2 rounded w-[5.67rem] flex justify-center items-center mr-4"
               >
                 {editStudent === -1 ? 'Clear All' : 'Cancel'}
               </div>
@@ -805,7 +884,7 @@ const AddMarks = () => {
             <button
               disabled={isLoading}
               onClick={handleSubmit}
-              className="bg-[#4f72cc] hover:bg-blue-700 transition-all duration-300 text-white p-2 rounded w-[5.67rem] flex justify-center items-center"
+              className="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded w-[5.67rem] flex justify-center items-center"
             >
               {isLoading ? (
                 <img
@@ -822,31 +901,10 @@ const AddMarks = () => {
 
         </div>
 
-        <ExistingStudent isLoading3={isLoading3} courseCode={courseCode} typeData={typeData} editStudent={editStudent} handleEditClick={handleEditClick} examType={examType} Sortby={SortBy} setSortby={setSortby} active={active} setActive={setActive} total={total} />
+        <ExistingStudent isLoading3={isLoading3} courseCode={courseCode} typeData={typeData} editStudent={editStudent} handleEditClick={handleEditClick} examType={examType} />
 
       </div>
-      {open &&
-        <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-          <div className=" w-[30%] h-[30%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
-            <div className="w-full grow flex flex-col">
 
-              <div className=" flex space-x-2 text-xl font-semibold items-center">
-                <ion-icon name="alert-circle"></ion-icon>
-                <p >Alert</p>
-              </div>
-
-              <div className=" w-full  grow flex justify-center items-center">
-                Are you sure to delete mark of this {typeData[editStudent]?.regNo}
-              </div>
-
-            </div>
-            <div className=" w-full space-x-2 flex justify-end font-medium ">
-              <button className=" px-3 py-2 rounded-md hover:bg-red-700 text-red-700 hover:bg-opacity-10 transition-all duration-700" onClick={handleOpen}>Cancel</button>
-              <button className=" px-2 py-2 rounded-md bg-[#4f72cc] text-white hover:shadow-lg hover:shadow-[#4f72cc] transition-all duration-700" onClick={handleDelete}>Confirm</button>
-            </div>
-          </div>
-        </div>
-      }
 
     </div>
   );

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { getApi, getDepOut, putApi, searchData } from '../../api/api';
+import { getApi, getDepOut, putApi, searchData } from '../../../api/api';
 import { debounce } from 'lodash';
-import loading from "../../assets/loading.svg";
-import studentMarksImg from "../../assets/studentMark.png";
+import loading from "../../../assets/loading.svg";
+import studentMarksImg from "../../../assets/studentMark.png";
 
 function Programs() {
 
@@ -125,7 +125,7 @@ function Programs() {
     return (
         <div className=' w-full grow flex flex-col space-y-10 overflow-y-auto py-2'>
 
-            <div className=' flex space-x-2 w-full justify-end'>
+            <div className=' flex space-x-2 w-full justify-start px-2 mt-4'>
 
                 <div className=' w-[19rem] relative flex items-center justify-end space-x-2' ref={dropdownRef2}>
                     <h1 className="">Department :</h1>
@@ -160,7 +160,7 @@ function Programs() {
 
 
 
-                <button className=" bg-[#3b84f4] py-2 px-4 rounded-md text-white" onClick={handleGet}>
+                <button className="  bg-[#3b84f4] py-2 px-4 rounded-md text-white" onClick={handleGet}>
                     Get
                 </button>
 
@@ -175,29 +175,29 @@ function Programs() {
                     <div className=' w-[70%]  grow'>
                         <table>
                             <thead>
-                                <tr className=' border rounded-lg bg-[#3b84f4] text-white'>
-                                    <th className="px-4 py-2" >S no</th>
-                                    <th className="px-4 py-2" >Course Code</th>
-                                    <th className="px-4 py-2" >Course Title</th>
-                                    <th className="px-4 py-2" >CIA AttainLevel</th>
-                                    <th className="px-4 py-2" >ESE AttainLevel</th>
-                                    <th className="px-4 py-2" >overAll AttainLevel</th>
+                                <tr className=' border-black rounded-lg bg-[#000000] text-white'>
+                                    <th className="px-4 py-2 border" >S no</th>
+                                    <th className="px-4 py-2 border" >Course Code</th>
+                                    <th className="px-4 py-2 border" >Course Title</th>
+                                    <th className="px-4 py-2 border" >CIA AttainLevel</th>
+                                    <th className="px-4 py-2 border" >ESE AttainLevel</th>
+                                    <th className="px-4 py-2 border" >overAll AttainLevel</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 {
-                                    outComeData?.map((item, index) => (<tr className=' border rounded-lg  text-black text-center'>
-                                        <td className="px-4 py-2" >{index + 1}</td>
-                                        <td className="px-4 py-2" >{item.courseCode}</td>
-                                        <td className="px-4 py-2" >{item.courseTitle}</td>
-                                        <td className="px-4 py-2">
+                                    outComeData?.map((item, index) => (<tr className={` border rounded-lg  text-black text-center ${index % 2 === 0 ? 'bg-white' : 'bg-[#e2e8f0]'}`}>
+                                        <td className="px-4 py-2 border" >{index + 1}</td>
+                                        <td className="px-4 py-2 border" >{item.courseCode}</td>
+                                        <td className="px-4 py-2 border" >{item.courseTitle}</td>
+                                        <td className="px-4 py-2 border">
                                             {item.ciaAttain == 0 && item.eseAtain == 0  ? "-" : (item.ciaAttain)}
                                         </td>
-                                        <td className="px-4 py-2">
+                                        <td className="px-4 py-2 border">
                                             {item.ciaAttain == 0 && item.eseAtain == 0  ? "-" : (item.eseAtain)}
                                         </td>
-                                        <td className="px-4 py-2">
+                                        <td className="px-4 py-2 border">
                                             {item.ciaAttain == 0 && item.eseAtain == 0  ? "-" : (item.overAtain)}
                                         </td>
                                     </tr>))
@@ -217,8 +217,8 @@ function Programs() {
                         <div className="w-fit h-fit relative text-center">
                             <img src={studentMarksImg} alt="" className=" w-[20rem] " />
                             <div className=" absolute bottom-[9rem] text-center w-[20rem]">
-                                <p>Enter Department to get</p>
-                                <p>all Course OutCome</p>
+                                <p>Enter Department Code to get</p>
+                                <p>All Department's OutCome</p>
                             </div>
                         </div>
                     </div>
