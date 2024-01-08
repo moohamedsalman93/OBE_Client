@@ -34,7 +34,7 @@ function CourseOutcome({ userId }) {
 
     return (
         <div className=' w-full h-full p-5'>
-            <div className=" flex justify-end items-center space-x-5">
+            <div className=" flex justify-start items-center space-x-5">
 
                 <span className="flex items-center space-x-2">
                     <h1 className=' font-medium'>Course Code :</h1>
@@ -138,8 +138,8 @@ function CourseOutcome({ userId }) {
                                         {outComeData?.averageAttainLevel < 1.5 ? 'Low' : (outComeData?.averageAttainLevel > 2.5 ? 'High' : 'Moderate')}
                                     </span>
                                 </h1>
-                                <h1 className=" px-4 "><span className=' font-medium text-[18px]'>Course Attainment Level - Direct Method (80%) :</span> {outComeData?.direct80}</h1>
-                                <h1 className=" px-4 "><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {outComeData?.direct80}</h1>
+                                <h1 className=" px-4 "><span className=' font-medium text-[18px]'>Course Attainment Level - Direct Method (80%) :</span> {(outComeData?.direct80).toFixed(2)}</h1>
+                                <h1 className=" px-4 "><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {(outComeData?.direct80).toFixed(2)}</h1>
                             </div>
 
 
@@ -204,11 +204,11 @@ function CourseOutcome({ userId }) {
                                     <tbody>
                                         <tr>
 
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps1 || 0}</td>
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps2 || 0}</td>
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps3 || 0}</td>
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps4 || 0}</td>
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps5 || 0}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps1 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps2 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps3 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps4 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps5 || 0).toFixed(2)}</td>
 
                                         </tr>
                                     </tbody>

@@ -41,7 +41,7 @@ function Science() {
                 <img src={loading} alt="" className=' w-12' />
             </div> : (outComeData.length !== 0 ? <div className=' w-full space-y-4 flex flex-col items-center'>
                 <table className=" table-auto border-collapse border text-center mt-4 w-[60rem]">
-                    <thead className=' bg-[#3b84f4]  text-white'>
+                    <thead className=' bg-[#4f72cc]  text-white'>
                         <tr>
                             <th className="border p-2">S.No</th>
                             <th className="border p-2">Program</th>
@@ -54,7 +54,7 @@ function Science() {
                             <tr key={index}>
                                 <td className="border p-2">{index + 1}</td>
                                 <td className="border p-2">{item.depTitle}</td>
-                                <td className="border p-2">{item.overAtain < 1 ? '-' : item.overAtain}</td>
+                                <td className="border p-2">{item.overAtain < 0.01 ? '-' : Number(item.overAtain).toFixed(2)}</td>
                                 <td className="border p-2"></td>
                             </tr>
                         ))}
@@ -63,14 +63,14 @@ function Science() {
 
                 <div className=' w-full h-12 flex items-center justify-center space-x-2'>
                     <h1>Average AttainLevel for Science :</h1>
-                    <h1>{avgAttain() }</h1>
+                    <h1>{avgAttain() || 0}</h1>
                 </div>
 
                 <div className=" mt-4 w-full font-medium text-[#3b84f4]  py-3 text-center flex justify-center">
                     <BarChart
-                        width={500}
+                        width={900}
                         height={300}
-                        data={outComeData.map((item) => ({ name: item.depTitle, value: item.overAtain }))}
+                        data={outComeData.map((item) => ({ name: item.depTitle, value: Number(item.overAtain).toFixed(1) }))}
                         margin={{
                             top: 5,
                             right: 30,
@@ -112,3 +112,4 @@ function Science() {
 }
 
 export default Science
+

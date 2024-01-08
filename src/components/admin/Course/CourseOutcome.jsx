@@ -238,14 +238,17 @@ function AdminCourseOutcome() {
                                     </tbody>
                                 </table>
 
-                                <h1 className=" px-4 pt-5 "><span className=' font-medium text-[18px]'>Total no of student :</span> {Math.round(outComeData?.totalStudents)}</h1>
-                                <h1 className=" px-4 py-2 "><span className=' font-medium text-[18px]'>Course Attainment Level :</span> {outComeData?.averageAttainLevel}
-                                    <span className={` font-bold px-2 ${outComeData?.averageAttainLevel < 1.5 ? ' text-red-600 ' : (outComeData?.averageAttainLevel > 2.5 ? ' text-green-600' : ' text-yellow-600')}`}>
-                                        {outComeData?.averageAttainLevel < 1.5 ? 'Low' : (outComeData?.averageAttainLevel > 2.5 ? 'High' : 'Moderate')}
-                                    </span>
-                                </h1>
-                                <h1 className=" px-4 "><span className=' font-medium text-[18px]'>Course Attainment Level - Direct Method (80%) :</span> {outComeData?.direct80}</h1>
-                                <h1 className=" px-4 "><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {outComeData?.direct80}</h1>
+                                <div className=' space-y-3 mt-7'>
+                                    <h1 className=" px-4  "><span className=' font-medium text-[18px]'>Total no of student :</span> {Math.round(outComeData?.totalStudents)}</h1>
+                                    <h1 className=" px-4  "><span className=' font-medium text-[18px]'>Course Attainment Level :</span> {outComeData?.averageAttainLevel}
+                                        <span className={` font-bold px-2 ${outComeData?.averageAttainLevel < 1.5 ? ' text-red-600 ' : (outComeData?.averageAttainLevel > 2.5 ? ' text-green-600' : ' text-yellow-600')}`}>
+                                            {outComeData?.averageAttainLevel < 1.5 ? 'Low' : (outComeData?.averageAttainLevel > 2.5 ? 'High' : 'Moderate')}
+                                        </span>
+                                    </h1>
+                                    <h1 className=" px-4 "><span className=' font-medium text-[18px]'>Course Attainment Level - Direct Method (80%) :</span> {(outComeData?.direct80).toFixed(2)}</h1>
+                                    <h1 className=" px-4 "><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {(outComeData?.direct80).toFixed(2)}</h1>
+
+                                </div>
                             </div>
 
 
@@ -310,11 +313,11 @@ function AdminCourseOutcome() {
                                     <tbody>
                                         <tr>
 
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps1 || 0}</td>
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps2 || 0}</td>
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps3 || 0}</td>
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps4 || 0}</td>
-                                            <td className="border px-4 py-2">{outComeData?.psoCOS?.ps5 || 0}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps1 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps2 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps3 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps4 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps5 || 0).toFixed(2)}</td>
 
                                         </tr>
                                     </tbody>

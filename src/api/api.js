@@ -53,11 +53,12 @@ export const getStaffCourse = async (path, setData, setisLoading) => {
   } catch (err) {
     setData([]);
     setisLoading(false);
+    toast.error('Network problem')
   }
 };
 
 export const putApi = async (path, setData, data, setisLoading) => {
- 
+
   setisLoading(true);
   try {
     const res = await axios.put(api + path, data);
@@ -194,6 +195,7 @@ export const AddNewCourse = async (data, setisLoading) => {
   }
 }
 
+
 export const deleteCourse = async (id, setisLoading) => {
   setisLoading(true);
   try {
@@ -205,4 +207,38 @@ export const deleteCourse = async (id, setisLoading) => {
     toast.error(err.message)
     setisLoading(false);
   }
+}
+
+
+export const AddNewProgram = async (data, setisLoading) => {
+  setisLoading(true);
+  try {
+    const res = await axios.post(api + 'staff/AddNewDepartment', data);
+    setisLoading(false);
+    return res
+  } catch (err) {
+   
+    toast.error(err.message)
+    setisLoading(false);
+  }
+}
+
+export const excelApi = async (urls, data, setProgress, setFileList) => {
+
+  try {
+    const res = await axios.post(api + urls, data, {
+      onUploadProgress(e) {
+        const progress = e.progress ?? 0;
+        setProgress(progress * 100);
+        if (progress * 100 >= 100) {
+          setFileList(null);
+        }
+      },
+    });
+
+    return res
+  } catch (err) {
+    toast.error(err.message)
+  }
+
 }

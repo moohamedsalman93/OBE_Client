@@ -69,21 +69,22 @@ function HomeAdmin({ Role, setRole, setuserName, userName, setuserId, userId }) 
     },
     {
       icon: "folder-open-outline",
-      name: "Manage Courses",
-      by: "manage",
-      path: "/Admin/Manage-Course"
-    },
-    {
-      icon: "folder-open-outline",
       name: "Manage Departments",
       by: "manage",
       path: "/Admin/Manage-Department"
     },
     {
       icon: "folder-open-outline",
+      name: "Manage Courses",
+      by: "manage",
+      path: "/Admin/Manage-Course"
+    },
+
+    {
+      icon: "folder-open-outline",
       name: "Manage Staffs",
       by: "manage",
-      path: "/Admin/Manage-Cours"
+      path: "/Admin/Manage-Staff"
     },
     {
       icon: "book",
@@ -99,22 +100,28 @@ function HomeAdmin({ Role, setRole, setuserName, userName, setuserId, userId }) 
     },
     {
       icon: "book",
-      name: "Specific program Outcomes",
+      name: "Program Specific Outcomes",
       by: "report",
       path: "/Admin/Outcome/Program"
     },
     {
       icon: "book",
-      name: "programs Outcomes",
+      name: "Program Outcomes-Science",
       by: "report",
-      path: "/Outcome/Course"
+      path: "/Admin/Outcome/Science-Outcome"
     },
     {
-      icon: "person-circle-outline",
-      name: "Account",
-      by: "manage",
-      path: "/Account"
+      icon: "book",
+      name: "Program Outcomes-Arts",
+      by: "report",
+      path: "/Admin/Outcome/Arts-Outcome"
     },
+    // {
+    //   icon: "person-circle-outline",
+    //   name: "Account",
+    //   by: "manage",
+    //   path: "/Account"
+    // },
 
   ]
 
@@ -171,7 +178,7 @@ function HomeAdmin({ Role, setRole, setuserName, userName, setuserId, userId }) 
                   )
                 }
 
-                <div onClick={handleLogOut} className=" transition-all duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer hover:bg-white  text-red-600 flex  items-center  rounded-[5px]">
+                <div onClick={handleLogOut} className=" transition-all duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer bg-white  text-red-600 flex  items-center  rounded-[5px]">
                   <ion-icon name="log-in"></ion-icon>
                   <p className=" text-sm font-medium">Log Out</p>
                 </div>

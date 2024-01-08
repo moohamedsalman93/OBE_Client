@@ -13,6 +13,9 @@ import AdminCourseOutcome from './components/admin/Course/CourseOutcome';
 import Programs from './components/admin/Programs/Programs';
 import RelationalMatrix from './components/RelationalMatrix/RelationalMatrix';
 import Students from './components/admin/Students/Students';
+import Science from './components/Science/Science';
+import Arts from './components/Arts/Arts';
+import ManageStaff from './components/admin/ManageStaff';
 
 
 function App() {
@@ -35,9 +38,12 @@ function App() {
           <Route  path="/Admin/" element={<AddMarks uName={userName} />} />
           <Route path="/Admin/Manage-Course" element={<ManageCourse />} />
           <Route path="/Admin/Manage-Department" element={<ManageDepartment />} />
+          <Route path="/Admin/Manage-Staff" element={<ManageStaff />} />
           <Route path="/Admin/Outcome/Course" element={<AdminCourseOutcome />} />
           <Route path="/Admin/Outcome/Program" element={<Programs />} />
           <Route path="/Admin/Outcome/Student" element={<Students />} />
+          <Route path="/Admin/Outcome/Science-Outcome" element={<Science />} />
+          <Route path="/Admin/Outcome/Arts-Outcome" element={<Arts />} />
         </Route>
 
         <Route path="/login" exact element={<LoginPage />} />
