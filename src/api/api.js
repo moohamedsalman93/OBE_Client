@@ -53,7 +53,7 @@ export const getStaffCourse = async (path, setData, setisLoading) => {
   } catch (err) {
     setData([]);
     setisLoading(false);
-    toast.error('Network problem')
+    toast.error(err.response.data.msg)
   }
 };
 
@@ -66,9 +66,8 @@ export const putApi = async (path, setData, data, setisLoading) => {
     setisLoading(false);
     return res
   } catch (err) {
-    console.log(err)
-    console.log(err.response.data.error)
-    toast.error(err.response.data.error)
+    console.log(err.response.data.msg)
+    toast.error(err.response.data.msg)
     setData([]);
     setisLoading(false);
   }
@@ -83,14 +82,12 @@ export const putApi2 = async (path, setData, data, setisLoading) => {
     setisLoading(false);
     return res
   } catch (err) {
-    console.log(err)
-    console.log(err.response.data.error)
-    toast.error(err.response.data.error)
+    console.log(err.response.data.msg)
+    toast.error(err.response.data.msg)
     setData([]);
     setisLoading(false);
   }
 };
-
 
 export const getDepOut = async (path, setData, data, setisLoading) => {
   console.log(api)
@@ -148,8 +145,8 @@ export const loginApi = async (path, data, setisLoading) => {
     setisLoading(false);
     return res
   } catch (err) {
-    console.log(err)
-    toast.error(err.response.data.warning.message)
+    console.log(err.response.data.msg)
+    toast.error(err.response.data.msg)
     setisLoading(false);
   }
 };
@@ -161,8 +158,8 @@ export const passChangeApi = async (path, setisLoading) => {
     setisLoading(false);
     return res
   } catch (err) {
-    console.log(err)
-    toast.error(err.response.data.warning.message)
+    console.log(err.response.data.msg)
+    toast.error(err.response.data.msg)
     setisLoading(false);
   }
 };
@@ -175,8 +172,8 @@ export const DeleteApi = async (path, data, setisLoading) => {
     setisLoading(false);
     return res
   } catch (err) {
-    console.log(err)
-    toast.error(err.message)
+    console.log(err.response.data.msg)
+    toast.error(err.response.data.msg)
     setisLoading(false);
   }
 };
@@ -189,8 +186,8 @@ export const AddNewCourse = async (data, setisLoading) => {
     setisLoading(false);
     return res
   } catch (err) {
-    console.log(err)
-    toast.error(err.message)
+    console.log(err.response.data.msg)
+    toast.error(err.response.data.msg)
     setisLoading(false);
   }
 }
@@ -203,8 +200,21 @@ export const deleteCourse = async (id, setisLoading) => {
     setisLoading(false);
     return res
   } catch (err) {
-    console.log(err)
-    toast.error(err.message)
+    console.log(err.response.data.msg)
+    toast.error(err.response.data.msg)
+    setisLoading(false);
+  }
+}
+
+export const deleteDep = async (id, setisLoading) => {
+  setisLoading(true);
+  try {
+    const res = await axios.delete(api + 'staff/deleteDepartment?id=' + id);
+    setisLoading(false);
+    return res
+  } catch (err) {
+    console.log(err.response.data.msg)
+    toast.error(err.response.data.msg)
     setisLoading(false);
   }
 }
@@ -218,7 +228,7 @@ export const AddNewProgram = async (data, setisLoading) => {
     return res
   } catch (err) {
    
-    toast.error(err.message)
+    toast.error(err.response.data.msg)
     setisLoading(false);
   }
 }
@@ -238,7 +248,58 @@ export const excelApi = async (urls, data, setProgress, setFileList) => {
 
     return res
   } catch (err) {
-    toast.error(err.message)
+    toast.error(err.response.data.msg)
   }
 
+}
+
+export const addStaff = async (data, setisLoading) => {
+  setisLoading(true);
+  try {
+    const res = await axios.post(api + 'staff/addStaff', data);
+    setisLoading(false);
+    return res
+  } catch (err) {
+    console.log(err)
+    toast.error(err.response.data.msg)
+    setisLoading(false);
+  }
+}
+
+export const staffCourseAssign = async (data, setisLoading) => {
+  setisLoading(true);
+  try {
+    const res = await axios.post(api + 'staff/staffCourseAssign', data);
+    setisLoading(false);
+    return res
+  } catch (err) {
+    console.log(err)
+    toast.error(err.response.data.msg)
+    setisLoading(false);
+  }
+}
+
+
+export const deleteStaff = async (id, setisLoading) => {
+  setisLoading(true);
+  try {
+    const res = await axios.delete(api + 'staff/deleteStaff?id=' + id);
+    setisLoading(false);
+    return res
+  } catch (err) {
+    toast.error(err.response.data.msg)
+    setisLoading(false);
+  }
+}
+
+export const deleteStaffCourse = async (id, setisLoading) => {
+  setisLoading(true);
+  try {
+    const res = await axios.delete(api + 'staff/deleteStaffCourse?id=' + id);
+    setisLoading(false);
+    return res
+  } catch (err) {
+    toast.error(err.response.data.msg)
+    setisLoading(false);
+  }
 }

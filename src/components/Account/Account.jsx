@@ -12,14 +12,14 @@ function Account({ userId }) {
 
   const handleSubmit = () => {
 
-    if (p1.length > 4 && p2.length > 4) {
+    if (p1.length > 6 && p2.length > 6) {
       passChangeApi(`staff/changePassword?email=${userId}&password=${p2}`, setLoading).then((res) => {
         toast.success(res.data.success.message)
         setP1('')
         setP2('')
       })
     } else {
-      toast.error('Password should be min-4 and max-16')
+      toast.error('Password should be min-6 and max-16')
     }
   }
 

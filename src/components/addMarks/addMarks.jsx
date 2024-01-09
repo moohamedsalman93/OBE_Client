@@ -14,7 +14,6 @@ const AddMarks = () => {
 
   //#region  Variables
   const dropdownRef2 = useRef(null);
-  const Navigate = useNavigate();
   const [focusedOptionIndex, setFocusedOptionIndex] = useState(0);
   const [isOpen2, setIsOpen2] = useState(false);
   const [CourseData, setCourseData] = useState([]);
@@ -112,39 +111,6 @@ const AddMarks = () => {
 
   //#endregion
 
-  //#region  Create an array of arrays
-
-  //#endregion
-
-  //#region  markChange
-  // const handleMarkChange = (question, value) => {
-  //   if (value === "") {
-  //     setMarks((prevMarks) => ({
-  //       ...prevMarks,
-  //       [question]: value,
-  //     }));
-  //   } else {
-  //     const numericValue = value;
-  //     const markLimitsForQuestion = markLimits[question];
-
-  //     // Check if the input is a valid number within the allowed range
-  //     if (
-  //       numericValue >= markLimitsForQuestion.min &&
-  //       numericValue <= markLimitsForQuestion.max
-  //     ) {
-  //       setMarks((prevMarks) => ({
-  //         ...prevMarks,
-  //         [question]: numericValue,
-  //       }));
-  //     } else if (numericValue === 0) {
-  //       setMarks((prevMarks) => ({
-  //         ...prevMarks,
-  //         [question]: numericValue,
-  //       }));
-  //     }
-  //   }
-  // };
-  //#endregion
 
   //#region  markChange
   const handleMarkChange = (question, value) => {
@@ -210,105 +176,114 @@ const AddMarks = () => {
   const handleSubmit = (e) => {
 
     e.preventDefault();
-    if (examType === 'C1' || examType === 'C2' || examType === 'ESE') {
-      for (const question of questions) {
-        if (marks[question] === '') {
-          toast.error(`Please fill ${question} Field`, { duration: 1500 });
-          return;
-        }
-      }
-    }
 
     if (!deparment || !courseCode || !regNo) {
       toast.error("Please fill all detail first", { duration: 1500 });
       return;
     }
 
+    if (studentStatus === 'notOnrole') {
 
-    const addData = async () => {
-      setIsLoading(true);
+      const last3Digits = parseInt(regNo, 10);
+      const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
+      setRegNo(newLast3Digits);
+      toast.success('Skipped the reg no')
 
-      const marksAsNumbers = {};
-      for (const question of questions) {
-        marksAsNumbers[examType + question] = parseInt(marks[question] || 0, 10);
+
+    } else {
+      if (examType === 'C1' || examType === 'C2' || examType === 'ESE') {
+        for (const question of questions) {
+          if (marks[question] === '') {
+            toast.error(`Please fill ${question} Field`, { duration: 1500 });
+            return;
+          }
+        }
       }
 
-      const sStatus = examType + 'STATUS'
-      const StaffIn = examType + 'STAFF'
+      const addData = async () => {
+        setIsLoading(true);
 
-      const statusStudent = studentStatus === '' ? 'present' : studentStatus
-      var typeDe = examType
+        const marksAsNumbers = {};
+        for (const question of questions) {
+          marksAsNumbers[examType + question] = parseInt(marks[question] || 0, 10);
+        }
 
-      const newDataforMark = {
-        regNo: '23' + deparment + regNo,
-        department: deparment,
-        code: courseCode,
-        claass: deparment,
-        section: "A",
-        status: statusStudent,
-        [sStatus]: statusStudent,
-        [StaffIn]: staffIntial,
-        exam: examType,
-        ...marksAsNumbers,
+        const sStatus = examType + 'STATUS'
+        const StaffIn = examType + 'STAFF'
+
+        const statusStudent = studentStatus === '' ? 'present' : studentStatus
+        var typeDe = examType
+
+        const newDataforMark = {
+          regNo: '23' + deparment + regNo,
+          department: deparment,
+          code: courseCode,
+          claass: deparment,
+          section: "A",
+          status: statusStudent,
+          [sStatus]: statusStudent,
+          [StaffIn]: staffIntial,
+          exam: examType,
+          ...marksAsNumbers,
+        };
+
+        const newDataforAss = {
+          regNo: '23' + deparment + regNo,
+          department: deparment,
+          code: courseCode,
+          claass: deparment,
+          section: "A",
+          status: statusStudent,
+          exam: "ASG",
+          [StaffIn]: staffIntial,
+          [typeDe]: parseInt(Assignment, 10),
+        };
+
+        var newData;
+
+        if (examType === 'ASG1' || examType === 'ASG2') {
+          newData = newDataforAss
+        }
+        else {
+          newData = newDataforMark
+        }
+
+        try {
+          await axios
+            .post("http://localhost:3000/staff/addMarks", newData)
+            .then((res) => {
+              if (res?.status === 200) {
+                setIsLoading(false);
+
+                toast.success("Mark saved successfully", { duration: 1500 });
+                getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
+                if (editStudent === -1) {
+                  const last3Digits = parseInt(regNo, 10);
+                  const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
+                  // Update the state with the new value
+                  setRegNo(newLast3Digits);
+                  handleClear()
+                  setStudentStatus('')
+                }
+                else {
+                  setRegNo('')
+                  handleClear('')
+                  setEditstudent(-1)
+                  setStudentStatus('')
+                }
+
+              }
+            });
+        } catch (err) {
+          toast.error(err.response.data.msg, { duration: 1500 });
+          setIsLoading(false);
+        }
       };
 
-      const newDataforAss = {
-        regNo: '23' + deparment + regNo,
-        department: deparment,
-        code: courseCode,
-        claass: deparment,
-        section: "A",
-        status: statusStudent,
-        exam: "ASG",
-        [StaffIn]: staffIntial,
-        [typeDe]: parseInt(Assignment, 10),
-      };
+      addData();
+    }
 
-      var newData;
 
-      if (examType === 'ASG1' || examType === 'ASG2') {
-        newData = newDataforAss
-      }
-      else {
-        newData = newDataforMark
-      }
-
-      try {
-        await axios
-          .post("http://localhost:3000/staff/addMarks", newData)
-          .then((res) => {
-            if (res.status === 200) {
-              setIsLoading(false);
-
-              toast.success("Mark saved successfully", { duration: 1500 });
-              getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
-              if (editStudent === -1) {
-                const last3Digits = parseInt(regNo, 10);
-                const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
-                // Update the state with the new value
-                setRegNo(newLast3Digits);
-                handleClear()
-                setStudentStatus('')
-              }
-              else {
-                setRegNo('')
-                handleClear('')
-                setEditstudent(-1)
-                setStudentStatus('')
-              }
-
-            } else {
-              toast.error(res.data.error.message, { duration: 1500 });
-              setIsLoading(false);
-            }
-          });
-      } catch (err) {
-        toast.error(err.response.data.error.message, { duration: 1500 });
-        setIsLoading(false);
-      }
-    };
-
-    addData();
   };
   //#endregion
 
@@ -376,7 +351,12 @@ const AddMarks = () => {
   const departmentOnSelect = item => {
     setdepartment(item.departmentCode);
     setIsOpen2(false);
-    getStaffCourse(`staff/getStaff?department=${item.departmentCode}&uname=${Uname}`, setCourseData, setIsLoading2)
+    if (Uname === 'admin') {
+      getApi(`staff/searchCode?question=${item.departmentCode}`, setCourseData, setIsLoading2)
+    } else {
+      getStaffCourse(`staff/getStaff?department=${item.departmentCode}&uname=${Uname}`, setCourseData, setIsLoading2)
+    }
+
   };
   //#endregion
 
@@ -678,8 +658,8 @@ const AddMarks = () => {
                   </option>
 
                   {CourseData.map((course, index) => (
-                    <option key={index} value={course.courseCode} className="rounded font-medium">
-                      {course.courseCode}
+                    <option key={index} value={Uname === 'admin' ? course.code : course.courseCode} className="rounded font-medium">
+                      {Uname === 'admin' ? course.code : course.courseCode}
                     </option>
                   ))}
                 </select>

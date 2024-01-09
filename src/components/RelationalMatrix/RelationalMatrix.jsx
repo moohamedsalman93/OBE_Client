@@ -47,31 +47,31 @@ function RelationalMatrix({ userId }) {
   ];
 
   const markLimits = {
-    PSO1CO1: { min: 0, max: 10 },
-    PSO1CO2: { min: 0, max: 10 },
-    PSO1CO3: { min: 0, max: 10 },
-    PSO1CO4: { min: 0, max: 10 },
-    PSO1CO5: { min: 0, max: 10 },
-    PSO2CO1: { min: 0, max: 10 },
-    PSO2CO2: { min: 0, max: 10 },
-    PSO2CO3: { min: 0, max: 10 },
-    PSO2CO4: { min: 0, max: 10 },
-    PSO2CO5: { min: 0, max: 10 },
-    PSO3CO1: { min: 0, max: 10 },
-    PSO3CO2: { min: 0, max: 10 },
-    PSO3CO3: { min: 0, max: 10 },
-    PSO3CO4: { min: 0, max: 10 },
-    PSO3CO5: { min: 0, max: 10 },
-    PSO4CO1: { min: 0, max: 10 },
-    PSO4CO2: { min: 0, max: 10 },
-    PSO4CO3: { min: 0, max: 10 },
-    PSO4CO4: { min: 0, max: 10 },
-    PSO4CO5: { min: 0, max: 10 },
-    PSO5CO1: { min: 0, max: 10 },
-    PSO5CO2: { min: 0, max: 10 },
-    PSO5CO3: { min: 0, max: 10 },
-    PSO5CO4: { min: 0, max: 10 },
-    PSO5CO5: { min: 0, max: 10 },
+    PSO1CO1: { min: 0, max: 3 },
+    PSO1CO2: { min: 0, max: 3 },
+    PSO1CO3: { min: 0, max: 3 },
+    PSO1CO4: { min: 0, max: 3 },
+    PSO1CO5: { min: 0, max: 3 },
+    PSO2CO1: { min: 0, max: 3 },
+    PSO2CO2: { min: 0, max: 3 },
+    PSO2CO3: { min: 0, max: 3 },
+    PSO2CO4: { min: 0, max: 3 },
+    PSO2CO5: { min: 0, max: 3 },
+    PSO3CO1: { min: 0, max: 3 },
+    PSO3CO2: { min: 0, max: 3 },
+    PSO3CO3: { min: 0, max: 3 },
+    PSO3CO4: { min: 0, max: 3 },
+    PSO3CO5: { min: 0, max: 3 },
+    PSO4CO1: { min: 0, max: 3 },
+    PSO4CO2: { min: 0, max: 3 },
+    PSO4CO3: { min: 0, max: 3 },
+    PSO4CO4: { min: 0, max: 3 },
+    PSO4CO5: { min: 0, max: 3 },
+    PSO5CO1: { min: 0, max: 3 },
+    PSO5CO2: { min: 0, max: 3 },
+    PSO5CO3: { min: 0, max: 3 },
+    PSO5CO4: { min: 0, max: 3 },
+    PSO5CO5: { min: 0, max: 3 },
   };
 
   const numRows = Math.ceil(questions.length / 5);
@@ -127,7 +127,7 @@ function RelationalMatrix({ userId }) {
         await axios
           .post("http://localhost:3000/staff/addPso", newData)
           .then((res) => {
-            if (res.status === 201) {
+            if (res.status === 200) {
               setIsLoading(false);
               toast.success(`PSO saved successfully ${Course[indexOfAdd].code.code}`, { duration: 1500 });
               getApi(`staff/getStaffsDetails?uname=${userId}`, setCourse, setLoading2).then((res) => {
@@ -135,13 +135,10 @@ function RelationalMatrix({ userId }) {
                 setMarks({})
               })
 
-            } else {
-              toast.error(res.data.error.message, { duration: 1500 });
-              setIsLoading(false);
-            }
+            } 
           });
       } catch (err) {
-        toast.error(err?.response?.data?.error?.message, { duration: 1500 });
+        toast.error("validation error", { duration: 1500 });
         setIsLoading(false);
       }
     };

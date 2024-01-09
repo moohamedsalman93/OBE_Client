@@ -200,7 +200,7 @@ function ManageCourse() {
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : CourseData.map((item, index) =>
           <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-5 h-12 border-b place-content-center place-items-center rounded-lg`}>
-            <p>{item.id}</p>
+            <p>{index + 1 + (Active - 1) * 10}</p>
             <p>{item.code}</p>
             <p className=' text-center truncate overflow-hidden w-full'>{item.name}</p>
             <p>{item.depCode}</p>

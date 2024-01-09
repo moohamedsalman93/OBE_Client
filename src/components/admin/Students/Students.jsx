@@ -63,7 +63,7 @@ function Students() {
                     <input type="text" placeholder='23MCAXXX' value={regNo} onChange={(e) => setRegNo((e.target.value)?.toUpperCase())} className='border-2 p-2 rounded-md' />
                 </span>
 
-                <button className=" bg-[#3b84f4] py-2 px-4 rounded-md text-white" onClick={handleGet}>
+                <button className=" bg-[#3b84f4] py-2 px-4 rounded-md text-white" onClick={() => handleGet()}>
                     Get
                 </button>
                 <div className=' grow  h-12 flex justify-end items-center'>
@@ -72,9 +72,9 @@ function Students() {
                         content={() => comp.current}
                         documentTitle = 'ssa'
                     /> */}
-                    <div onClick={handlePrint} className=' w-fit flex px-3 py-1 border-2 text-gray-700 cursor-pointer rounded-md'>
+                    <button disabled={setOutcomeData.length === 0} onClick={() => handlePrint()} className=' w-fit flex px-3 py-1 border-2 text-gray-700 cursor-pointer rounded-md'>
                         Print
-                    </div>
+                    </button>
 
                 </div>
             </div>
@@ -115,7 +115,7 @@ function Students() {
                     </div>
 
                     <div class="print-only" style={{ display: "none" }}>
-                        <div style={{ width: '60%', padding: '1px', paddingLeft: '4px', paddingRight: '10px', margin: '0 auto', display: 'flex',flexDirection:'column' }}>
+                        <div style={{ width: '60%', padding: '1px', paddingLeft: '4px', paddingRight: '10px', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
                             <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse' }}>Student Outcome for {regNo}</p>
 
                             <table style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse' }}>

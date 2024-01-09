@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useRef, useState } from 'react'
-import { AddNewCourse, AddNewProgram, deleteCourse, excelApi, getCourseApi, searchData } from '../../api/api';
+import { AddNewCourse, AddNewProgram, deleteCourse, deleteDep, excelApi, getCourseApi, searchData } from '../../api/api';
 import { Pagination } from '../addMarks/pagiNation';
 import loading from "../../assets/loading.svg";
 import { debounce } from 'lodash';
@@ -46,7 +46,7 @@ function ManageDepartment() {
 
     data.append('Excel', fileList);
 
-    excelApi('staff/addCourseByExcel', data, setProgress, setFileList).then((res) => {
+    excelApi('staff/addDepartmentByExcel', data, setProgress, setFileList).then((res) => {
       if (res.status === 200) {
         toast.success("Imported successfully", { duration: 1500 });
       }
@@ -97,8 +97,8 @@ function ManageDepartment() {
   }
 
   const handleDelete = (ItemId) => {
-    deleteCourse(ItemId, setIsLoading).then(res => {
-      if (res.status === 200) {
+    deleteDep(ItemId, setIsLoading).then(res => {
+      if (res?.status === 200) {
         setIsDeletePopup(-1)
         toast.success(res.data.success)
         getCourseApi(`staff/getAllDepartment?page=${Active}`, setCourseData, setTotal, setIsLoading)
@@ -157,7 +157,7 @@ function ManageDepartment() {
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : CourseData.map((item, index) =>
           <div key={index} className={` w-[70%] font-medium text-sm grid grid-cols-6 h-12 border-b place-content-center place-items-center rounded-lg`}>
-            <p>{index + 1}</p>
+            <p>{index + 1 + (Active - 1) * 10}</p>
             <p>{item.departmentCode}</p>
             <p className=' col-span-2 text-center truncate overflow-hidden w-full'>{item.name}</p>
             <p>{item.catagory}</p>
