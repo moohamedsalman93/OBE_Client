@@ -19,7 +19,7 @@ function Account({ userId }) {
         setP2('')
       })
     } else {
-      toast.error('Password should be min-6 and max-16')
+      toast.error('Password should be min-7 and max-16')
     }
   }
 

@@ -73,7 +73,7 @@ const AddMarks = () => {
       data.append('courseCode', courseCode)
 
       excelApi('staff/addMarksByExcel', data, setProgress, setFileList).then((res) => {
-        if (res.status === 200) {
+        if (res?.status === 200) {
           toast.success("Imported successfully", { duration: 1500 });
         }
       })
@@ -611,7 +611,7 @@ const AddMarks = () => {
               </div>
             </div>
 
-            <div className=" flex justify-between w-full">
+            <div className=" flex justify-between w-full items-center">
               <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
                 <h1 className="text-[#676060]">Department :</h1>
                 <input
@@ -687,12 +687,12 @@ const AddMarks = () => {
 
               </div>
 
-              <div className=" bg-slate-200 py-2 col-span-2 space-x-2 flex items-center shadow-md border justify-center rounded-md  px-3 w-fit">
+              <div className=" bg-slate-200 py-2 col-span-2 space-x-2 flex items-center shadow-md border justify-center rounded-md  px-3 h-fit w-fit">
 
                 <h1 className="">Status :</h1>
 
-                <button
-                  className={`transition-all duration-300  shadow-sm border h-10 w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? 'bg-[#4f72cc] text-white' : 'text-black bg-[#F8FCFF]'}`}
+                <button disabled={examType === 'ASG1' || examType === 'ASG2' ? true : false}
+                  className={`${examType === 'ASG1' || examType === 'ASG2' ? 'bg-opacity-20 cursor-not-allowed' : 'opacity-100'} transition-all duration-300  shadow-sm border h-10 w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? 'bg-[#4f72cc] text-white' : 'text-black bg-[#F8FCFF]'}`}
                   onClick={() => {
                     if (studentStatus === 'absent') {
                       setStudentStatus('');
@@ -709,24 +709,6 @@ const AddMarks = () => {
                 >
                   Absent
                 </button>
-
-                <button
-
-                  className={`transition-all duration-300  shadow-sm border h-10 w-[6.5rem] font-medium rounded-md  px-2 ${studentStatus === 'notOnrole' ? 'bg-[#4f72cc] text-white' : 'text-black bg-[#F8FCFF]'}`}
-                  onClick={() => {
-                    if (studentStatus === 'notOnrole') {
-                      setStudentStatus('');
-
-                    }
-                    else {
-                      setStudentStatus('notOnrole');
-                      handleClear()
-                    }
-                  }}
-                >
-                  Not on Roll
-                </button>
-
               </div>
             </div>
 
@@ -930,8 +912,8 @@ const AddMarks = () => {
                       </option>
 
                       {CourseData.map((course, index) => (
-                        <option key={index} value={course.courseCode} className="rounded font-medium">
-                          {course.courseCode}
+                        <option key={index} value={Uname === 'admin' ? course.code : course.courseCode} className="rounded font-medium">
+                          {Uname === 'admin' ? course.code : course.courseCode}
                         </option>
                       ))}
                     </select>

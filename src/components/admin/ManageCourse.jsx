@@ -129,7 +129,7 @@ function ManageCourse() {
       if (res.status === 200) {
         setIsDeletePopup(-1)
         toast.success(res.data.success)
-        getCourseApi(`staff/deleteCourse?page=${Active}`, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=${Active}`, setCourseData, setTotal, setIsLoading)
       }
     })
   }

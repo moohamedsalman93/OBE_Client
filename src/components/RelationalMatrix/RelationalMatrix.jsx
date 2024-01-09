@@ -103,6 +103,15 @@ function RelationalMatrix({ userId }) {
           [question]: numericValue,
         }));
       }
+      else {
+        toast.error(
+          "Please enter a mark between " +
+          markLimitsForQuestion.min +
+          " and " +
+          markLimitsForQuestion.max,
+          { duration: 1500 }
+        );
+      }
     }
   };
 
@@ -135,7 +144,7 @@ function RelationalMatrix({ userId }) {
                 setMarks({})
               })
 
-            } 
+            }
           });
       } catch (err) {
         toast.error("validation error", { duration: 1500 });
