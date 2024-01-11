@@ -4,7 +4,7 @@ import loadingImg from '../../assets/loading.svg'
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-function RelationalMatrix({ userId }) {
+function RelationalMatrix({ userId,year }) {
 
   const [indexOfAdd, setIndexOfAdd] = useState(-1)
   const [isHideDiv, setIsHideDiv] = useState(false)
@@ -81,7 +81,7 @@ function RelationalMatrix({ userId }) {
   }
 
   useEffect(() => {
-    getApi(`staff/getStaffsDetails?uname=${userId}`, setCourse, setLoading2)
+    getApi(`staff/getStaffsDetails?uname=${userId}&year=`+year, setCourse, setLoading2)
   }, [])
 
   const handleMarkChange = (question, value) => {
@@ -128,7 +128,8 @@ function RelationalMatrix({ userId }) {
       }
 
       const newData = {
-        code: Course[indexOfAdd].code.code,
+        code: Course[indexOfAdd]?.code?.code,
+        year:year,
         ...marksAsNumbers,
       };
 
@@ -138,8 +139,8 @@ function RelationalMatrix({ userId }) {
           .then((res) => {
             if (res.status === 200) {
               setIsLoading(false);
-              toast.success(`PSO saved successfully ${Course[indexOfAdd].code.code}`, { duration: 1500 });
-              getApi(`staff/getStaffsDetails?uname=${userId}`, setCourse, setLoading2).then((res) => {
+              toast.success(`PSO saved successfully ${Course[indexOfAdd]?.code?.code}`, { duration: 1500 });
+              getApi(`staff/getStaffsDetails?uname=${userId}&year=`+year, setCourse, setLoading2).then((res) => {
                 setIndexOfAdd(-1)
                 setMarks({})
               })
@@ -191,7 +192,7 @@ function RelationalMatrix({ userId }) {
                     Course.map((item, index) => item.code.pso.length === 0 && (
                       <div key={index} onClick={() => setIndexOfAdd(index)} className=' h-[7rem] shadow-md bg-[#e13434] cursor-pointer bg-opacity-10 saturate-200 after:translate-x-3 before:translate-x-8 duration-300 rounded-lg w-[14rem] border flex flex-col justify-start items-center p-2 space-y-1'>
                         <p className=' text-md font-medium'>{item.code.code}</p>
-                        <p className=' text-sm font-medium'>{item.code.depCode}</p>
+                        <p className=' text-sm font-medium'>{item.code.department.departmentCode}</p>
                         <p className=' text-sm font-medium h-full w-full flex items-center justify-center text-center'>{item.code.name}</p>
                       </div>))
                   }
@@ -207,7 +208,7 @@ function RelationalMatrix({ userId }) {
                     Course.map((item, index) => item.code.pso.length !== 0 && (
                       <div key={index} onClick={() => handleEdit(index)} className=' h-[7rem] shadow-md bg-[#34e168] bg-opacity-10 saturate-200 after:translate-x-3 before:translate-x-8 duration-300 rounded-lg w-[14rem] border flex flex-col justify-start items-center p-2 space-y-1'>
                         <p className=' text-md font-medium'>{item.code.code}</p>
-                        <p className=' text-sm font-medium'>{item.code.depCode}</p>
+                        <p className=' text-sm font-medium'>{item.code.department.departmentCode}</p>
                         <p className=' text-sm font-medium h-full w-full flex items-center justify-center text-center'>{item.code.name}</p>
                       </div>))
                   }

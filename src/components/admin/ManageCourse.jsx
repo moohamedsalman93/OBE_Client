@@ -5,7 +5,7 @@ import loading from "../../assets/loading.svg";
 import { debounce } from 'lodash';
 import toast, { LoaderIcon } from 'react-hot-toast';
 
-function ManageCourse() {
+function ManageCourse({ year }) {
   const [CourseData, setCourseData] = useState([]);
   const [Total, setTotal] = useState(0);
   const [Active, setActive] = useState(1);
@@ -45,6 +45,7 @@ function ManageCourse() {
     const data = new FormData();
 
     data.append('Excel', fileList);
+    data.append('year', year)
 
     excelApi('staff/addCourseByExcel', data, setProgress, setFileList).then((res) => {
       if (res.status === 200) {
@@ -58,13 +59,13 @@ function ManageCourse() {
 
 
   useEffect(() => {
-    getCourseApi(`staff/getAllCourses?page=${Active}`, setCourseData, setTotal, setIsLoading)
+    getCourseApi(`staff/getAllCourses?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
   }, [Active])
 
   //#region search
   const handleDepSearch = debounce(async (val) => {
     if (val.length > 0) {
-      searchData('staff/searchDepartment/?question=' + val, setSearchValue, setIsLoading2)
+      searchData('staff/searchDepartment/?question=' + val + '&year=' + year, setSearchValue, setIsLoading2)
     }
 
   }, 500);
@@ -100,7 +101,8 @@ function ManageCourse() {
     const data = {
       code: CourseCode,
       name: CourseName,
-      depCode: deparment
+      depCode: deparment,
+      year: year
     }
 
     AddNewCourse(data, setIsLoading3).then((res) => {
@@ -111,7 +113,7 @@ function ManageCourse() {
         setCourseName('');
         setdepartment('');
         setIsEdit(-1);
-        getCourseApi(`staff/getAllCourses?page=${Active}`, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
       }
       // else {
       //   toast.error('Please try again later')
@@ -129,7 +131,7 @@ function ManageCourse() {
       if (res.status === 200) {
         setIsDeletePopup(-1)
         toast.success(res.data.success)
-        getCourseApi(`staff/getAllCourses?page=${Active}`, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=${Active}&year=`+year, setCourseData, setTotal, setIsLoading)
       }
     })
   }
@@ -138,7 +140,7 @@ function ManageCourse() {
     setIsEdit(ItemId)
     setCourseCode(CourseData[ItemId].code)
     setCourseName(CourseData[ItemId].name)
-    setdepartment(CourseData[ItemId].depCode)
+    setdepartment(CourseData[ItemId].department.departmentCode)
   }
 
   const handleEditCancel = () => {
@@ -151,10 +153,10 @@ function ManageCourse() {
   //#region apicall
   const handleInputChange = debounce(async (value) => {
     if (value.length % 2 !== 0) {
-      getCourseApi(`staff/getAllCourses?page=1&question=${value}`, setCourseData, setTotal, setIsLoading)
+      getCourseApi(`staff/getAllCourses?page=1&question=${value}&year=` + year, setCourseData, setTotal, setIsLoading)
     }
     else if (value.length == 0) {
-      getCourseApi(`staff/getAllCourses?page=1&question=`, setCourseData, setTotal, setIsLoading)
+      getCourseApi(`staff/getAllCourses?page=1&year=${year}&question=`, setCourseData, setTotal, setIsLoading)
     }
   }, 500);
   //#endregion
@@ -198,21 +200,23 @@ function ManageCourse() {
           <p>Department</p>
           <p>Actions</p>
         </div>
-        {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : CourseData.map((item, index) =>
-          <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-5 h-12 border-b place-content-center place-items-center rounded-lg`}>
-            <p>{index + 1 + (Active - 1) * 10}</p>
-            <p>{item.code}</p>
-            <p className=' text-center truncate overflow-hidden w-full'>{item.name}</p>
-            <p>{item.depCode}</p>
-            <div className=' flex space-x-3'>
-              <div className=' text-lg' onClick={() => handleEditPopup(index)}>
-                <ion-icon name="create-outline"></ion-icon>
-              </div>
-              <div className=' text-lg' onClick={() => handleDeletePopup(index)}>
-                <ion-icon name="trash-outline"></ion-icon>
+        {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
+          CourseData.map((item, index) =>
+            <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-5 h-12 border-b place-content-center place-items-center rounded-lg`}>
+              <p>{index + 1 + (Active - 1) * 10}</p>
+              <p>{item.code}</p>
+              <p className=' text-center truncate overflow-hidden w-full'>{item.name}</p>
+              <p>{item?.department?.departmentCode}</p>
+              <div className=' flex space-x-3'>
+                <div className=' text-lg' onClick={() => handleEditPopup(index)}>
+                  <ion-icon name="create-outline"></ion-icon>
+                </div>
+                <div className=' text-lg' onClick={() => handleDeletePopup(index)}>
+                  <ion-icon name="trash-outline"></ion-icon>
+                </div>
               </div>
             </div>
-          </div>
+          )
         )
         }
       </div>

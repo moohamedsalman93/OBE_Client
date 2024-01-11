@@ -7,7 +7,7 @@ import loading from "../../assets/loading.svg";
 import { debounce } from 'lodash';
 import toast from 'react-hot-toast';
 
-function ManageDepartment() {
+function ManageDepartment({ year }) {
   const [CourseData, setCourseData] = useState([]);
   const [Total, setTotal] = useState(0);
   const [Active, setActive] = useState(1);
@@ -46,7 +46,7 @@ function ManageDepartment() {
 
     data.append('Excel', fileList);
 
-    excelApi('staff/addDepartmentByExcel', data, setProgress, setFileList).then((res) => {
+    excelApi('staff/addDepartmentByExcel?year=' + year, data, setProgress, setFileList).then((res) => {
       if (res.status === 200) {
         toast.success("Imported successfully", { duration: 1500 });
       }
@@ -57,7 +57,7 @@ function ManageDepartment() {
   const uploading = progress > 0 && progress < 100;
 
   useEffect(() => {
-    getCourseApi(`staff/getAllDepartment?page=${Active}`, setCourseData, setTotal, setIsLoading)
+    getCourseApi(`staff/getAllDepartment?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
   }, [Active])
 
   const handleSubmit = () => {
@@ -67,7 +67,8 @@ function ManageDepartment() {
     const data = {
       name: Name,
       depCode: Code,
-      cat: Cat
+      cat: Cat,
+      year: year
     }
 
     AddNewProgram(data, setIsLoading3).then((res) => {
@@ -77,7 +78,7 @@ function ManageDepartment() {
         setCode('');
         setName('');
         setIsEdit(-1)
-        getCourseApi(`staff/getAllDepartment?page=${Active}`, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllDepartment?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
       }
       else {
         toast.error('Please try again later')
@@ -101,7 +102,7 @@ function ManageDepartment() {
       if (res?.status === 200) {
         setIsDeletePopup(-1)
         toast.success(res.data.success)
-        getCourseApi(`staff/getAllDepartment?page=${Active}`, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllDepartment?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
       }
     })
   }
@@ -109,10 +110,10 @@ function ManageDepartment() {
   //#region apicall
   const handleInputChange = debounce(async (value) => {
     if (value.length % 2 !== 0) {
-      getCourseApi(`staff/getAllDepartment?page=1&question=${value}`, setCourseData, setTotal, setIsLoading)
+      getCourseApi(`staff/getAllDepartment?page=1&question=${value}&year=`+year, setCourseData, setTotal, setIsLoading)
     }
     else if (value.length == 0) {
-      getCourseApi(`staff/getAllDepartment?page=${Active}&question=`, setCourseData, setTotal, setIsLoading)
+      getCourseApi(`staff/getAllDepartment?page=${Active}&year=${year}&question=`, setCourseData, setTotal, setIsLoading)
     }
   }, 500);
   //#endregion

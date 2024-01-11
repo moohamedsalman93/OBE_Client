@@ -5,7 +5,7 @@ import loading from "../../assets/loading.svg";
 import { debounce } from 'lodash';
 import toast, { LoaderIcon } from 'react-hot-toast';
 
-function ManageStaff() {
+function ManageStaff({ year }) {
   const [StaffData, setStaffData] = useState([]);
   const [CourseData, setCourseData] = useState([]);
   const [Total, setTotal] = useState(0);
@@ -52,7 +52,7 @@ function ManageStaff() {
 
     data.append('Excel', fileList);
 
-    excelApi('staff/addStaffByExcel', data, setProgress, setFileList).then((res) => {
+    excelApi('staff/addStaffByExcel?year=' + year, data, setProgress, setFileList).then((res) => {
       if (res.status === 200) {
         toast.success("Imported successfully", { duration: 1500 });
       }
@@ -94,7 +94,7 @@ function ManageStaff() {
 
     const data = {
       codeid: addCourseIndex,
-      uname: StaffData[isAssignPopup]?.email,
+      uname: StaffData[isAssignPopup]?.uname,
       name: StaffData[isAssignPopup]?.name,
     }
 
@@ -125,8 +125,8 @@ function ManageStaff() {
 
   const handlePopup = (ItemId) => {
     setIsPopup(ItemId)
-    const userId = StaffData[ItemId].email
-    getApi(`staff/getStaffsDetails?uname=${userId}`, setCourseData, setIsLoading4)
+    const userId = StaffData[ItemId].uname
+    getApi(`staff/getStaffsDetails?uname=${userId}&year=` + year, setCourseData, setIsLoading4)
   }
 
   const handleDeletePop = (ItemId) => {
@@ -166,7 +166,7 @@ function ManageStaff() {
   //#region search
   const handleCourseSearch = debounce(async (val) => {
     if (val.length > 0) {
-      searchData('staff/searchCourse?question=' + val, setSearchValue, setIsLoading2)
+      searchData('staff/searchCourse?question=' + val + '&year=' + year, setSearchValue, setIsLoading2)
     }
 
   }, 500);
@@ -210,7 +210,7 @@ function ManageStaff() {
       <div className=' w-full grow flex flex-col items-center py-4'>
         <div className=' w-[60%] font-semibold text-lg grid grid-cols-5 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
           <p>No</p>
-          <p>Code</p>
+          <p>Uname</p>
           <p className=''>Course Name</p>
           <p className=' '>Action</p>
           <p className=' '>Details</p>
@@ -218,7 +218,7 @@ function ManageStaff() {
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (StaffData.length === 0 ? <div className=' font-medium mt-5'>No Data Found</div> : StaffData.map((item, index) =>
           <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-5 h-12 border-b place-content-center place-items-center rounded-lg`}>
             <p>{index + 1 + (Active - 1) * 10}</p>
-            <p>{item.email}</p>
+            <p>{item.uname}</p>
             <p className=' text-center truncate overflow-hidden w-full'>{item.name}</p>
             <div className=' flex space-x-2'>
               <div className=' flex space-x-3'>
@@ -331,7 +331,7 @@ function ManageStaff() {
                       CourseData.length !== 0 ? CourseData.map((item, index) =>
                         <div key={index} className={` w-full font-medium text-sm grid grid-cols-5 h-12 border-b place-content-center place-items-center rounded-lg`}>
                           <p>{index + 1}</p>
-                          <p>{item.code.depCode}</p>
+                          <p>{item.code.department.departmentCode}</p>
                           <p>{item.code.code}</p>
                           <p className=' text-center truncate overflow-hidden w-full'>{item.code.name}</p>
 

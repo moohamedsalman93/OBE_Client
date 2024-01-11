@@ -3,7 +3,7 @@ import loadingImg from '../../assets/loading.svg'
 import toast from 'react-hot-toast';
 import { getApi, passChangeApi } from '../../api/api';
 
-function Account({ userId }) {
+function Account({ userId,year }) {
   const [p1, setP1] = useState('');
   const [p2, setP2] = useState('');
   const [isLoading, setLoading] = useState(false)
@@ -24,7 +24,7 @@ function Account({ userId }) {
   }
 
   useEffect(() => {
-    getApi(`staff/getStaffsDetails?uname=${userId}`, setCourse, setLoading2)
+    getApi(`staff/getStaffsDetails?uname=${userId}&year=`+year, setCourse, setLoading2)
   }, [])
 
   return (
@@ -75,7 +75,7 @@ function Account({ userId }) {
                 Course.map((item, index) =>
                   <div key={index} className=' h-[7rem] shadow-md bg-[#346fe1] bg-opacity-10 saturate-200 after:translate-x-3 before:translate-x-8 duration-300 rounded-lg w-[14rem] border flex flex-col justify-start items-center p-2 space-y-1'>
                     <p className=' text-md font-medium'>{item.code.code}</p>
-                    <p className=' text-sm font-medium'>{item.code.depCode}</p>
+                    <p className=' text-sm font-medium'>{item.code.department.departmentCode}</p>
                     <p className=' text-sm font-medium h-full w-full flex items-center justify-center text-center'>{item.code.name}</p>
                   </div>)
               }

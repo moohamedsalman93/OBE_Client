@@ -5,7 +5,7 @@ import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
 import ReactToPrint from 'react-to-print';
 
-function Students() {
+function Students({year}) {
     const [regNo, setRegNo] = useState("");
     const [isLoading1, setIsLoading1] = useState(false)
     const [outComeData, setOutcomeData] = useState([]);
@@ -14,7 +14,7 @@ function Students() {
 
     //#region handleGet
     const handleGet = () => {
-        putApi2(`staff/getStudent`, setOutcomeData, { RegNO: regNo }, setIsLoading1).then(res => {
+        putApi2(`staff/getStudent`, setOutcomeData, { RegNO: regNo, year: year }, setIsLoading1).then(res => {
 
         })
     }

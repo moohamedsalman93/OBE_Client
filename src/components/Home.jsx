@@ -7,13 +7,14 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-hot-toast";
 import '../App.css'
+import { getYearApi } from "../api/api";
 
 function Home({ Role, setRole, setuserName, userName, setuserId, userId }) {
 
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
   const [logOutBtn, setlogOutBtn] = useState(false);
-  const [jmc, setJmc] = useState('hello')
+  const [date,setDate]=useState()
 
   const handleLogOutbtn = () => {
 
@@ -112,8 +113,8 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId }) {
 
           <div className=" w-full grow py-4 px-2 text-white">
             <div className=" w-full space-y-7">
-              <p className=" text-medium font-semibold">Menus</p>
-
+                <p className=" text-medium font-semibold">Menus</p>
+                
               <div className=" space-y-2">
                 {
                   menus.map((item, index) =>

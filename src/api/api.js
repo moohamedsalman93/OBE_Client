@@ -227,7 +227,7 @@ export const AddNewProgram = async (data, setisLoading) => {
     setisLoading(false);
     return res
   } catch (err) {
-   
+
     toast.error(err.response.data.msg)
     setisLoading(false);
   }
@@ -301,5 +301,25 @@ export const deleteStaffCourse = async (id, setisLoading) => {
   } catch (err) {
     toast.error(err.response.data.msg)
     setisLoading(false);
+  }
+}
+
+export const setYearApi = async (year) => {
+  try {
+    const res = await axios.post(api + 'staff/setYear?year=' + year);
+    return res
+  } catch (err) {
+    console.log(err)
+    toast.error(err.response.data.msg)
+  }
+}
+
+export const getYearApi = async (year) => {
+  try {
+    const res = await axios.get(api + 'staff/getYear');
+    return res
+  } catch (err) {
+    console.log(err)
+    toast.error(err.response.data.msg)
   }
 }

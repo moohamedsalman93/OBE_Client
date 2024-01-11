@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import loading from "../../assets/loading.svg";
 import studentMarksImg from "../../assets/studentMark.png";
 
-function CourseOutcome({ userId }) {
+function CourseOutcome({ userId,year }) {
 
     const dropdownRef2 = useRef(null);
     const [courseCode, setCourseCode] = useState("");
@@ -15,7 +15,7 @@ function CourseOutcome({ userId }) {
 
     //#region useEffect
     useEffect(() => {
-        getApi(`staff/getStaffsDetails?uname=${userId}`, setCourseData, setIsLoading1)
+        getApi(`staff/getStaffsDetails?uname=${userId}&year=`+year, setCourseData, setIsLoading1)
     }, []);
     //#endregion
 
@@ -23,7 +23,8 @@ function CourseOutcome({ userId }) {
     const handleGet = () => {
         const data = {
             department: courseCode.split('-')[1],
-            code: courseCode.split('-')[0]
+            code: courseCode.split('-')[0],
+            year:year
         }
         putApi(`staff/getMarks`, setOutcomeData, data, setIsLoading1).then(res => {
             console.log(res)
@@ -48,8 +49,8 @@ function CourseOutcome({ userId }) {
                         </option>
 
                         {CourseData.map((course, index) => (
-                            <option key={index} value={course.code.code + '-' + course.code.depCode}>
-                                {course.code.code + '-' + course.code.depCode}
+                            <option key={index} value={course.code.code + '-' + course.code.department.departmentCode}>
+                                {course.code.code + '-' + course.code.department.departmentCode}
                             </option>
                         ))}
                     </select>

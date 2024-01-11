@@ -10,7 +10,7 @@ import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
 
-const AddMarks = () => {
+const AddMarks = ({ year }) => {
 
   //#region  Variables
   const dropdownRef2 = useRef(null);
@@ -71,6 +71,7 @@ const AddMarks = () => {
       data.append('Excel', fileList);
       data.append('depCode', deparment);
       data.append('courseCode', courseCode)
+      data.append('year',year)
 
       excelApi('staff/addMarksByExcel', data, setProgress, setFileList).then((res) => {
         if (res?.status === 200) {
@@ -223,6 +224,7 @@ const AddMarks = () => {
           status: statusStudent,
           [sStatus]: statusStudent,
           [StaffIn]: staffIntial,
+          year:year,
           exam: examType,
           ...marksAsNumbers,
         };
@@ -235,6 +237,7 @@ const AddMarks = () => {
           section: "A",
           status: statusStudent,
           exam: "ASG",
+          year:year,
           [StaffIn]: staffIntial,
           [typeDe]: parseInt(Assignment, 10),
         };
@@ -256,7 +259,7 @@ const AddMarks = () => {
                 setIsLoading(false);
 
                 toast.success("Mark saved successfully", { duration: 1500 });
-                getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
+                getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&year=`+year, setExistingData, setIsLoading3)
                 if (editStudent === -1) {
                   const last3Digits = parseInt(regNo, 10);
                   const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
@@ -287,16 +290,6 @@ const AddMarks = () => {
   };
   //#endregion
 
-  //#region Handle Input Change
-  const handleInputChange = (event) => {
-    const inputValue = event.target.value;
-    if (inputValue === "" || (inputValue >= 0 && inputValue <= 3)) {
-      setValue(inputValue);
-    } else {
-      toast.error("Please enter a number between 0 and 3.", { duration: 1500 });
-    }
-  };
-  //#endregion
 
   //#region Handle Outside Click
   const handleOutsideClick2 = event => {
@@ -352,9 +345,9 @@ const AddMarks = () => {
     setdepartment(item.departmentCode);
     setIsOpen2(false);
     if (Uname === 'admin') {
-      getApi(`staff/searchCode?question=${item.departmentCode}`, setCourseData, setIsLoading2)
+      getApi(`staff/searchCode?question=${item.departmentCode}&year=${year}`, setCourseData, setIsLoading2)
     } else {
-      getStaffCourse(`staff/getStaff?department=${item.departmentCode}&uname=${Uname}`, setCourseData, setIsLoading2)
+      getStaffCourse(`staff/getStaff?department=${item.departmentCode}&uname=${Uname}&year=${year}`, setCourseData, setIsLoading2)
     }
 
   };
@@ -363,7 +356,7 @@ const AddMarks = () => {
   //#region search
   const handleDepSearch = debounce(async (val) => {
     if (val.length > 0) {
-      searchData('staff/searchDepartment/?question=' + val, setSearchValue, setIsLoading2)
+      searchData('staff/searchDepartment/?question=' + val + '&year=' + year, setSearchValue, setIsLoading2)
     }
 
   }, 500);
@@ -395,7 +388,7 @@ const AddMarks = () => {
   //#region hanledOnselectCource
   const handleCourseOnslect = (e) => {
     setCourseCode(e.target.value)
-    getCourseApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}&sortby=${SortBy}`, setExistingData, setTotal, setIsLoading3)
+    getCourseApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}&sortby=${SortBy}&year=`+year, setExistingData, setTotal, setIsLoading3)
   }
   //#endregion
 
@@ -496,10 +489,10 @@ const AddMarks = () => {
   //#region handleDelete
   const handleDelete = () => {
     const markId = typeData[editStudent]?.marks[0]?.id
-    DeleteApi('staff/deleteMark', { id: markId, exam: examType }, setIsLoading).then(res => {
+    DeleteApi('staff/deleteMark?year='+year, { id: markId, exam: examType }, setIsLoading).then(res => {
       if (res.status === 200) {
         toast.success('mark deleted successfully')
-        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}`, setExistingData, setIsLoading3)
+        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=`+year, setExistingData, setIsLoading3)
         handleClear()
         setRegNo('')
         setEditstudent(-1)
@@ -526,14 +519,15 @@ const AddMarks = () => {
     const params = {
       code: courseCode,
       department: deparment,
-      regNo: '23' + deparment + regNo
+      regNo: String(year).slice(2) + deparment + regNo,
+      year:year
     }
 
     let temp = {}
 
     if (regNo && deparment && courseCode) {
       const temp = {}
-      getRegMarksApi('staff/byCode', setRegData, params, setIsLoading).then((res) => {
+      getRegMarksApi('staff/byCode?', setRegData, params, setIsLoading).then((res) => {
         if (res.data.success) {
           if (examType === 'ASG1') {
             if (res.data.marks[0].ASG1STAFF !== null) {
@@ -578,7 +572,7 @@ const AddMarks = () => {
   useEffect(() => {
     setActive(1)
     if (courseCode && deparment) {
-      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}`, setExistingData, setTotal, setIsLoading3)
+      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=`+year, setExistingData, setTotal, setIsLoading3)
     }
 
   }, [SortBy])
@@ -586,7 +580,7 @@ const AddMarks = () => {
 
   //#region useEffect paginationChange
   useEffect(() => {
-    getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}`, setExistingData, setTotal, setIsLoading3)
+    getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}&year=`+year, setExistingData, setTotal, setIsLoading3)
   }, [active])
   //#endregion
 
@@ -668,7 +662,7 @@ const AddMarks = () => {
               <div className=" space-y-2">
                 <h1 className="text-[#676060]">Register No:</h1>
                 <div className=" flex bg-[#F8FCFF] border rounded px-2 items-center min-w-[100px] max-w-fit space-x-1">
-                  <h1 className=" font-medium">23{deparment !== '' ? deparment : 'MCA'}</h1>
+                  <h1 className=" font-medium">{String(year).slice(2  )}{deparment !== '' ? deparment : 'MCA'}</h1>
                   <input
                     type="tel"
                     placeholder="XXX"

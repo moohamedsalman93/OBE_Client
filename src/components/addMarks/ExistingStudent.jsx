@@ -47,7 +47,7 @@ function ExistingStudent({ isLoading3, courseCode, typeData, editStudent, handle
                                                     {typeData?.map((item, index) =>
                                                         <div key={index} className={` h-10 mx-2  grid grid-cols-2 px-2 items-center text-center border-b text-sm font-medium hover:border-blue-700 hover:text-blue-600 cursor-pointer ${editStudent === index ? 'font-semibold text-[#4f72cc] border-[#4f72cc]' : (item?.marks[0][examType + 'STATUS'] === 'absent' && 'text-red-600')}`} onClick={() => handleEditClick(index)}>
                                                             <p>{item?.regNo}</p>
-                                                            <p className='  w-full h-7 truncate flex items-center justify-center'>{item?.marks[0][examType + 'STAFF']}</p>
+                                                            <p className='  w-full h-4 overflow-hidden flex items-start  justify-center'>{item?.marks[0][examType + 'STAFF']}</p>
                                                         </div>
                                                     )
                                                     }

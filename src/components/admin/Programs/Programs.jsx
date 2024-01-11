@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
 
-function Programs() {
+function Programs({year}) {
 
     const dropdownRef2 = useRef(null);
     const [departmentName, setDepartmentName] = useState("");
@@ -52,7 +52,7 @@ function Programs() {
     //#region search
     const handleDepSearch = debounce(async (val) => {
         console.log('searching..')
-        searchData('staff/searchDepartment/?question=' + val, setSearchValue, setIsLoading2)
+        searchData('staff/searchDepartment/?question=' + val + '&year=' + year, setSearchValue, setIsLoading2)
     }, 500);
     //#endregion
 
@@ -99,6 +99,7 @@ function Programs() {
     const handleGet = () => {
         const data = {
             department: deparment,
+            year: year
         }
 
         getDepOut(`staff/getByDepartment`, setOutcomeData, data, setIsLoading1).then(res => {

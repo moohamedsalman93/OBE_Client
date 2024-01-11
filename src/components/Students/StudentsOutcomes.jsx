@@ -5,7 +5,7 @@ import studentMarksImg from "../../assets/studentMark.png";
 import { putApi } from "../../api/api";
 import toast from "react-hot-toast";
 
-function StudentsOutcomes() {
+function StudentsOutcomes({year}) {
     const [regNo, setRegNo] = useState("");
 
     const [data, setdata] = useState([]);
@@ -28,6 +28,7 @@ function StudentsOutcomes() {
     const handleGet = () => {
         const data = {
             regNo: regNo,
+            year:year
         }
         putApi(`staff/getByStudent`, setOutcomeData, data, setIsLoading1).then(res => {
             console.log(res)

@@ -7,22 +7,13 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-hot-toast";
 import '../App.css'
+import { getYearApi, setYearApi } from "../api/api";
 
-function HomeAdmin({ Role, setRole, setuserName, userName, setuserId, userId }) {
+function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate }) {
 
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
-  const [logOutBtn, setlogOutBtn] = useState(false);
-
-  const handleLogOutbtn = () => {
-
-    if (logOutBtn == true) {
-      setlogOutBtn(false)
-    }
-    else {
-      setlogOutBtn(true)
-    }
-  }
+  const [dateData, setDataData] = useState([2023, 2024, 2025, 2026, 2027, 2028]);
 
   useEffect(() => {
     if (!token) {
@@ -49,10 +40,7 @@ function HomeAdmin({ Role, setRole, setuserName, userName, setuserId, userId }) 
 
     } catch (error) {
       console.error('Error decoding token:', error);
-
     }
-
-
   }, [token, navigate]);
 
   const handleLogOut = () => {
@@ -125,6 +113,13 @@ function HomeAdmin({ Role, setRole, setuserName, userName, setuserId, userId }) 
 
   ]
 
+  //#region hanledOnselectDate
+  const handleCourseOnDate = (e) => {
+    setDate(e.target.value)
+    setYearApi(e.target.value)
+  }
+  //#endregion
+
   return (
     <div className=" w-screen h-screen bg-white flex flex-col">
       <div className=" w-full flex h-full  relative">
@@ -140,12 +135,30 @@ function HomeAdmin({ Role, setRole, setuserName, userName, setuserId, userId }) 
               </div>
             </div>
 
+
           </div>
 
           <div className=" w-full grow py-4 px-2 text-white space-y-3">
 
             <div className=" w-full space-y-3">
-              <p className=" text-lg font-bold text-black">Manage</p>
+              <div className=" w-full flex justify-between">
+                <p className=" text-lg font-bold text-black">Manage</p>
+                <div className=" space-x-2 flex items-center">
+                  <h1 className="text-[#000000] font-medium">Year</h1>
+                  <select
+                    value={date}
+                    onChange={handleCourseOnDate}
+                    className={`bg-[#f8fcff00] shadow-sm border h-fit w-[5rem] font-medium rounded px-2 ${date === '' ? 'text-gray-400' : 'text-black'}`}
+                  >
+                    {dateData.map((eachDate, index) => (
+                      <option key={index} value={eachDate} className="rounded font-medium">
+                        {eachDate}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
 
               <div className=" space-y-2">
                 {

@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
 
-function AdminCourseOutcome() {
+function AdminCourseOutcome({year}) {
 
     const dropdownRef2 = useRef(null);
     const [courseCode, setCourseCode] = useState("");
@@ -38,7 +38,7 @@ function AdminCourseOutcome() {
     const departmentOnSelect = item => {
         setdepartment(item.departmentCode);
         setIsOpen2(false);
-        getApi(`staff/searchCode?question=${item.departmentCode}`, setCourseData, setIsLoading2)
+        getApi(`staff/searchCode?question=${item.departmentCode}&year=`+year, setCourseData, setIsLoading2)
 
     };
     //#endregion
@@ -52,7 +52,7 @@ function AdminCourseOutcome() {
     //#region search
     const handleDepSearch = debounce(async (val) => {
         console.log('searching..')
-        searchData('staff/searchDepartment/?question=' + val, setSearchValue, setIsLoading2)
+        searchData('staff/searchDepartment/?question=' + val +'&year='+year, setSearchValue, setIsLoading2)
     }, 500);
     //#endregion
 
