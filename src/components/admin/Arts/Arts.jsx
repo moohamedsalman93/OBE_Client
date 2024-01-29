@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getCatagoryOut, putApi } from '../../api/api'
+import { getCatagoryOut, putApi } from '../../../api/api'
 import {
   Tooltip,
   BarChart,
@@ -7,16 +7,17 @@ import {
   XAxis,
   CartesianGrid,
 } from "recharts";
-import studentMarksImg from "../../assets/studentMark.png";
-import loading from "../../assets/loading.svg";
+import studentMarksImg from "../../../assets/studentMark.png";
+import loading from "../../../assets/loading.svg";
 
-function Arts() {
+function Arts({year}) {
   const [outComeData, setCourseData] = useState([]);
   const [isLoading, setIsloading] = useState(false);
 
   useEffect(() => {
     const data = {
-      catagory: "Arts"
+      catagory: "Arts",
+      year:year
     }
 
     getCatagoryOut('staff/getByCategory', setCourseData, data, setIsloading)
@@ -33,12 +34,12 @@ function Arts() {
 
 
   return (
-    <div className=' w-full h-full overflow-y-auto space-y-4 flex flex-col items-center'>
-      <h1 className=' text-center font-medium mt-3 text-[18px]'>Program Outcome for Arts</h1>
+    <div className=' w-full xl:h-[45rem] 2xl:h-[39rem] overflow-y-hidden space-y-2 flex flex-col items-center bg-white rounded-md shadow-md'>
+          <h1 className=' text-center font-medium mt-3 text-[18px] '>Program Outcome for Arts</h1>
 
       {isLoading ? <div className=' w-full flex items-center justify-center h-full'>
         <img src={loading} alt="" className=' w-12' />
-      </div> : (outComeData.length !== 0 ? <div className=' w-full space-y-4 flex flex-col items-center'>
+      </div> : (outComeData.length !== 0 ? <div className=' w-full space-y-4 flex flex-col items-center overflow-y-auto'>
         <table className=" table-auto border-collapse border text-center mt-4 w-[60rem]">
           <thead className=' bg-[#4f72cc]  text-white'>
             <tr>

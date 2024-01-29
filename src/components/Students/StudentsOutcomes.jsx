@@ -56,7 +56,7 @@ function StudentsOutcomes({year}) {
                 </div>
 
                 <button
-                    className=" bg-[#3b84f4] py-2 px-4 rounded-md text-white"
+                    className=" bg-[#4f72cc] py-2 px-4 rounded-md text-white"
                     onClick={handleGet}
                 >
                     Get
@@ -72,7 +72,7 @@ function StudentsOutcomes({year}) {
                     ) : (
                         <table>
                             <thead>
-                                <tr className=' border rounded-lg bg-[#3b84f4] text-white'>
+                                <tr className=' border rounded-lg bg-black text-white'>
                                     <th className="px-4 py-2" >S no</th>
                                     <th className="px-4 py-2" >Course Code</th>
                                     <th className="px-4 py-2" >Course Name</th>

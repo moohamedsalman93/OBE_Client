@@ -5,7 +5,7 @@ import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
 import ReactToPrint from 'react-to-print';
 
-function Students({year}) {
+function Students({ year }) {
     const [regNo, setRegNo] = useState("");
     const [isLoading1, setIsLoading1] = useState(false)
     const [outComeData, setOutcomeData] = useState([]);
@@ -21,9 +21,23 @@ function Students({year}) {
     //#endregion
 
 
-    function calculateCiaTotal(marks) {
-        let LOT = (marks.C1LOT + marks.C2LOT + marks.ASGCO1 + marks.ASGCO2 + marks.C1MOT + marks.C2MOT + marks.C1HOT + marks.C2HOT)
+
+    function calculateLOT(marks) {
+        let ciaLOT = (marks?.C1LOT + marks?.C2LOT + marks.ASGCO1 + marks.ASGCO2) / 2
+        let LOT = (ciaLOT + marks.ESELOT) / 2
         return Math.round(LOT)
+    }
+
+    function calculateMOT(marks) {
+        let ciaMOT = (marks?.C1MOT + marks?.C2MOT ) / 2
+        let MOT = (ciaMOT + marks.ESEMOT) / 2
+        return Math.round(MOT)
+    }
+
+    function calculateHOT(marks) {
+        let ciaHOT = (marks?.C1HOT + marks?.C2HOT) / 2
+        let HOT = (ciaHOT + marks.ESEHOT) / 2
+        return Math.round(HOT)
     }
 
     const handlePrint = () => {
@@ -54,16 +68,16 @@ function Students({year}) {
 
 
     return (
-        <div className=' w-full h-full p-5 flex flex-col'>
+        <div className=' w-full xl:h-[45rem] 2xl:h-[39rem] p-5 flex flex-col bg-white rounded-lg shadow-md'>
             <div className=" flex justify-start items-center space-x-5">
 
 
-                <span className="flex items-center space-x-2">
+                <span className="flex items-center space-x-2 font-normal">
                     <h1>Register No :</h1>
-                    <input type="text" placeholder='23MCAXXX' value={regNo} onChange={(e) => setRegNo((e.target.value)?.toUpperCase())} className='border-2 p-2 rounded-md' />
+                    <input type="text" placeholder='23MCAXXX' value={regNo} onChange={(e) => setRegNo((e.target.value)?.toUpperCase())} className='border-2 p-2 rounded-md h-10' />
                 </span>
 
-                <button className=" bg-[#3b84f4] py-2 px-4 rounded-md text-white" onClick={() => handleGet()}>
+                <button className=" bg-[#4f72cc] h-10 px-4 rounded-md text-white" onClick={() => handleGet()}>
                     Get
                 </button>
                 <div className=' grow  h-12 flex justify-end items-center'>
@@ -80,19 +94,19 @@ function Students({year}) {
             </div>
 
             {outComeData.length !== 0 ?
-                (<div>
+                (<div className=' w-full grow'>
 
                     <div className="flex w-full flex-col justify-start  items-center grow py-4">
-                        <p className=' font-medium text-xl text-gray-700'>Student Outcome for {regNo}</p>
+
 
                         <table className="table-auto rounded-md border mt-2">
                             <thead className="bg-black text-white">
                                 <tr>
                                     <th className="px-4 py-2 border">Courses Name</th>
                                     <th className="px-4 py-2 border">Courses Name</th>
-                                    <th className="px-4 py-2 border">CIA</th>
-                                    <th className="px-4 py-2 border">ESE</th>
-                                    <th className="px-4 py-2 border">Over All</th>
+                                    <th className="px-4 py-2 border">LOT</th>
+                                    <th className="px-4 py-2 border">MOT</th>
+                                    <th className="px-4 py-2 border">HOT</th>
 
                                 </tr>
                             </thead>
@@ -101,9 +115,9 @@ function Students({year}) {
                                     <tr key={index} className=' font-medium'>
                                         <th className="border px-4 py-2 ">{item?.code?.code}</th>
                                         <td className="border px-4 py-2 w-72 h-16 overflow-x-hidden text-center">{item?.code?.name}</td>
-                                        <td className="border px-4 py-2">{calculateCiaTotal(item?.marks[0])}/160</td>
-                                        <td className="border px-4 py-2">{(item?.marks[0].ESELOT) + (item?.marks[0].ESEMOT) + (item?.marks[0]?.ESEHOT)}/75</td>
-                                        <td className="border px-4 py-2">{calculateCiaTotal(item?.marks[0]) + (item?.marks[0].ESELOT) + (item?.marks[0].ESEMOT) + (item?.marks[0]?.ESEHOT)}/235</td>
+                                        <td className="border px-4 py-2">{calculateLOT(item?.marks[0])}</td>
+                                        <td className="border px-4 py-2">{calculateMOT(item?.marks[0])}</td>
+                                        <td className="border px-4 py-2">{calculateHOT(item?.marks[0])}</td>
 
                                     </tr>
                                 )
@@ -134,9 +148,9 @@ function Students({year}) {
                                         <tr key={index} style={{ height: '55px', border: '2px solid #ccc' }}>
                                             <th style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{item?.code?.code}</th>
                                             <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{item?.code?.name}</td>
-                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{calculateCiaTotal(item?.marks[0])}/160</td>
-                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{(item?.marks[0].ESELOT) + (item?.marks[0].ESEMOT) + (item?.marks[0]?.ESEHOT)}/75</td>
-                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{calculateCiaTotal(item?.marks[0]) + (item?.marks[0].ESELOT) + (item?.marks[0].ESEMOT) + (item?.marks[0]?.ESEHOT)}/235</td>
+                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{calculateLOT(item?.marks[0])}</td>
+                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{calculateMOT(item?.marks[0])}</td>
+                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{calculateHOT(item?.marks[0])}</td>
 
                                         </tr>
                                     )

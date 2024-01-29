@@ -295,7 +295,7 @@ const AddMarks = () => {
         await axios
           .post("http://localhost:3000/staff/addMarks", newData)
           .then((res) => {
-            if (res.status === 200) {
+            if (res?.status === 200) {
               setIsLoading(false);
 
               toast.success("Mark saved successfully", { duration: 1500 });
@@ -535,7 +535,7 @@ const AddMarks = () => {
   const handleDelete = () => {
     const markId = typeData[editStudent]?.marks[0]?.id
     DeleteApi('staff/deleteMark', { id: markId, exam: examType }, setIsLoading).then(res => {
-      if (res.status === 200) {
+      if (res?.status === 200) {
         toast.success('mark deleted successfully')
         getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}`, setExistingData, setIsLoading3)
         handleClear()

@@ -37,6 +37,7 @@ export const getCourseApi = async (path, setData, setTotal, setisLoading) => {
     setData(res.data.data);
     setTotal(res.data.totalPages)
     setisLoading(false);
+    return res
   } catch (err) {
     setData([]);
     setisLoading(false);
@@ -233,8 +234,8 @@ export const AddNewProgram = async (data, setisLoading) => {
   }
 }
 
-export const excelApi = async (urls, data, setProgress, setFileList) => {
-
+export const excelApi = async (urls, data, setProgress, setFileList,setLoading) => {
+  setLoading(true)
   try {
     const res = await axios.post(api + urls, data, {
       onUploadProgress(e) {
@@ -249,6 +250,7 @@ export const excelApi = async (urls, data, setProgress, setFileList) => {
     return res
   } catch (err) {
     toast.error(err.response.data.msg)
+    setLoading(false)
   }
 
 }

@@ -33,7 +33,7 @@ function LoginPage() {
             if (res) {
                 console.log(res)
 
-                if (res.status === 200) {
+                if (res?.status === 200) {
                     toast.success('login success')
                     localStorage.setItem('token', res.data.success.data.token)
                     Navigate('/')

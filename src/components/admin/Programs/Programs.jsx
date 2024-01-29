@@ -124,19 +124,19 @@ function Programs({year}) {
     }
 
     return (
-        <div className=' w-full grow flex flex-col space-y-10 overflow-y-auto py-2'>
+        <div className=' w-full grow flex flex-col space-y-2 xl:h-[45rem] 2xl:h-[39rem] overflow-y-auto py-2 bg-white rounded-lg shadow-md'>
 
-            <div className=' flex space-x-2 w-full justify-start px-2 mt-4'>
+            <div className=' flex space-x-2 w-full justify-start items-center px-4 py-2 font-normal '>
 
-                <div className=' w-[19rem] relative flex items-center justify-end space-x-2' ref={dropdownRef2}>
-                    <h1 className="">Department :</h1>
+                <div className=' w-[20.5rem] relative flex items-center justify-end space-x-2' ref={dropdownRef2}>
+                    <h1 className="w-[8rem] ">Department :</h1>
                     <input
                         type="text"
                         value={deparment}
                         onChange={departmentOnChange}
                         onFocus={handleDropdownToggle2}
                         placeholder="Eg: MCA"
-                        className='border-2 p-2 rounded-md'
+                        className='border-2 p-2 rounded-md h-10'
                     />
                     {isOpen2 && (
                         <ul className="absolute z-20 top-10 mt-2 w-[12.6rem]  flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
@@ -161,19 +161,19 @@ function Programs({year}) {
 
 
 
-                <button className="  bg-[#3b84f4] py-2 px-4 rounded-md text-white" onClick={handleGet}>
+                <button className="  bg-[#4f72cc] h-10 px-4 rounded-md text-white" onClick={handleGet}>
                     Get
                 </button>
 
             </div>
 
             {outComeData.length !== 0 ?
-                (<div className=' w-full flex flex-col justify-center items-center  grow'>
-                    <div className=' grow p-5 space-x-3 text-xl flex items-center'>
+                (<div className=' w-full flex space-y-4 flex-col justify-center items-center  grow'>
+                    <div className=' space-x-3 text-lg flex items-center'>
                         <p className=' font-medium  '>Attain Level for {departmentName}</p>
-                        <p className=' text-blue-500 font-medium'>{addAttain()}</p>
+                        <p className=' text-blue-500 font-medium'>{addAttain() || 0}</p>
                     </div>
-                    <div className=' w-[70%]  grow'>
+                    <div className=' w-[80%]  grow'>
                         <table>
                             <thead>
                                 <tr className=' border-black rounded-lg bg-[#000000] text-white'>
@@ -188,7 +188,7 @@ function Programs({year}) {
 
                             <tbody>
                                 {
-                                    outComeData?.map((item, index) => (<tr className={` border rounded-lg  text-black text-center ${index % 2 === 0 ? 'bg-white' : 'bg-[#e2e8f0]'}`}>
+                                    outComeData?.map((item, index) => (<tr className={` border rounded-lg  text-black font-medium text-center ${index % 2 === 0 ? 'bg-white' : 'bg-[#e2e8f0]'}`}>
                                         <td className="px-4 py-2 border" >{index + 1}</td>
                                         <td className="px-4 py-2 border" >{item.courseCode}</td>
                                         <td className="px-4 py-2 border" >{item.courseTitle}</td>

@@ -137,7 +137,7 @@ function RelationalMatrix({ userId,year }) {
         await axios
           .post("http://localhost:3000/staff/addPso", newData)
           .then((res) => {
-            if (res.status === 200) {
+            if (res?.status === 200) {
               setIsLoading(false);
               toast.success(`PSO saved successfully ${Course[indexOfAdd]?.code?.code}`, { duration: 1500 });
               getApi(`staff/getStaffsDetails?uname=${userId}&year=`+year, setCourse, setLoading2).then((res) => {

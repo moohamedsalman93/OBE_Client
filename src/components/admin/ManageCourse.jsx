@@ -4,6 +4,8 @@ import { Pagination } from '../addMarks/pagiNation';
 import loading from "../../assets/loading.svg";
 import { debounce } from 'lodash';
 import toast, { LoaderIcon } from 'react-hot-toast';
+import sampleCSV from '../../assets/course.csv';
+
 
 function ManageCourse({ year }) {
   const [CourseData, setCourseData] = useState([]);
@@ -20,6 +22,7 @@ function ManageCourse({ year }) {
   const [searchValue, setSearchValue] = useState([]);
   const [focusedOptionIndex, setFocusedOptionIndex] = useState(0);
   const [CourseCode, setCourseCode] = useState('');
+  const [isImportLoading, setIsImportLoading] = useState(false);
   const [CourseName, setCourseName] = useState('');
   const [searchText, setSearchText] = useState('');
   const [isEdit, setIsEdit] = useState(-1);
@@ -47,9 +50,11 @@ function ManageCourse({ year }) {
     data.append('Excel', fileList);
     data.append('year', year)
 
-    excelApi('staff/addCourseByExcel', data, setProgress, setFileList).then((res) => {
-      if (res.status === 200) {
-        toast.success("Imported successfully", { duration: 1500 });
+    excelApi('staff/addCourseByExcel', data, setProgress, setFileList, setIsImportLoading).then((res) => {
+      if (res?.status === 200) {
+        toast.success(res.data.success, { duration: 1500 });
+        getCourseApi(`staff/getAllCourses?page=1&year=` + year, setCourseData, setTotal, setIsLoading)
+        setIsOpenImport(false)
       }
     })
 
@@ -125,13 +130,23 @@ function ManageCourse({ year }) {
   const handleDeletePopup = (ItemId) => {
     setIsDeletePopup(ItemId)
   }
+  //#region toDownload Sample csv
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = sampleCSV;
+    link.setAttribute('download', 'sampleCourse.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  //#endregion
 
   const handleDelete = (ItemId) => {
     deleteCourse(ItemId, setIsLoading).then(res => {
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setIsDeletePopup(-1)
         toast.success(res.data.success)
-        getCourseApi(`staff/getAllCourses?page=${Active}&year=`+year, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
       }
     })
   }
@@ -172,8 +187,8 @@ function ManageCourse({ year }) {
 
 
   return (
-    <div className=' h-full w-full flex flex-col'>
-      <div className=' h-20 px-10  py-2 w-full flex justify-between items-end space-x-2'>
+    <div className=' h-full w-full xl:h-[45rem] 2xl:h-[39.5rem] flex flex-col bg-white rounded-md shadow-md p-2'>
+      <div className=' h-12 px-2  py-2 w-full flex justify-between items-end space-x-2'>
         <p className=' font-semibold text-xl grow'>Courses List</p>
 
         <div className=' flex relative w-fit h-fit'>
@@ -192,7 +207,7 @@ function ManageCourse({ year }) {
         <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg text-white'>New Course</button>
       </div>
 
-      <div className=' w-full grow flex flex-col items-center py-4'>
+      <div className=' w-full grow flex flex-col items-center py-2'>
         <div className=' w-[60%] font-semibold text-lg grid grid-cols-5 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
           <p>Id</p>
           <p>Course Code</p>
@@ -202,16 +217,16 @@ function ManageCourse({ year }) {
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
           CourseData.map((item, index) =>
-            <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-5 h-12 border-b place-content-center place-items-center rounded-lg`}>
+            <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-5 h-11 border-b place-content-center place-items-center rounded-lg`}>
               <p>{index + 1 + (Active - 1) * 10}</p>
               <p>{item.code}</p>
               <p className=' text-center truncate overflow-hidden w-full'>{item.name}</p>
               <p>{item?.department?.departmentCode}</p>
               <div className=' flex space-x-3'>
-                <div className=' text-lg' onClick={() => handleEditPopup(index)}>
+                <div className=' text-lg hover:text-blue-600 cursor-pointer' onClick={() => handleEditPopup(index)}>
                   <ion-icon name="create-outline"></ion-icon>
                 </div>
-                <div className=' text-lg' onClick={() => handleDeletePopup(index)}>
+                <div className=' text-lg hover:text-red-600 cursor-pointer' onClick={() => handleDeletePopup(index)}>
                   <ion-icon name="trash-outline"></ion-icon>
                 </div>
               </div>
@@ -229,7 +244,7 @@ function ManageCourse({ year }) {
       </div>
 
       {isOpen &&
-        <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+        <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
           <div className=" w-[30%] h-[40%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col">
 
@@ -311,7 +326,7 @@ function ManageCourse({ year }) {
       }
 
       {isDeletePopup !== -1 &&
-        <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+        <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
           <div className=" w-[30%] h-[40%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col">
 
@@ -339,7 +354,7 @@ function ManageCourse({ year }) {
       }
 
       {isEdit !== -1 &&
-        <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+        <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
           <div className=" w-[30%] h-[40%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col">
 
@@ -360,7 +375,7 @@ function ManageCourse({ year }) {
                     onChange={departmentOnChange}
                     onFocus={handleDropdownToggle2}
                     placeholder="Eg: MCA"
-                    className='bg-[#F8FCFF] shadow-sm border h-10 w-[60%] rounded px-2 text-black font-medium'
+                    className='bg-[#F8FCFF] shadow-sm border h-10 w-[60%] rounded px-2 text-black font-medium cursor-not-allowed'
                   />
                   {isOpen2 && (
                     <ul className="absolute z-20 mt-2 w-[60%] flex right-0 top-9 flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
@@ -391,7 +406,7 @@ function ManageCourse({ year }) {
                     disabled={true}
                     onChange={(e) => setCourseCode(e.target.value)}
                     placeholder="23MCA1CC1"
-                    className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[60%] rounded px-2 text-black font-medium'
+                    className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[60%] rounded px-2 text-black font-medium cursor-not-allowed'
                   />
 
                 </div>
@@ -414,7 +429,7 @@ function ManageCourse({ year }) {
 
             <div className=" w-full space-x-2 flex justify-end font-medium ">
               <button className=" px-3 py-2 rounded-md hover:bg-red-700 text-red-700 hover:bg-opacity-10 transition-all duration-700" onClick={() => handleEditCancel()}>Cancel</button>
-              <button className=" px-2 py-2 rounded-md bg-[#4f72cc] text-white hover:shadow-lg hover:shadow-[#4f72cc] transition-all duration-700" onClick={handleSubmit}>Add</button>
+              <button className=" px-2 py-2 rounded-md bg-[#4f72cc] text-white hover:shadow-lg hover:shadow-[#4f72cc] transition-all duration-700" onClick={handleSubmit}>Save</button>
             </div>
 
 
@@ -423,7 +438,7 @@ function ManageCourse({ year }) {
       }
 
       {isOpenImport &&
-        <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+        <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
           <div className=" w-[30%] h-[50%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col space-y-4">
 
@@ -498,7 +513,15 @@ function ManageCourse({ year }) {
               </div>
 
             </div>
-            <div className=" w-full space-x-2 flex justify-end font-medium ">
+            <div className=' w-full flex justify-center items-center absolute top-10'>
+              {
+                isImportLoading && <img src={loading} alt="" className=' h-8' />
+              }
+            </div>
+            <div className=" w-full space-x-2 flex justify-between font-medium ">
+              <div className=" underline cursor-pointer" onClick={handleDownload}>
+                Sample Format
+              </div>
               <button className=" px-3 py-2 rounded-md hover:bg-red-700 text-red-700 hover:bg-opacity-10 transition-all duration-700" onClick={() => setIsOpenImport(false)}>Close</button>
 
             </div>

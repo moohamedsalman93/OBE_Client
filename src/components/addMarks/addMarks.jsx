@@ -9,8 +9,9 @@ import { useNavigate } from "react-router-dom";
 import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
+import sampleCSV from '../../assets/sampleMark.xlsx';
 
-const AddMarks = ({ year }) => {
+const AddMarks = ({ uName, year }) => {
 
   //#region  Variables
   const dropdownRef2 = useRef(null);
@@ -46,6 +47,7 @@ const AddMarks = ({ year }) => {
   const [fileList, setFileList] = useState(null);
   const [shouldHighlight, setShouldHighlight] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isImportLoading, setIsImportLoading] = useState(false);
 
   const preventDefaultHandler = (e) => {
     e.preventDefault();
@@ -71,11 +73,15 @@ const AddMarks = ({ year }) => {
       data.append('Excel', fileList);
       data.append('depCode', deparment);
       data.append('courseCode', courseCode)
-      data.append('year',year)
+      data.append('year', year)
+      data.append('staff', uName)
 
-      excelApi('staff/addMarksByExcel', data, setProgress, setFileList).then((res) => {
+      excelApi('staff/addMarksByExcel', data, setProgress, setFileList, setIsImportLoading).then((res) => {
         if (res?.status === 200) {
           toast.success("Imported successfully", { duration: 1500 });
+          getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=` + year, setExistingData, setTotal, setIsLoading3)
+          setIsImportLoading(false)
+          setIsOpenImport(false)
         }
       })
     }
@@ -224,7 +230,7 @@ const AddMarks = ({ year }) => {
           status: statusStudent,
           [sStatus]: statusStudent,
           [StaffIn]: staffIntial,
-          year:year,
+          year: year,
           exam: examType,
           ...marksAsNumbers,
         };
@@ -237,7 +243,7 @@ const AddMarks = ({ year }) => {
           section: "A",
           status: statusStudent,
           exam: "ASG",
-          year:year,
+          year: year,
           [StaffIn]: staffIntial,
           [typeDe]: parseInt(Assignment, 10),
         };
@@ -259,7 +265,7 @@ const AddMarks = ({ year }) => {
                 setIsLoading(false);
 
                 toast.success("Mark saved successfully", { duration: 1500 });
-                getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&year=`+year, setExistingData, setIsLoading3)
+                getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&year=` + year, setExistingData, setIsLoading3)
                 if (editStudent === -1) {
                   const last3Digits = parseInt(regNo, 10);
                   const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
@@ -388,7 +394,7 @@ const AddMarks = ({ year }) => {
   //#region hanledOnselectCource
   const handleCourseOnslect = (e) => {
     setCourseCode(e.target.value)
-    getCourseApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}&sortby=${SortBy}&year=`+year, setExistingData, setTotal, setIsLoading3)
+    getCourseApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}&sortby=${SortBy}&year=` + year, setExistingData, setTotal, setIsLoading3)
   }
   //#endregion
 
@@ -489,10 +495,10 @@ const AddMarks = ({ year }) => {
   //#region handleDelete
   const handleDelete = () => {
     const markId = typeData[editStudent]?.marks[0]?.id
-    DeleteApi('staff/deleteMark?year='+year, { id: markId, exam: examType }, setIsLoading).then(res => {
-      if (res.status === 200) {
+    DeleteApi('staff/deleteMark?year=' + year, { id: markId, exam: examType }, setIsLoading).then(res => {
+      if (res?.status === 200) {
         toast.success('mark deleted successfully')
-        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=`+year, setExistingData, setIsLoading3)
+        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=` + year, setExistingData, setIsLoading3)
         handleClear()
         setRegNo('')
         setEditstudent(-1)
@@ -520,7 +526,7 @@ const AddMarks = ({ year }) => {
       code: courseCode,
       department: deparment,
       regNo: String(year).slice(2) + deparment + regNo,
-      year:year
+      year: year
     }
 
     let temp = {}
@@ -572,7 +578,7 @@ const AddMarks = ({ year }) => {
   useEffect(() => {
     setActive(1)
     if (courseCode && deparment) {
-      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=`+year, setExistingData, setTotal, setIsLoading3)
+      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=` + year, setExistingData, setTotal, setIsLoading3)
     }
 
   }, [SortBy])
@@ -580,9 +586,23 @@ const AddMarks = ({ year }) => {
 
   //#region useEffect paginationChange
   useEffect(() => {
-    getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}&year=`+year, setExistingData, setTotal, setIsLoading3)
+    getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}&year=` + year, setExistingData, setTotal, setIsLoading3)
   }, [active])
   //#endregion
+
+  //#region toDownload Sample csv
+
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = sampleCSV;
+    link.setAttribute('download', 'sampleMark.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  //#endregion
+
 
   return (
     <div className=" w-full h-full  relative  flex justify-center items-center font-medium">
@@ -662,7 +682,7 @@ const AddMarks = ({ year }) => {
               <div className=" space-y-2">
                 <h1 className="text-[#676060]">Register No:</h1>
                 <div className=" flex bg-[#F8FCFF] border rounded px-2 items-center min-w-[100px] max-w-fit space-x-1">
-                  <h1 className=" font-medium">{String(year).slice(2  )}{deparment !== '' ? deparment : 'MCA'}</h1>
+                  <h1 className=" font-medium">{String(year).slice(2)}{deparment !== '' ? deparment : 'MCA'}</h1>
                   <input
                     type="tel"
                     placeholder="XXX"
@@ -850,7 +870,7 @@ const AddMarks = ({ year }) => {
       {isOpenImport &&
         <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
           <div className=" w-[30%] h-[50%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
-            <div className="w-full grow flex flex-col space-y-4">
+            <div className="w-full grow flex flex-col space-y-4 relative">
 
               <div className=" flex space-x-2 text-xl font-semibold items-center">
                 <ion-icon name="cloud-upload-outline"></ion-icon>
@@ -977,9 +997,18 @@ const AddMarks = ({ year }) => {
                 </div>
 
               </div>
+              <div className=' w-full flex justify-center items-center absolute top-10'>
+                {
+                  isImportLoading && <img src={loading} alt="" className=' h-8' />
+                }
+              </div>
 
             </div>
-            <div className=" w-full space-x-2 flex justify-end font-medium ">
+            <div className=" w-full space-x-2 flex justify-between items-center font-medium ">
+              <div className=" underline cursor-pointer" onClick={handleDownload}>
+                Sample Format
+              </div>
+
               <button className=" px-3 py-2 rounded-md hover:bg-red-700 text-red-700 hover:bg-opacity-10 transition-all duration-700" onClick={() => setIsOpenImport(false)}>Close</button>
 
             </div>

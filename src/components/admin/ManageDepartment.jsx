@@ -6,6 +6,7 @@ import { Pagination } from '../addMarks/pagiNation';
 import loading from "../../assets/loading.svg";
 import { debounce } from 'lodash';
 import toast from 'react-hot-toast';
+import sampleCSV from '../../assets/program.csv';
 
 function ManageDepartment({ year }) {
   const [CourseData, setCourseData] = useState([]);
@@ -15,7 +16,7 @@ function ManageDepartment({ year }) {
   const [isOpen, setIsOpen] = useState(false)
   const [isEdit, setIsEdit] = useState(-1);
   const [isDeletePopup, setIsDeletePopup] = useState(-1);
-
+  const [isImportLoading, setIsImportLoading] = useState(false);
   const [isLoading3, setIsLoading3] = useState(false);
 
   const [Name, setName] = useState('');
@@ -46,9 +47,11 @@ function ManageDepartment({ year }) {
 
     data.append('Excel', fileList);
 
-    excelApi('staff/addDepartmentByExcel?year=' + year, data, setProgress, setFileList).then((res) => {
-      if (res.status === 200) {
+    excelApi('staff/addDepartmentByExcel?year=' + year, data, setProgress, setFileList,setIsImportLoading).then((res) => {
+      if (res?.status === 200) {
         toast.success("Imported successfully", { duration: 1500 });
+        getCourseApi(`staff/getAllDepartment?page=1&year=` + year, setCourseData, setTotal, setIsLoading)
+        setIsOpenImport(false)
       }
     })
 
@@ -72,7 +75,7 @@ function ManageDepartment({ year }) {
     }
 
     AddNewProgram(data, setIsLoading3).then((res) => {
-      if (res.status === 200) {
+      if (res?.status === 200) {
         toast.success(Code + ' is added successfully')
         setIsOpen(false);
         setCode('');
@@ -110,7 +113,7 @@ function ManageDepartment({ year }) {
   //#region apicall
   const handleInputChange = debounce(async (value) => {
     if (value.length % 2 !== 0) {
-      getCourseApi(`staff/getAllDepartment?page=1&question=${value}&year=`+year, setCourseData, setTotal, setIsLoading)
+      getCourseApi(`staff/getAllDepartment?page=1&question=${value}&year=` + year, setCourseData, setTotal, setIsLoading)
     }
     else if (value.length == 0) {
       getCourseApi(`staff/getAllDepartment?page=${Active}&year=${year}&question=`, setCourseData, setTotal, setIsLoading)
@@ -126,10 +129,20 @@ function ManageDepartment({ year }) {
   };
   //#endregion
 
+  //#region toDownload Sample csv
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = sampleCSV;
+    link.setAttribute('download', 'sampleProgram.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  //#endregion
 
   return (
-    <div className=' h-full w-full flex flex-col'>
-      <div className=' h-20 px-10  py-2 w-full flex justify-between items-end  space-x-2'>
+    <div className=' h-full w-full xl:h-[45rem] 2xl:h-[39rem] flex flex-col bg-white rounded-md shadow-md p-2'>
+      <div className=' h-12 px-2  py-2 w-full flex justify-between items-end space-x-2'>
         <p className=' font-semibold text-xl grow'>Program List</p>
 
         <div className=' flex relative w-fit h-fit'>
@@ -148,7 +161,7 @@ function ManageDepartment({ year }) {
         <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg text-white'>New Program</button>
       </div>
 
-      <div className=' w-full grow flex flex-col items-center py-4'>
+      <div className=' w-full grow flex flex-col items-center py-2'>
         <div className=' w-[70%] font-medium text-lg grid grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
           <p>S.no</p>
           <p>Program Code</p>
@@ -157,16 +170,16 @@ function ManageDepartment({ year }) {
           <p>Actions</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : CourseData.map((item, index) =>
-          <div key={index} className={` w-[70%] font-medium text-sm grid grid-cols-6 h-12 border-b place-content-center place-items-center rounded-lg`}>
+          <div key={index} className={` w-[70%] font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
             <p>{index + 1 + (Active - 1) * 10}</p>
             <p>{item.departmentCode}</p>
             <p className=' col-span-2 text-center truncate overflow-hidden w-full'>{item.name}</p>
             <p>{item.catagory}</p>
             <div className=' flex space-x-3'>
-              <div className=' text-lg' onClick={() => handleEditPopup(index)}>
+              <div className=' text-lg hover:text-blue-600 cursor-pointer' onClick={() => handleEditPopup(index)}>
                 <ion-icon name="create-outline"></ion-icon>
               </div>
-              <div className=' text-lg' onClick={() => handleDeletePopup(index)}>
+              <div className=' text-lg hover:text-red-600 cursor-pointer' onClick={() => handleDeletePopup(index)}>
                 <ion-icon name="trash-outline"></ion-icon>
               </div>
             </div>
@@ -431,7 +444,15 @@ function ManageDepartment({ year }) {
               </div>
 
             </div>
-            <div className=" w-full space-x-2 flex justify-end font-medium ">
+            <div className=' w-full flex justify-center items-center absolute top-10'>
+              {
+                isImportLoading && <img src={loading} alt="" className=' h-8' />
+              }
+            </div>
+            <div className=" w-full space-x-2 flex justify-between font-medium ">
+              <div className=" underline cursor-pointer" onClick={handleDownload}>
+                Sample Format
+              </div>
               <button className=" px-3 py-2 rounded-md hover:bg-red-700 text-red-700 hover:bg-opacity-10 transition-all duration-700" onClick={() => setIsOpenImport(false)}>Close</button>
 
             </div>

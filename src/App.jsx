@@ -7,16 +7,11 @@ import { useEffect, useState } from 'react';
 import Account from './components/Account/Account';
 import CourseOutcome from './components/Course/CourseOutcome';
 import HomeAdmin from './components/HomeAdmin';
-import ManageCourse from './components/admin/ManageCourse';
-import ManageDepartment from './components/admin/ManageDepartment';
-import AdminCourseOutcome from './components/admin/Course/CourseOutcome';
-import Programs from './components/admin/Programs/Programs';
 import RelationalMatrix from './components/RelationalMatrix/RelationalMatrix';
-import Students from './components/admin/Students/Students';
-import Science from './components/Science/Science';
-import Arts from './components/Arts/Arts';
-import ManageStaff from './components/admin/ManageStaff';
 import { getYearApi } from './api/api';
+import Reports from './components/admin/Reports';
+import Manage from './components/admin/Manage';
+import Outcome from './components/admin/Outcome';
 
 
 function App() {
@@ -24,11 +19,13 @@ function App() {
   const [userName, setuserName] = useState('')
   const [userId, setuserId] = useState('')
   const [date, setDate] = useState()
+  const [currentYear, setCurrentYear] = useState()
 
   useEffect(()=>{
     getYearApi().then(res => {
-      if (res.status === 200) {
+      if (res?.status === 200) {
         setDate(res?.data.data)
+        setCurrentYear(res?.data.data)
       }
     })
   },[])
@@ -45,16 +42,11 @@ function App() {
           <Route path="/RelationalMatrix" element={<RelationalMatrix userId={userId} year={date} />} />
         </Route>
 
-        <Route path="/Admin" element={<HomeAdmin Role={Role} date={date} setDate={setDate} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} />} >
+        <Route path="/Admin" element={<HomeAdmin Role={Role} date={date} setDate={setDate} year={currentYear} setCurrentYear={setCurrentYear} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} />} >
           <Route  path="/Admin/" element={<AddMarks uName={userName} year={date} />} />
-          <Route path="/Admin/Manage-Course" element={<ManageCourse year={date}/>} />
-          <Route path="/Admin/Manage-Department" element={<ManageDepartment year={date}/>} />
-          <Route path="/Admin/Manage-Staff" element={<ManageStaff year={date}/>} />
-          <Route path="/Admin/Outcome/Course" element={<AdminCourseOutcome year={date}/>} />
-          <Route path="/Admin/Outcome/Program" element={<Programs year={date}/>} />
-          <Route path="/Admin/Outcome/Student" element={<Students year={date}/>} />
-          <Route path="/Admin/Outcome/Science-Outcome" element={<Science year={date}/>} />
-          <Route path="/Admin/Outcome/Arts-Outcome" element={<Arts year={date}/>} />
+          <Route path="/Admin/Outcome/" element={<Outcome year={date}/>} />
+          <Route path="/Admin/reports" element={<Reports year={date}/>} />
+          <Route path="/Admin/manage" element={<Manage year={date}/>} />
         </Route>
 
         <Route path="/login" exact element={<LoginPage />} />

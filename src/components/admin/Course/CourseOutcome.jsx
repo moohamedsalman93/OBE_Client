@@ -108,10 +108,10 @@ function AdminCourseOutcome({year}) {
 
 
     return (
-        <div className=' w-full h-full p-5'>
+        <div className=' w-full h-full p-5 bg-white rounded-lg shadow-md xl:h-[45rem] 2xl:h-[39rem]'>
             <div className=" flex justify-start items-center space-x-5">
 
-                <div className=' w-[19rem] relative flex items-center justify-end space-x-2' ref={dropdownRef2}>
+                <div className=' w-[19rem] relative font-normal flex items-center justify-end space-x-2' ref={dropdownRef2}>
                     <h1 className="">Department :</h1>
                     <input
                         type="text"
@@ -119,7 +119,7 @@ function AdminCourseOutcome({year}) {
                         onChange={departmentOnChange}
                         onFocus={handleDropdownToggle2}
                         placeholder="Eg: MCA"
-                        className='border-2 p-2 rounded-md'
+                        className='border-2 p-2 rounded-md h-10'
                     />
                     {isOpen2 && (
                         <ul className="absolute z-20 top-10 mt-2 w-[12.6rem]  flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
@@ -142,12 +142,12 @@ function AdminCourseOutcome({year}) {
                     )}
                 </div>
 
-                <span className="flex items-center space-x-2">
+                <span className="flex items-center space-x-2 font-normal">
                     <h1>Course Code :</h1>
                     <select
                         value={courseCode}
                         onChange={(e) => setCourseCode(e.target.value)}
-                        className={` border-2 h-[2.8rem] rounded-md px-2 ${courseCode === '' ? 'text-gray-400' : 'text-black'}`}
+                        className={` border-2 h-10 rounded-md px-2 ${courseCode === '' ? 'text-gray-400' : 'text-black'}`}
                     >
                         <option value=''>
                             Select Code
@@ -161,7 +161,7 @@ function AdminCourseOutcome({year}) {
                     </select>
                 </span>
 
-                <button className=" bg-[#3b84f4] py-2 px-4 rounded-md text-white" onClick={handleGet}>
+                <button className=" bg-[#4f72cc] h-10 px-4 rounded-md text-white" onClick={handleGet}>
                     Get
                 </button>
             </div>
@@ -171,8 +171,8 @@ function AdminCourseOutcome({year}) {
 
                     <div className=' w-full flex'>
 
-                        <div className=" w-[50%] space-y-16">
-                            <div className="mt-10">
+                        <div className=" w-[50%] space-y-16 2xl:space-y-5">
+                            <div className="mt-10 2xl:mt-5">
                                 <h1 className=" font-medium">CIA Attainment</h1>
                                 {/* CIA I */}
                                 <div>
@@ -254,8 +254,8 @@ function AdminCourseOutcome({year}) {
 
                         </div>
 
-                        <div className=" w-[50%] space-y-16">
-                            <div className="mt-10">
+                        <div className=" w-[50%] space-y-16 2xl:space-y-5">
+                            <div className="mt-10 2xl:mt-5">
                                 <h1 className=" font-medium">ESE Attainment</h1>
                                 <div>
                                     <table className="table-auto rounded-md border mt-2">
