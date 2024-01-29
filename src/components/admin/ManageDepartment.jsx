@@ -52,6 +52,7 @@ function ManageDepartment({ year }) {
         toast.success("Imported successfully", { duration: 1500 });
         getCourseApi(`staff/getAllDepartment?page=1&year=` + year, setCourseData, setTotal, setIsLoading)
         setIsOpenImport(false)
+        setIsImportLoading(false)
       }
     })
 

@@ -52,6 +52,7 @@ function ManageCourse({ year }) {
 
     excelApi('staff/addCourseByExcel', data, setProgress, setFileList, setIsImportLoading).then((res) => {
       if (res?.status === 200) {
+        setIsImportLoading(false)
         toast.success(res.data.success, { duration: 1500 });
         getCourseApi(`staff/getAllCourses?page=1&year=` + year, setCourseData, setTotal, setIsLoading)
         setIsOpenImport(false)
