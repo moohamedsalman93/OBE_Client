@@ -86,7 +86,7 @@ function Students({ year }) {
                         content={() => comp.current}
                         documentTitle = 'ssa'
                     /> */}
-                    <button disabled={setOutcomeData.length === 0} onClick={() => handlePrint()} className=' w-fit flex px-3 py-1 border-2 text-gray-700 cursor-pointer rounded-md'>
+                    <button disabled={outComeData.length === 0 } onClick={() => handlePrint()} className=' w-fit flex px-3 py-1 bg-black text-white cursor-pointer rounded-md'>
                         Print
                     </button>
 

@@ -143,7 +143,7 @@ function Entryreports({ year }) {
             </div>
 
             <div className=' h-10 w-full flex justify-center items-start relative'>
-                <Pagination active={Active} setActive={setActive} total={Total} />
+                {Total !== 0 && <Pagination active={Active} setActive={setActive} total={Total} />}
             </div>
             {isOpen &&
                 <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">

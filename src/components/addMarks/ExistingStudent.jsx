@@ -38,7 +38,7 @@ function ExistingStudent({ isLoading3, courseCode, typeData, editStudent, handle
                                 typeData?.length !== 0 ?
                                     (
                                         <div className=" w-full h-full   flex flex-col justify-start">
-                                            <div className=' w-full h-[36.5rem] '>
+                                            <div className=' w-full h-[44rem] 2xl:h-[36.5rem] '>
                                                 <div className=" h-10 m-2 pr-2  grid grid-cols-2 px-2 items-center text-center font-medium  rounded-md bg-slate-200   shadow-md border">
                                                     <p>Register No</p>
                                                     <p>staff's Name</p>
@@ -56,9 +56,11 @@ function ExistingStudent({ isLoading3, courseCode, typeData, editStudent, handle
                                             </div>
 
                                             <div className=' flex flex-col  w-full h-[5rem]'>
-                                                <div className=' w-full flex justify-center items-center'>
-                                                    <Pagination active={active} setActive={setActive} total={total} />
-                                                </div>
+                                                {total !== 0 &&
+                                                    <div className=' w-full flex justify-center items-center'>
+                                                        <Pagination active={active} setActive={setActive} total={total} />
+                                                    </div>
+                                                }
 
                                                 <div className=' w-full flex justify-center items-center h-22'>
                                                     <button className=' px-4 py-2 bg-[#4f72cc] rounded-md text-white font-medium ' onClick={() => setIsOpenImport(true)}>Import</button>

@@ -69,16 +69,16 @@ function ManageStaff({ year }) {
 
   };
 
-    //#region toDownload Sample csv
-    const handleDownload = () => {
-      const link = document.createElement('a');
-      link.href = sampleCSV;
-      link.setAttribute('download', 'sampleStaff.csv');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    };
-    //#endregion
+  //#region toDownload Sample csv
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = sampleCSV;
+    link.setAttribute('download', 'sampleStaff.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  //#endregion
 
   const uploading = progress > 0 && progress < 100;
 
@@ -149,7 +149,7 @@ function ManageStaff({ year }) {
     staffCourseAssign(data, setIsLoading3).then((res) => {
       if (res?.status === 200) {
         toast.success('Course assigned successfully')
-        getApi(`staff/getStaffsDetails?uname=${StaffData[isPopup].uname}&year=` + year, setCourseData, setIsLoading4)
+        getApi(`staff/getStaffsDetails?uname=${instantAdd ? AddNewCourse?.uname : StaffData[isPopup]?.uname}&year=` + year, setCourseData, setIsLoading4)
       }
     })
   }
@@ -292,7 +292,7 @@ function ManageStaff({ year }) {
       </div>
 
       <div className=' h-10 w-full flex justify-center items-start relative'>
-        <Pagination active={Active} setActive={setActive} total={Total} />
+        {Total !== 0 && <Pagination active={Active} setActive={setActive} total={Total} />}
 
         <button className=' px-4 py-2 bg-[#4f72cc] absolute right-3 bottom-2 rounded-md text-white font-medium ' onClick={() => setIsOpenImport(true)}>Import</button>
 

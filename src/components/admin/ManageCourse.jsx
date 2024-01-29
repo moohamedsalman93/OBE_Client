@@ -238,7 +238,9 @@ function ManageCourse({ year }) {
       </div>
 
       <div className=' h-10 w-full flex justify-center items-start relative'>
-        <Pagination active={Active} setActive={setActive} total={Total} />
+        {Total !== 0 &&
+          <Pagination active={Active} setActive={setActive} total={Total} />}
+
 
         <button className=' px-4 py-2 bg-[#4f72cc] absolute right-3 bottom-2 rounded-md text-white font-medium ' onClick={() => setIsOpenImport(true)}>Import</button>
 
@@ -440,7 +442,7 @@ function ManageCourse({ year }) {
 
       {isOpenImport &&
         <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-          <div className=" w-[30%] h-[50%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+          <div className=" w-[30%] h-[50%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col relative">
             <div className="w-full grow flex flex-col space-y-4">
 
               <div className=" flex space-x-2 text-xl font-semibold items-center">

@@ -191,7 +191,7 @@ function ManageDepartment({ year }) {
       </div>
 
       <div className=' h-10 w-full flex justify-center items-start relative'>
-        <Pagination active={Active} setActive={setActive} total={Total} />
+      {Total !== 0 && <Pagination active={Active} setActive={setActive} total={Total} />}
 
         <button className=' px-4 py-2 bg-[#4f72cc] absolute right-3 bottom-2 rounded-md text-white font-medium ' onClick={() => setIsOpenImport(true)}>Import</button>
 
