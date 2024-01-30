@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
 
-function AdminCourseOutcome({year}) {
+function AdminCourseOutcome({ year }) {
 
     const dropdownRef2 = useRef(null);
     const [courseCode, setCourseCode] = useState("");
@@ -38,7 +38,7 @@ function AdminCourseOutcome({year}) {
     const departmentOnSelect = item => {
         setdepartment(item.departmentCode);
         setIsOpen2(false);
-        getApi(`staff/searchCode?question=${item.departmentCode}&year=`+year, setCourseData, setIsLoading2)
+        getApi(`staff/searchCode?question=${item.departmentCode}&year=` + year, setCourseData, setIsLoading2)
 
     };
     //#endregion
@@ -52,7 +52,7 @@ function AdminCourseOutcome({year}) {
     //#region search
     const handleDepSearch = debounce(async (val) => {
         console.log('searching..')
-        searchData('staff/searchDepartment/?question=' + val +'&year='+year, setSearchValue, setIsLoading2)
+        searchData('staff/searchDepartment/?question=' + val + '&year=' + year, setSearchValue, setIsLoading2)
     }, 500);
     //#endregion
 
@@ -106,6 +106,16 @@ function AdminCourseOutcome({year}) {
     }
     //#endregion
 
+    function psa(outComeData) {
+        const ps1 = outComeData?.psoCOS?.ps1 || 0;
+        const ps2 = outComeData?.psoCOS?.ps2 || 0;
+        const ps3 = outComeData?.psoCOS?.ps3 || 0;
+        const ps4 = outComeData?.psoCOS?.ps4 || 0;
+        const ps5 = outComeData?.psoCOS?.ps5 || 0;
+
+        const average = ((ps1 + ps2 + ps3 + ps4 + ps5) / 5).toFixed(2);
+        return average
+    }
 
     return (
         <div className=' w-full h-full p-5 bg-white rounded-lg shadow-md xl:h-[45rem] 2xl:h-[39rem]'>
@@ -322,7 +332,7 @@ function AdminCourseOutcome({year}) {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <h1 className=" px-4  pt-5"><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {(outComeData?.psoCOS?.ps1 + outComeData?.psoCOS?.ps2 + outComeData?.psoCOS?.ps3 + outComeData?.psoCOS?.ps4 + outComeData?.psoCOS?.ps5) / 5}</h1>
+                                <h1 className=" px-4  pt-5"><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {psa(outComeData)}</h1>
 
                             </div>
                         </div>

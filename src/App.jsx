@@ -12,6 +12,7 @@ import { getYearApi } from './api/api';
 import Reports from './components/admin/Reports';
 import Manage from './components/admin/Manage';
 import Outcome from './components/admin/Outcome';
+import AboutUs from './components/AboutUs';
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         </Route>
 
         <Route path="/login" exact element={<LoginPage />} />
+        <Route path="/AboutUs" exact element={<AboutUs />} />
       </Routes>
     </BrowserRouter>
   );

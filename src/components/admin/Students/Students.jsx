@@ -40,6 +40,8 @@ function Students({ year }) {
         return Math.round(HOT)
     }
 
+  
+
     const handlePrint = () => {
 
         setTimeout(() => {

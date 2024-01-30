@@ -613,8 +613,8 @@ const AddMarks = ({ uName, year }) => {
           <div className="flex flex-wrap gap-4 pt-20 w-full h-fit px-5">
 
             <div className=" space-y-2">
-              <h1 className="text-base font-normal text-[#676060]">
-                OB components :
+              <h1 className="text-base font-medium text-[#676060]">
+                OBE Components :
               </h1>
               <div className=" flex space-x-4 items-end ">
                 <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C1'} textlabel={'CIA-1'} />
@@ -748,7 +748,7 @@ const AddMarks = ({ uName, year }) => {
                 <div className=" flex space-x-5">
 
                   <div className=" space-x-2 flex items-center">
-                    <h1 className="text-[#df6363] font-semibold">LOT :</h1>
+                    <h1 className="text-[#e2401b] font-bold">LOT :</h1>
                     <input
                       type="text"
                       placeholder="0"
@@ -760,7 +760,7 @@ const AddMarks = ({ uName, year }) => {
                   </div>
 
                   <div className=" space-x-2 flex items-center">
-                    <h1 className="text-[#dfa563] font-semibold">MOT :</h1>
+                    <h1 className="text-[#1c54b7] font-bold">MOT :</h1>
                     <input
                       type="text"
                       placeholder="0"
@@ -772,7 +772,7 @@ const AddMarks = ({ uName, year }) => {
                   </div>
 
                   <div className=" space-x-2 flex items-center">
-                    <h1 className="text-[#6bdf63] font-semibold">HOT :</h1>
+                    <h1 className="text-[#0b7d4b] font-bold">HOT :</h1>
                     <input
                       type="text"
                       placeholder="0"

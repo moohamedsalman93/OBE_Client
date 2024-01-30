@@ -3,7 +3,7 @@ import results from "../assets/results.png";
 import marks from "../assets/add marks.png";
 import course from "../assets/add cources.png";
 import logo from "../assets/Logo.png";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-hot-toast";
 import '../App.css'
@@ -88,6 +88,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
           if (res?.status === 200) {
             setDate(res?.data.data)
             setCurrentYear(res?.data.data)
+            
           }
         })
       }
@@ -112,11 +113,11 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
             </div>
           </div>
           <div className=" flex justify-start space-x-2 font-medium w-full">
-            <p>Current year :</p>
-            <p>{year}</p>
+            <p>Acadmeic year :</p>
+            <p>{year}-{year+1}</p>
           </div>
           <div className=" flex justify-start space-x-2 font-normal w-full">
-            <p className=" font-medium">Set year :</p>
+            <p className=" font-medium">Preview :</p>
             <div className=" flex space-x-2">
               <div className=" space-x-2 flex items-center ">
 
@@ -133,7 +134,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
                 </select>
               </div>
               <div className=" bg-blue-500 h-6 rounded-md px-2 text-white font-normal cursor-pointer" onClick={() => handlesetOnDate()}>
-                set
+                Set
               </div>
             </div>
           </div>
@@ -143,7 +144,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
           <div className=" w-full space-y-3 ">
             <div className=" w-full flex justify-between ">
-              <p className=" text-lg font-bold text-black">Manage</p>
+              <p className=" text-lg font-bold text-black">Menus</p>
 
             </div>
 

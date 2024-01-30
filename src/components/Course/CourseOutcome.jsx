@@ -214,7 +214,7 @@ function CourseOutcome({ userId,year }) {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <h1 className=" px-4  pt-5"><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {(outComeData?.psoCOS?.ps1 + outComeData?.psoCOS?.ps2 + outComeData?.psoCOS?.ps3 + outComeData?.psoCOS?.ps4 + outComeData?.psoCOS?.ps5) / 5}</h1>
+                                <h1 className=" px-4  pt-5"><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {((outComeData?.psoCOS?.ps1 + outComeData?.psoCOS?.ps2 + outComeData?.psoCOS?.ps3 + outComeData?.psoCOS?.ps4 + outComeData?.psoCOS?.ps5) / 5).toFixed(2)}</h1>
 
                             </div>
                         </div>

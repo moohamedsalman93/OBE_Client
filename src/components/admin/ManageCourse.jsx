@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AddNewCourse, deleteCourse, excelApi, getCourseApi, searchData } from '../../api/api';
+import { AddNewCourse, deleteCourse, excelApi, getApi, getCourseApi, searchData } from '../../api/api';
 import { Pagination } from '../addMarks/pagiNation';
 import loading from "../../assets/loading.svg";
 import { debounce } from 'lodash';
@@ -9,6 +9,7 @@ import sampleCSV from '../../assets/course.csv';
 
 function ManageCourse({ year }) {
   const [CourseData, setCourseData] = useState([]);
+  const [StaffData, setStaffData] = useState([]);
   const [Total, setTotal] = useState(0);
   const [Active, setActive] = useState(1);
   const [isLoading, setIsLoading] = useState(false)
@@ -19,6 +20,7 @@ function ManageCourse({ year }) {
   const [isDeletePopup, setIsDeletePopup] = useState(-1);
   const [isLoading2, setIsLoading2] = useState(false);
   const [isLoading3, setIsLoading3] = useState(false);
+  const [isLoading4, setIsLoading4] = useState(false);
   const [searchValue, setSearchValue] = useState([]);
   const [focusedOptionIndex, setFocusedOptionIndex] = useState(0);
   const [CourseCode, setCourseCode] = useState('');
@@ -30,6 +32,7 @@ function ManageCourse({ year }) {
   const [fileList, setFileList] = useState(null);
   const [shouldHighlight, setShouldHighlight] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isPopup, setIsPopup] = useState(-1);
 
   const preventDefaultHandler = (e) => {
     e.preventDefault();
@@ -185,7 +188,11 @@ function ManageCourse({ year }) {
   };
   //#endregion
 
-
+  const handlePopup = (ItemId) => {
+    setIsPopup(ItemId)
+    const id = CourseData[ItemId].id
+    getApi(`staff/getStaffbyCode?id=${id}`, setStaffData, setIsLoading4)
+  }
 
   return (
     <div className=' h-full w-full xl:h-[45rem] 2xl:h-[39.5rem] flex flex-col bg-white rounded-md shadow-md p-2'>
@@ -209,20 +216,24 @@ function ManageCourse({ year }) {
       </div>
 
       <div className=' w-full grow flex flex-col items-center py-2'>
-        <div className=' w-[60%] font-semibold text-lg grid grid-cols-5 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+        <div className=' w-[60%] font-semibold text-lg grid grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
           <p>Id</p>
           <p>Course Code</p>
           <p>Course Name</p>
           <p>Department</p>
+          <p>Staff</p>
           <p>Actions</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
           CourseData.map((item, index) =>
-            <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-5 h-11 border-b place-content-center place-items-center rounded-lg`}>
+            <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
               <p>{index + 1 + (Active - 1) * 10}</p>
               <p>{item.code}</p>
               <p className=' text-center truncate overflow-hidden w-full'>{item.name}</p>
               <p>{item?.department?.departmentCode}</p>
+              <div className=' bg-blue-500 px-4 py-1 rounded-md text-white cursor-pointer' onClick={() => handlePopup(index)}>
+                show
+              </div>
               <div className=' flex space-x-3'>
                 <div className=' text-lg hover:text-blue-600 cursor-pointer' onClick={() => handleEditPopup(index)}>
                   <ion-icon name="create-outline"></ion-icon>
@@ -324,6 +335,51 @@ function ManageCourse({ year }) {
             </div>
 
 
+          </div>
+        </div>
+      }
+      {isPopup !== -1 &&
+        <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+          <div className=" w-[40%] h-[60%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+            <div className=' flex w-full justify-between h-12 border-b items-center'>
+              <p className=' font-bold'>Staffs </p>
+              <p className=' font-medium'>{CourseData[isPopup].name}</p>
+            </div>
+
+            <div className="w-full grow max-h-[82%] flex flex-col">
+              <div className=' w-full grow flex flex-col items-center py-4 overflow-hidden'>
+                <div className=' w-full font-semibold text-base grid grid-cols-4 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+                  <p>index</p>
+                  <p>UserId</p>
+                  <div className=' col-span-2 flex justify-start w-full '>
+                    
+                      Course Name
+                    
+                    </div>
+                </div>
+                {isLoading4 ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> :
+                  (<div className=' w-full h-[78%] overflow-y-scroll '>
+                    {
+                      CourseData.length !== 0 ? StaffData.map((item, index) =>
+                        <div key={index} className={` w-full font-medium text-sm grid grid-cols-4 h-12 border-b place-content-center place-items-center rounded-lg`}>
+                          <p>{index + 1}</p>
+                          <p>{item?.uname}</p>
+                          <p className=' col-span-2 flex justify-start w-full pl-3'>{item?.staffName}</p>
+
+                        </div>
+                      ) : <div className=' w-full flex justify-center mt-5 font-medium'>Not found</div>
+                    }
+                  </div>
+                  )
+                }
+              </div>
+
+            </div>
+            <div className=' w-full flex justify-end'>
+              <button className=" px-4 py-2 rounded-md bg-[#4f72cc] text-white hover:shadow-lg hover:shadow-[#4f72cc] transition-all duration-700" onClick={() => setIsPopup(-1)}>Close</button>
+
+            </div>
+            
           </div>
         </div>
       }

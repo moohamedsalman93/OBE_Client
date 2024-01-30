@@ -186,7 +186,7 @@ function RelationalMatrix({ userId,year }) {
 
               <div className=' w-full'>
 
-                < p className=' font-semibold'>Not Added</p>
+                < p className=' font-semibold'>Not Entered</p>
                 <div className=' w-full py-3 gap-3 flex flex-wrap'>
                   {
                     Course.map((item, index) => item.code.pso.length === 0 && (
@@ -202,7 +202,7 @@ function RelationalMatrix({ userId,year }) {
               </div>
 
               <div className=' w-full'>
-                <p className=' font-semibold'>Added</p>
+                <p className=' font-semibold'>Entered</p>
                 <div className=' w-full py-3 gap-3 flex flex-wrap'>
                   {
                     Course.map((item, index) => item.code.pso.length !== 0 && (

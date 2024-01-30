@@ -86,18 +86,25 @@ function LoginPage() {
                                 maxLength={30}
                             />
                             <div onClick={() => setIsShow(!isShow)} className=' cursor-pointer absolute items-center text-xl right-5'>
-                                <ion-icon name={isShow?"eye":"eye-off"}></ion-icon>
+                                <ion-icon name={isShow ? "eye" : "eye-off"}></ion-icon>
                             </div>
                         </div>
 
                         <button disabled={isLoading} onClick={handleSumbit} className=' h-11 w-[20rem] flex justify-center items-center bg-[#4f72cc] rounded-lg text-lg font-medium text-white hover:scale-[0.95] transition'>{isLoading ? <img src={loading} alt="" className=' w-8 text-zinc-50' /> : 'Log In'}</button>
 
                     </div>
+
                 </div>
-                <div className=' w-3/5 h-full flex items-center justify-center '>
-                    <img src={illustrate} alt=""  className=' scale-[1.5]'/>
+                <div className=' w-3/5 h-full flex items-center justify-center relative'>
+                    <img src={illustrate} alt="" className=' scale-[1.5]' />
+                    <div className=' absolute bottom-1 right-2 flex flex-col items-start'>
+                        <p className=' font-medium text-neutral-500 animate-bounce'>Developed By <span className=' underline text-[#4f72cc] hover:text-black transition-colors duration-500 cursor-pointer' onClick={()=>Navigate('/AboutUs')}> MCA students</span></p>
+                        <p className=' font-semibold text-neutral-500'>Guided By <span>Abdul Qadir S,</span><span className=' text-xs '> Asst. COE</span></p>
+                    </div>
                 </div>
+
             </div>
+
         </div>
     )
 }
