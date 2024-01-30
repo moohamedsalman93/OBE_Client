@@ -78,8 +78,8 @@ export const putApi2 = async (path, setData, data, setisLoading) => {
   setisLoading(true);
   try {
     const res = await axios.put(api + path, data);
-    setData(res.data.student);
-    console.log(res.data.student)
+    setData(res?.data?.students);
+    console.log(res?.data?.students)
     setisLoading(false);
     return res
   } catch (err) {
