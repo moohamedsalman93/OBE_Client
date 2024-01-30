@@ -22,24 +22,6 @@ function Students({ year }) {
 
 
 
-    function calculateLOT(marks) {
-        let ciaLOT = (marks?.C1LOT + marks?.C2LOT + marks.ASGCO1 + marks.ASGCO2) / 2
-        let LOT = (ciaLOT + marks.ESELOT) / 2
-        return Math.round(LOT)
-    }
-
-    function calculateMOT(marks) {
-        let ciaMOT = (marks?.C1MOT + marks?.C2MOT ) / 2
-        let MOT = (ciaMOT + marks.ESEMOT) / 2
-        return Math.round(MOT)
-    }
-
-    function calculateHOT(marks) {
-        let ciaHOT = (marks?.C1HOT + marks?.C2HOT) / 2
-        let HOT = (ciaHOT + marks.ESEHOT) / 2
-        return Math.round(HOT)
-    }
-
   
 
     const handlePrint = () => {
@@ -104,23 +86,18 @@ function Students({ year }) {
                         <table className="table-auto rounded-md border mt-2">
                             <thead className="bg-black text-white">
                                 <tr>
+                                    <th className="px-4 py-2 border">Courses code</th>
                                     <th className="px-4 py-2 border">Courses Name</th>
-                                    <th className="px-4 py-2 border">Courses Name</th>
-                                    <th className="px-4 py-2 border">LOT</th>
-                                    <th className="px-4 py-2 border">MOT</th>
-                                    <th className="px-4 py-2 border">HOT</th>
-
+                                    <th className="px-4 py-2 border">Attainment level</th>
+                                
                                 </tr>
                             </thead>
                             <tbody>
                                 {outComeData.map((item, index) =>
                                     <tr key={index} className=' font-medium'>
-                                        <th className="border px-4 py-2 ">{item?.code?.code}</th>
-                                        <td className="border px-4 py-2 w-72 h-16 overflow-x-hidden text-center">{item?.code?.name}</td>
-                                        <td className="border px-4 py-2">{calculateLOT(item?.marks[0])}</td>
-                                        <td className="border px-4 py-2">{calculateMOT(item?.marks[0])}</td>
-                                        <td className="border px-4 py-2">{calculateHOT(item?.marks[0])}</td>
-
+                                        <th className="border px-4 py-2 ">{item?.courseCode}</th>
+                                        <td className="border px-4 py-2 w-72 h-16 overflow-x-hidden text-center">{item?.name}</td>
+                                        <td className="border px-4 py-2">{item?.Attain}</td>
                                     </tr>
                                 )
 
@@ -130,7 +107,7 @@ function Students({ year }) {
 
                     </div>
 
-                    <div class="print-only" style={{ display: "none" }}>
+                    {/* <div class="print-only" style={{ display: "none" }}>
                         <div style={{ width: '60%', padding: '1px', paddingLeft: '4px', paddingRight: '10px', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
                             <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse' }}>Student Outcome for {regNo}</p>
 
@@ -163,7 +140,7 @@ function Students({ year }) {
                         </div>
 
 
-                    </div>
+                    </div> */}
 
                 </div>)
                 :
