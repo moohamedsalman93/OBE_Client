@@ -22,8 +22,9 @@ function AboutUs() {
                             <img src={SAQ} alt="" className=' h-[13rem] w-[13rem] rounded-full object-fit ' />
                         </div>
                         <div>
-                            <p className=' text-xl text-neutral-500 font-semibold'>S Abdul Qadir.,</p>
-                            <p className=' text-md text-neutral-500 font-medium'>Assistant Controller</p>
+                            <p className=' text-xl text-neutral-500 font-semibold text-center'>Dr. O.S. Abdul Qadir</p>
+                            <p className=' text-sm text-neutral-500 font-semibold text-center'>MCA,M.Phil,.Ph.D</p>
+                            <p className=' text-md text-neutral-500 font-medium'>Assistant Controller of Examinations</p>
 
                         </div>
 
