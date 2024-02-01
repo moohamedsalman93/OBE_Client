@@ -2,7 +2,7 @@ import React from 'react'
 import salman from '../assets/salman.png'
 import siraj from '../assets/siraj.JPG'
 import SAQ from '../assets/SAQ.jpg'
-import JP from '../assets/jp.JPG'
+import JP from '../assets/jp.png'
 import basith from '../assets/basith.png'
 import { useNavigate } from 'react-router-dom'
 
@@ -19,7 +19,7 @@ function AboutUs() {
                     <div className=' text-2xl font-semibold'>Software Guide</div>
                     <div className=' w-full flex flex-col items-center space-y-3  animate-slideinSAQ'>
                         <div className='  rounded-full h-[13rem] w-[13rem]'>
-                            <img src={SAQ} alt="" className=' object-fill h-[13rem] w-[13rem] rounded-full' />
+                            <img src={SAQ} alt="" className=' h-[13rem] w-[13rem] rounded-full object-fit ' />
                         </div>
                         <div>
                             <p className=' text-xl text-neutral-500 font-semibold'>S Abdul Qadir.,</p>
@@ -50,7 +50,7 @@ function AboutUs() {
 
                             </div>
                         </a>
-
+                        <a href="https://www.linkedin.com/in/bass55" target="_blank" rel="noopener noreferrer">
                         <div className=' w-full flex flex-col items-center space-y-3 animate-slideinbasith'>
                             <div className='  rounded-full h-40 w-40'>
                                 <img src={basith} alt="" className=' object-cover h-40 w-40 rounded-full' />
@@ -63,6 +63,7 @@ function AboutUs() {
                             </div>
 
                         </div>
+                        </a>
                         <a href="https://moohamedsalman93.github.io/portfolio/" target="_blank" rel="noopener noreferrer">
                             <div className='w-full flex flex-col items-center space-y-3 animate-slideinsalman'>
                                 <div className='rounded-full h-[10rem] w-[10rem]'>
@@ -75,7 +76,7 @@ function AboutUs() {
                                 </div>
                             </div>
                         </a>
-
+                        <a href="https://www.linkedin.com/in/jayaprakash-r-596a6a25b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer">
                         <div className=' w-full flex flex-col items-center space-y-3 animate-slideinjp'>
                             <div className=' bg-black rounded-full h-[10rem] w-[10rem]'>
                             <div className='  rounded-full h-40 w-40'>
@@ -89,6 +90,7 @@ function AboutUs() {
                             </div>
 
                         </div>
+                        </a>
                     </div>
                 </div>
             </div>
