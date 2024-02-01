@@ -11,6 +11,8 @@ import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
 import sampleCSV from '../../assets/sampleMark.xlsx';
 
+const api = process.env.REACT_APP_API_URL;
+
 const AddMarks = ({ uName, year }) => {
 
   //#region  Variables
@@ -259,7 +261,7 @@ const AddMarks = ({ uName, year }) => {
 
         try {
           await axios
-            .post("http://localhost:3000/staff/addMarks", newData)
+            .post(api+"staff/addMarks", newData)
             .then((res) => {
               if (res?.status === 200) {
                 setIsLoading(false);

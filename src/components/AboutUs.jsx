@@ -11,13 +11,14 @@ function AboutUs() {
     return (
         <div className=" w-screen h-screen flex flex-col space-x-4  overflow-hidden justify-center items-center p-10 bg-gradient-to-br from-[#4f72cc] to-[#58caea]">
             <div className=' w-full h-10'>
-                <button className=' font-medium text-white px-4 py-2 hover:underline' onClick={() => Navigate('/')}>{'<'} Back to Login</button>
+                <button className='  w-fit h-full font-medium text-white px-4 py-2 hover:underline flex justify-start items-center gap-x-2 text-center' onClick={() => Navigate('/')}><h1 className=' text-[20px] text-center h-full'><ion-icon name="arrow-back-circle-outline"></ion-icon></h1> Back to Login</button>
             </div>
             <div className=" w-full grow bg-white rounded-lg flex justify-center items-center">
 
                 <div className=' w-[40%] h-full space-y-6 flex flex-col justify-center items-center'>
                     <div className=' text-2xl font-semibold'>Software Guide</div>
-                    <div className=' w-full flex flex-col items-center space-y-3  animate-slideinSAQ'>
+                    <a href="https://jmc.edu/include/department/cs/staff/profile/SAQ-Profile-13-07-2023.pdf" target="_blank" rel="noopener noreferrer">
+                    <div className=' w-full flex flex-col items-center space-y-3  animate-slideinSAQ cursor-pointer'>
                         <div className='  rounded-full h-[13rem] w-[13rem]'>
                             <img src={SAQ} alt="" className=' h-[13rem] w-[13rem] rounded-full object-fit ' />
                         </div>
@@ -25,10 +26,10 @@ function AboutUs() {
                             <p className=' text-xl text-neutral-500 font-semibold text-center'>Dr. O.S. Abdul Qadir</p>
                             <p className=' text-sm text-neutral-500 font-semibold text-center'>MCA,M.Phil,.Ph.D</p>
                             <p className=' text-md text-neutral-500 font-medium'>Assistant Controller of Examinations</p>
-
+                            <button className=' w-full text-center  font-medium hover:scale-75 transition-all duration-300 px-3 py-2 text-blue-600 text-sm rounded-md'>View profile</button>
                         </div>
 
-                    </div>
+                    </div></a>
 
 
 
