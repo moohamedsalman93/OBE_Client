@@ -7,14 +7,15 @@ import {
     TabPanel,
 } from "@material-tailwind/react";
 import {
-    Square3Stack3DIcon,
-    UserCircleIcon,
-    Cog6ToothIcon,
+    DocumentDuplicateIcon,
+    AcademicCapIcon,
+    UserIcon 
 } from "@heroicons/react/24/solid";
-import AddMarks from '../addMarks/addMarks';
+
 import ManageStaff from './ManageStaff';
 import ManageDepartment from './ManageDepartment';
 import ManageCourse from './ManageCourse';
+// import { AcademicCapIcon } from '@heroicons/react/solid';
 
 function Manage({year}) {
     const [activeTab, setActiveTab] = React.useState("Course");
@@ -22,20 +23,20 @@ function Manage({year}) {
         {
             label: "Course",
             value: "Course",
-            icon: Square3Stack3DIcon,
+            icon: AcademicCapIcon,
             desc: <ManageCourse year={year}/>,
         },
 
         {
             label: "Program",
             value: "Program",
-            icon: Cog6ToothIcon,
+            icon: DocumentDuplicateIcon,
             desc: <ManageDepartment year={year}/>,
         },
         {
             label: "Staff",
             value: "Staff",
-            icon: Cog6ToothIcon,
+            icon: UserIcon,
             desc: <ManageStaff year={year}/>,
         },
     ];

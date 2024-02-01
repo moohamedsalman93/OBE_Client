@@ -252,23 +252,23 @@ function ManageStaff({ year }) {
           </div>
         </div>
 
-        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg text-white'>Add Staff</button>
+        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black font-medium rounded-lg text-white'>Add Staff</button>
       </div>
 
       <div className=' w-full grow flex flex-col items-center py-2'>
-        <div className=' w-[60%] font-semibold text-lg grid grid-cols-6 h-11 bg-slate-300 place-content-center place-items-center rounded-lg'>
-          <p>No</p>
-          <p>Uname</p>
-          <p className=''>Course Name</p>
+        <div className=' w-[70%] font-semibold  px-2 grid grid-cols-6 h-11 bg-slate-300 place-content-center place-items-center rounded-lg'>
+          <p className='text-start w-full'>No.</p>
+          <p className='text-start w-full'>Uname</p>
+          <p className='text-start w-full'>Course Name</p>
           <p className=' '>Action</p>
           <p className=' '>Details</p>
           <p className=' '>Password</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-11 absolute top-1/2' /> : (StaffData.length === 0 ? <div className=' font-medium mt-5'>No Data Found</div> : StaffData.map((item, index) =>
-          <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
-            <p>{index + 1 + (Active - 1) * 10}</p>
-            <p>{item.uname}</p>
-            <p className=' text-center truncate overflow-hidden w-full'>{item.name}</p>
+          <div key={index} className={` w-[70%] px-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
+            <p className=' text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
+            <p className='text-start w-full'>{item.uname}</p>
+            <p className=' text-start truncate overflow-hidden w-full'>{item.name}</p>
             <div className=' flex space-x-2'>
               <div className=' flex space-x-3'>
                 <div className=' text-lg text-red-500 cursor-pointer ' onClick={() => handleDeletePop(index)}>

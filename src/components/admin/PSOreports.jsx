@@ -116,26 +116,26 @@ function PSOreports({ year }) {
                     </div>
                 </div>
 
-                <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg text-white'>Print</button>
+                <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg font-medium text-white'>Print</button>
 
             </div>
 
             <div className=' w-full grow flex flex-col items-center py-2'>
-                <div className=' w-[60%] font-semibold text-lg grid grid-cols-5 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
-                    <p>Id</p>
-                    <p>Course Code</p>
-                    <p>Course Name</p>
-                    <p>Department</p>
-                    <p>Staff</p>
+                <div className=' w-[70%] px-2 font-semibold grid gap-2 grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+                    <p className='text-start w-full'>Id</p>
+                    <p className='text-start w-full'>Course Code</p>
+                    <p className='text-start w-full col-span-2'>Course Name</p>
+                    <p className='text-start w-full'>Department</p>
+                    <p className='text-start w-full'>Staff</p>
                 </div>
                 {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
                     CourseData.map((item, index) =>
-                        <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-5 h-11 border-b place-content-center place-items-center rounded-lg`}>
-                            <p>{index + 1 + (Active - 1) * 10}</p>
-                            <p>{item.code}</p>
-                            <p className=' text-center truncate overflow-hidden w-full'>{item.name}</p>
-                            <p>{item?.department?.departmentCode}</p>
-                            <p className=' text-center truncate overflow-hidden w-full'>{item.staff[0]?.staffName || '-'}</p>
+                        <div key={index} className={` w-[70%] px-2 gap-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
+                            <p className='text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
+                            <p className='text-start w-full'>{item.code}</p>
+                            <p className=' text-start truncate overflow-hidden w-full pr-4 col-span-2'>{item.name.toLowerCase()}</p>
+                            <p className='text-start w-full'>{item?.department?.departmentCode}</p>
+                            <p className=' text-start truncate overflow-hidden w-full'>{item.staff[0]?.staffName || '-'}</p>
                         </div>
                     )
                 )

@@ -212,25 +212,25 @@ function ManageCourse({ year }) {
           </div>
         </div>
 
-        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg text-white'>New Course</button>
+        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg text-white font-medium'>New Course</button>
       </div>
 
       <div className=' w-full grow flex flex-col items-center py-2'>
-        <div className=' w-[60%] font-semibold text-lg grid grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
-          <p>Id</p>
-          <p>Course Code</p>
-          <p>Course Name</p>
-          <p>Department</p>
-          <p>Staff</p>
+        <div className=' text-start w-[75%] px-2 font-semibold  grid gap-2 grid-cols-7 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+          <p className=' text-start w-full'>No.</p>
+          <p className='text-start w-full'>Course Code</p>
+          <p className=' col-span-2 text-start w-full'>Course Name</p>
+          <p className=' text-start w-full'>Department</p>
+          <p className=' text-center w-full'>Staff</p>
           <p>Actions</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
           CourseData.map((item, index) =>
-            <div key={index} className={` w-[60%] font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
-              <p>{index + 1 + (Active - 1) * 10}</p>
-              <p>{item.code}</p>
-              <p className=' text-center truncate overflow-hidden w-full'>{item.name}</p>
-              <p>{item?.department?.departmentCode}</p>
+            <div key={index} className={` text-start w-[75%] px-2 font-medium text-sm gap-2 grid grid-cols-7 h-11 border-b place-content-center place-items-center rounded-lg`}>
+              <p className=' text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
+              <p className=' text-start w-full'>{item.code}</p>
+              <p className=' text-start truncate overflow-hidden w-full col-span-2 pr-4'>{item.name.toLowerCase()}</p>
+              <p className=' text-start w-full'>{item?.department?.departmentCode}</p>
               <div className=' bg-blue-500 px-4 py-1 rounded-md text-white cursor-pointer' onClick={() => handlePopup(index)}>
                 show
               </div>
@@ -259,12 +259,12 @@ function ManageCourse({ year }) {
 
       {isOpen &&
         <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-          <div className=" w-[30%] h-[40%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+          <div className=" w-[30%] h-[45%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col">
 
               <div className=" flex space-x-2 text-xl font-semibold items-center border-b py-2">
-                <ion-icon name="add"></ion-icon>
-                <p >New Course</p>
+                <ion-icon name="add-circle"></ion-icon>
+                <p className=' text-base'>New Course</p>
               </div>
 
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
@@ -386,7 +386,7 @@ function ManageCourse({ year }) {
 
       {isDeletePopup !== -1 &&
         <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-          <div className=" w-[30%] h-[40%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+          <div className=" w-[30%] h-[45%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col">
 
               <div className=" flex space-x-2 text-xl font-semibold items-center border-b py-2">
@@ -414,7 +414,7 @@ function ManageCourse({ year }) {
 
       {isEdit !== -1 &&
         <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-          <div className=" w-[30%] h-[40%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+          <div className=" w-[30%] h-[45%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col">
 
               <div className=" flex space-x-2 text-xl font-semibold items-center border-b py-2">

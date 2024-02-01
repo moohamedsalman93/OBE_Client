@@ -50,23 +50,23 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
   let menus = [
     {
-      icon: "add",
+      icon: "add-circle",
       name: "Add Marks",
       path: "/Admin/"
     },
 
     {
-      icon: "book",
+      icon: "albums",
       name: "Manage",
       path: "/Admin/manage"
     },
     {
-      icon: "book",
+      icon: "documents",
       name: "Reports",
       path: "/Admin/reports"
     },
     {
-      icon: "book",
+      icon: "desktop",
       name: "Outcome",
       path: "/Admin/Outcome"
     },
@@ -88,7 +88,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
           if (res?.status === 200) {
             setDate(res?.data.data)
             setCurrentYear(res?.data.data)
-            
+            navigate('/');
           }
         })
       }

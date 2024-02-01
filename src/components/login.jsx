@@ -51,7 +51,7 @@ function LoginPage() {
         <div className=" w-screen h-screen flex flex-col space-x-4  overflow-hidden justify-center items-center p-10 bg-gradient-to-br from-[#4f72cc] to-[#58caea]">
             <div className=" w-full grow bg-white rounded-lg flex">
                 <div className=' w-2/5 h-full flex flex-col justify-center items-start mx-10'>
-                    <div className='  space-y-4'>
+                    <div className='  space-y-4 animate-jmc'>
                         <img src={logo} alt="" className=' h-[80px]' />
                         <div>
                             <p className=' text-3xl font-semibold'>Jamal Mohamed College's</p>
@@ -91,14 +91,14 @@ function LoginPage() {
                         </div>
 
                         <button disabled={isLoading} onClick={handleSumbit} className=' h-11 w-[20rem] flex justify-center items-center bg-[#4f72cc] rounded-lg text-lg font-medium text-white hover:scale-[0.95] transition'>{isLoading ? <img src={loading} alt="" className=' w-8 text-zinc-50' /> : 'Log In'}</button>
-
+                        <span className=' text-[#4f72cc] hover:text-black transition-colors duration-500 cursor-pointer font-medium' onClick={()=>Navigate('/AboutUs')}>About Us</span>
                     </div>
 
                 </div>
                 <div className=' w-3/5 h-full flex items-center justify-center relative'>
                     <img src={illustrate} alt="" className=' scale-[1.5]' />
                     <div className=' absolute bottom-1 right-2 flex flex-col items-start'>
-                        <p className=' font-medium text-neutral-500 animate-bounce'>Developed By <span className=' underline text-[#4f72cc] hover:text-black transition-colors duration-500 cursor-pointer' onClick={()=>Navigate('/AboutUs')}> MCA students</span></p>
+                        <p className=' font-medium text-neutral-500'>Developed By MCA students</p>
                         <p className=' font-semibold text-neutral-500'>Guided By <span>Abdul Qadir S,</span><span className=' text-xs '> Asst. COE</span></p>
                     </div>
                 </div>

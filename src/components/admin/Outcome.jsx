@@ -10,6 +10,9 @@ import {
     Square3Stack3DIcon,
     UserCircleIcon,
     Cog6ToothIcon,
+    DocumentDuplicateIcon,
+    AcademicCapIcon,
+    UserIcon 
 } from "@heroicons/react/24/solid";
 import Students from './Students/Students';
 import Programs from './Programs/Programs';
@@ -23,33 +26,33 @@ function Outcome({ year }) {
         {
             label: "Student",
             value: "Student",
-            icon: Cog6ToothIcon,
+            icon: UserIcon,
             desc: <Students year={year} />,
         },
         {
             label: "Course",
             value: "Course",
-            icon: Square3Stack3DIcon,
+            icon: AcademicCapIcon,
             desc: <AdminCourseOutcome year={year} />,
         },
 
         {
             label: "Program",
             value: "Program",
-            icon: Cog6ToothIcon,
+            icon: DocumentDuplicateIcon,
             desc: <Programs year={year} />,
         },
 
         {
             label: "Science",
             value: "Science",
-            icon: Cog6ToothIcon,
+            icon: DocumentDuplicateIcon,
             desc: <Science year={year} />,
         },
         {
             label: "Arts",
             value: "Arts",
-            icon: Cog6ToothIcon,
+            icon: DocumentDuplicateIcon,
             desc: <Arts year={year} />,
         },
 

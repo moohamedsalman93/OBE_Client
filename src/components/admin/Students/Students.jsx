@@ -22,7 +22,7 @@ function Students({ year }) {
 
 
 
-  
+
 
     const handlePrint = () => {
 
@@ -65,12 +65,7 @@ function Students({ year }) {
                     Get
                 </button>
                 <div className=' grow  h-12 flex justify-end items-center'>
-                    {/* <ReactToPrint
-                        trigger={() => }
-                        content={() => comp.current}
-                        documentTitle = 'ssa'
-                    /> */}
-                    <button disabled={outComeData.length === 0 } onClick={() => handlePrint()} className=' w-fit flex px-3 py-1 bg-black text-white cursor-pointer rounded-md'>
+                    <button disabled={outComeData.length === 0} onClick={() => handlePrint()} className=' w-fit flex font-medium px-3 py-1 bg-black text-white cursor-pointer rounded-md'>
                         Print
                     </button>
 
@@ -89,14 +84,14 @@ function Students({ year }) {
                                     <th className="px-4 py-2 border">Courses code</th>
                                     <th className="px-4 py-2 border">Courses Name</th>
                                     <th className="px-4 py-2 border">Attainment level</th>
-                                
+
                                 </tr>
                             </thead>
                             <tbody>
                                 {outComeData.map((item, index) =>
                                     <tr key={index} className=' font-medium'>
                                         <th className="border px-4 py-2 ">{item?.courseCode}</th>
-                                        <td className="border px-4 py-2 w-72 h-16 overflow-x-hidden text-center">{item?.name}</td>
+                                        <td className="border px-4 py-2 w-72 h-16 overflow-x-hidden text-start">{item?.name}</td>
                                         <td className="border px-4 py-2">{item?.Attain}</td>
                                     </tr>
                                 )
@@ -107,29 +102,30 @@ function Students({ year }) {
 
                     </div>
 
-                    {/* <div class="print-only" style={{ display: "none" }}>
-                        <div style={{ width: '60%', padding: '1px', paddingLeft: '4px', paddingRight: '10px', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
-                            <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse' }}>Student Outcome for {regNo}</p>
+                    <div class="print-only" style={{ display: "none" }}>
+                        <div style={{ width: '100%', padding: '1px', paddingLeft: '4px', paddingRight: '10px', margin: '20px auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'between', fontSize: '20px' }}>
+                            <div style={{ height: '50%%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center', marginBottom: '50px' }}>
+                                <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center',fontWeight: 'bold' }}>{'Jamal Mohamed College (Autonomous)'}</p>
+                                <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center' }}>{`Accredited with 'A++' Grade by NAAC (4th cycle) with CGPA 3.69 out of 4.0`}</p>
+                                <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center' }}>{`Affiliated to Bharathidasan University`}</p>
+                                <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center' }}>Student Outcome for {regNo}</p>
+
+                            </div>
 
                             <table style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse' }}>
                                 <thead style={{ background: 'white', borderRadius: '0.5rem', border: '1px solid #ccc' }}>
                                     <tr style={{ height: '3rem', fontWeight: 'bold' }}>
+                                        <th style={{ padding: '0.5rem', flex: '1', textAlign: 'center', border: '2px solid #ccc' }} >Courses code</th>
                                         <th style={{ padding: '0.5rem', flex: '1', textAlign: 'center', border: '2px solid #ccc' }} >Courses Name</th>
-                                        <th style={{ padding: '0.5rem', flex: '1', textAlign: 'center', border: '2px solid #ccc' }} >Courses Name</th>
-                                        <th style={{ padding: '0.5rem', flex: '1', textAlign: 'center', border: '2px solid #ccc' }} >CIA</th>
-                                        <th style={{ padding: '0.5rem', flex: '1', textAlign: 'center', border: '2px solid #ccc' }} >ESE</th>
-                                        <th style={{ padding: '0.5rem', flex: '1', textAlign: 'center', border: '2px solid #ccc' }} >Over All</th>
-
+                                        <th style={{ padding: '0.5rem', flex: '1', textAlign: 'center', border: '2px solid #ccc' }} >Attainment level</th>
                                     </tr>
                                 </thead>
                                 <tbody style={{ background: 'white' }}>
                                     {outComeData.map((item, index) =>
                                         <tr key={index} style={{ height: '55px', border: '2px solid #ccc' }}>
-                                            <th style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{item?.code?.code}</th>
-                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{item?.code?.name}</td>
-                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{calculateLOT(item?.marks[0])}</td>
-                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{calculateMOT(item?.marks[0])}</td>
-                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{calculateHOT(item?.marks[0])}</td>
+                                            <th style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{item?.courseCode}</th>
+                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'start', border: '2px solid #ccc' }}>{item?.name}</td>
+                                            <td style={{ padding: '0.5rem', overflow: 'hidden', textAlign: 'center', border: '2px solid #ccc' }}>{item?.Attain}</td>
 
                                         </tr>
                                     )
@@ -140,7 +136,7 @@ function Students({ year }) {
                         </div>
 
 
-                    </div> */}
+                    </div>
 
                 </div>)
                 :

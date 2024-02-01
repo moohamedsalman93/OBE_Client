@@ -577,7 +577,7 @@ const AddMarks = ({ uName, year }) => {
   //#region sortBy
   useEffect(() => {
     setActive(1)
-    if (courseCode && deparment) {
+    if (courseCode && deparment && year) {
       getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=` + year, setExistingData, setTotal, setIsLoading3)
     }
 
@@ -586,7 +586,9 @@ const AddMarks = ({ uName, year }) => {
 
   //#region useEffect paginationChange
   useEffect(() => {
-    getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}&year=` + year, setExistingData, setTotal, setIsLoading3)
+    if (courseCode && deparment && year) {
+      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}&year=` + year, setExistingData, setTotal, setIsLoading3)
+    }
   }, [active])
   //#endregion
 
@@ -872,9 +874,9 @@ const AddMarks = ({ uName, year }) => {
           <div className=" w-[30%] h-[50%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col space-y-4 relative">
 
-              <div className=" flex space-x-2 text-xl font-semibold items-center">
-                <ion-icon name="cloud-upload-outline"></ion-icon>
-                <p >Excel Import</p>
+              <div className=" flex space-x-2  font-bold h-fit items-center text-xl">
+                <ion-icon name="cloud-upload"></ion-icon>
+                <p className=" text-base">Upload Marks</p>
               </div>
 
               <div className=" w-full  grow flex  flex-col justify-evenly items-center">
@@ -959,7 +961,7 @@ const AddMarks = ({ uName, year }) => {
                   <div className="flex flex-col items-center">
                     {!fileList ? (
                       <>
-                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                        <ion-icon name="cloud-upload"></ion-icon>
                         <span>
                           <span>Choose a File</span> or drag it here
                         </span>
@@ -1005,8 +1007,8 @@ const AddMarks = ({ uName, year }) => {
 
             </div>
             <div className=" w-full space-x-2 flex justify-between items-center font-medium ">
-              <div className=" underline cursor-pointer" onClick={handleDownload}>
-                Sample Format
+              <div className="cursor-pointer text-[#4f72cc] hover:text-black transition-colors duration-300" onClick={handleDownload}>
+                Sample format
               </div>
 
               <button className=" px-3 py-2 rounded-md hover:bg-red-700 text-red-700 hover:bg-opacity-10 transition-all duration-700" onClick={() => setIsOpenImport(false)}>Close</button>

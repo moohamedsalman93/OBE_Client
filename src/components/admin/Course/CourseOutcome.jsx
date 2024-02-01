@@ -99,7 +99,8 @@ function AdminCourseOutcome({ year }) {
     const handleGet = () => {
         const data = {
             department: deparment,
-            code: courseCode
+            code: courseCode,
+            year:year
         }
         putApi(`staff/getMarks`, setOutcomeData, data, setIsLoading1).then(res => {
         })

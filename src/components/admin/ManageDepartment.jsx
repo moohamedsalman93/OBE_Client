@@ -159,23 +159,23 @@ function ManageDepartment({ year }) {
           </div>
         </div>
 
-        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg text-white'>New Program</button>
+        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black font-medium rounded-lg text-white'>New Program</button>
       </div>
 
       <div className=' w-full grow flex flex-col items-center py-2'>
-        <div className=' w-[70%] font-medium text-lg grid grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
-          <p>S.no</p>
-          <p>Program Code</p>
-          <p className=' col-span-2'>Program name</p>
-          <p>Catagory</p>
-          <p>Actions</p>
+        <div className=' w-[70%] px-2 font-medium  grid grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+          <p className=' text-start w-full'>No.</p>
+          <p className=' text-start w-full'>Program Code</p>
+          <p className=' text-start w-full col-span-2'>Program name</p>
+          <p className=' text-start w-full'>Catagory</p>
+          <p className=' text-center w-full'>Actions</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : CourseData.map((item, index) =>
-          <div key={index} className={` w-[70%] font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
-            <p>{index + 1 + (Active - 1) * 10}</p>
-            <p>{item.departmentCode}</p>
-            <p className=' col-span-2 text-center truncate overflow-hidden w-full'>{item.name}</p>
-            <p>{item.catagory}</p>
+          <div key={index} className={` w-[70%] px-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
+            <p className=' text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
+            <p className=' text-start w-full'>{item.departmentCode}</p>
+            <p className=' text-start col-span-2  truncate overflow-hidden w-full'>{item.name}</p>
+            <p className=' text-start w-full'>{item.catagory}</p>
             <div className=' flex space-x-3'>
               <div className=' text-lg hover:text-blue-600 cursor-pointer' onClick={() => handleEditPopup(index)}>
                 <ion-icon name="create-outline"></ion-icon>
@@ -199,12 +199,12 @@ function ManageDepartment({ year }) {
 
       {isOpen &&
         <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-          <div className=" w-[30%] h-[40%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+          <div className=" w-[30%] h-[45%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col">
 
               <div className=" flex space-x-2 text-xl font-semibold items-center border-b py-2">
-                <ion-icon name="add"></ion-icon>
-                <p >New Program</p>
+                <ion-icon name="add-circle"></ion-icon>
+                <p className=' text-base' >New Program</p>
               </div>
 
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
@@ -271,7 +271,7 @@ function ManageDepartment({ year }) {
 
       {isDeletePopup !== -1 &&
         <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-          <div className=" w-[30%] h-[40%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+          <div className=" w-[30%] h-[45%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col">
 
               <div className=" flex space-x-2 text-xl font-semibold items-center border-b py-2">
@@ -299,7 +299,7 @@ function ManageDepartment({ year }) {
 
       {isEdit !== -1 &&
         <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-          <div className=" w-[30%] h-[40%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+          <div className=" w-[30%] h-[45%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className="w-full grow flex flex-col">
 
               <div className=" flex space-x-2 text-xl font-semibold items-center border-b py-2">

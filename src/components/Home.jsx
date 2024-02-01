@@ -70,23 +70,24 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId }) {
 
   let menus = [
     {
-      icon: "add",
+      icon: "add-circle",
       name: "Add Marks",
       path: "/"
     },
 
     {
-      icon: "book",
+      icon: "albums",
       name: "Course Outcomes",
       path: "/Outcome/Course"
     },
     {
-      icon: "person-circle-outline",
+      icon: "extension-puzzle",
       name: "Relational Matrix",
       path: "/RelationalMatrix"
     },
+    
     {
-      icon: "person-circle-outline",
+      icon: "settings",
       name: "Account",
       path: "/Account"
     },

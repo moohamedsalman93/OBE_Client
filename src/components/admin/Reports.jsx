@@ -8,6 +8,7 @@ import {
 } from "@material-tailwind/react";
 import {
   Square3Stack3DIcon,
+  DocumentDuplicateIcon,
   UserCircleIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
@@ -22,14 +23,14 @@ function Reports({ year }) {
     {
       label: "Entry report",
       value: "Entry report",
-      icon: Square3Stack3DIcon,
+      icon: DocumentDuplicateIcon,
       desc: <Entryreports year={year} />,
     },
 
     {
       label: "PSO reports",
       value: "PSO reports",
-      icon: Cog6ToothIcon,
+      icon: DocumentDuplicateIcon,
       desc: <PSOreports year={year} />,
     },
   ];

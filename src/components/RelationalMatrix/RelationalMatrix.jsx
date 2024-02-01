@@ -235,17 +235,17 @@ function RelationalMatrix({ userId,year }) {
                 <thead>
                   <tr className="bg-gray-200 text-center">
                     <th></th>
-                    <th className="border p-2">CO1</th>
-                    <th className="border p-2">CO2</th>
-                    <th className="border p-2">CO3</th>
-                    <th className="border p-2">CO4</th>
-                    <th className="border p-2">CO5</th>
+                    <th className="border p-2">PS1</th>
+                    <th className="border p-2">PS2</th>
+                    <th className="border p-2">PS3</th>
+                    <th className="border p-2">PS4</th>
+                    <th className="border p-2">PS5</th>
                   </tr>
                 </thead>
                 <tbody>
                   {questionRows.map((row, rowIndex) => (
                     <tr key={rowIndex}>
-                      <td className='p-2 font-semibold'>PS{rowIndex + 1}</td>
+                      <td className='p-2 font-semibold'>CO{rowIndex + 1}</td>
                       {row.map((question, columnIndex) => (
                         <React.Fragment key={question}>
                           <td className="border p-2">
