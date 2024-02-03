@@ -51,7 +51,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId }) {
       }
 
       if (decodedToken.uname === 'admin') {
-        navigate('/Admin');
+        navigate('/Admin/');
       }
 
     } catch (error) {

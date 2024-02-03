@@ -12,32 +12,32 @@ import {
     UserIcon 
 } from "@heroicons/react/24/solid";
 
-import ManageStaff from './ManageStaff';
-import ManageDepartment from './ManageDepartment';
-import ManageCourse from './ManageCourse';
+import ManageStaff from './Manage/ManageStaff';
+import ManageDepartment from './Manage/ManageDepartment';
+import ManageCourse from './Manage/ManageCourse';
 // import { AcademicCapIcon } from '@heroicons/react/solid';
 
-function Manage({year}) {
+function Manage({year,currentSem}) {
     const [activeTab, setActiveTab] = React.useState("Course");
     const data = [
         {
             label: "Course",
             value: "Course",
             icon: AcademicCapIcon,
-            desc: <ManageCourse year={year}/>,
+            desc: <ManageCourse year={year} currentSem={currentSem}/>,
         },
 
         {
             label: "Program",
             value: "Program",
             icon: DocumentDuplicateIcon,
-            desc: <ManageDepartment year={year}/>,
+            desc: <ManageDepartment year={year} currentSem={currentSem}/>,
         },
         {
             label: "Staff",
             value: "Staff",
             icon: UserIcon,
-            desc: <ManageStaff year={year}/>,
+            desc: <ManageStaff year={year} currentSem={currentSem}/>,
         },
     ];
 

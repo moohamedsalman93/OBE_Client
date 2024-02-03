@@ -3,7 +3,7 @@ import loadingImg from '../../assets/loading.svg'
 import toast from 'react-hot-toast';
 import { getApi, passChangeApi } from '../../api/api';
 
-function Account({ userId,year }) {
+function Account({ userId,year,currentSem }) {
   const [p1, setP1] = useState('');
   const [p2, setP2] = useState('');
   const [isLoading, setLoading] = useState(false)
@@ -24,7 +24,7 @@ function Account({ userId,year }) {
   }
 
   useEffect(() => {
-    getApi(`staff/getStaffsDetails?uname=${userId}&year=`+year, setCourse, setLoading2)
+    getApi(`staff/getStaffsDetails?uname=${userId}&year=${year}&sem=${currentSem}`, setCourse, setLoading2)
   }, [])
 
   return (

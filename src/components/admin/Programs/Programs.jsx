@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
 
-function Programs({year}) {
+function Programs({ year, currenSem }) {
 
     const dropdownRef2 = useRef(null);
     const [departmentName, setDepartmentName] = useState("");
@@ -99,12 +99,11 @@ function Programs({year}) {
     const handleGet = () => {
         const data = {
             department: deparment,
-            year: year
+            year: year,
+            sem:currenSem
         }
 
-        getDepOut(`staff/getByDepartment`, setOutcomeData, data, setIsLoading1).then(res => {
-            console.log(res)
-        })
+        getDepOut(`staff/getByDepartment`, setOutcomeData, data, setIsLoading1)
     }
     //#endregion
 
@@ -113,14 +112,14 @@ function Programs({year}) {
         let i = 0.00
         let l = 0
         outComeData.map((item) => {
-            if(item.overAtain > 0){
+            if (item.overAtain > 0) {
                 l += 1
                 i += parseFloat(item.overAtain)
             }
         })
 
         console.log(i)
-        return i/l.toFixed(2)
+        return i / l.toFixed(2)
     }
 
     return (
@@ -193,13 +192,13 @@ function Programs({year}) {
                                         <td className="px-4 py-2 border" >{item.courseCode}</td>
                                         <td className="px-4 py-2 border" >{item.courseTitle}</td>
                                         <td className="px-4 py-2 border">
-                                            {item.ciaAttain == 0 && item.eseAtain == 0  ? "-" : (item.ciaAttain)}
+                                            {item.ciaAttain == 0 && item.eseAtain == 0 ? "-" : (item.ciaAttain)}
                                         </td>
                                         <td className="px-4 py-2 border">
-                                            {item.ciaAttain == 0 && item.eseAtain == 0  ? "-" : (item.eseAtain)}
+                                            {item.ciaAttain == 0 && item.eseAtain == 0 ? "-" : (item.eseAtain)}
                                         </td>
                                         <td className="px-4 py-2 border">
-                                            {item.ciaAttain == 0 && item.eseAtain == 0  ? "-" : (item.overAtain)}
+                                            {item.ciaAttain == 0 && item.eseAtain == 0 ? "-" : (item.overAtain)}
                                         </td>
                                     </tr>))
                                 }

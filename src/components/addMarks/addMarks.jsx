@@ -13,7 +13,7 @@ import sampleCSV from '../../assets/sampleMark.xlsx';
 
 const api = process.env.REACT_APP_API_URL;
 
-const AddMarks = ({ uName, year }) => {
+const AddMarks = ({ uName, year,currentSem }) => {
 
   //#region  Variables
   const dropdownRef2 = useRef(null);
@@ -77,11 +77,12 @@ const AddMarks = ({ uName, year }) => {
       data.append('courseCode', courseCode)
       data.append('year', year)
       data.append('staff', uName)
+      data.append('sem',currentSem)
 
       excelApi('staff/addMarksByExcel', data, setProgress, setFileList, setIsImportLoading).then((res) => {
         if (res?.status === 200) {
           toast.success("Imported successfully", { duration: 1500 });
-          getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=` + year, setExistingData, setTotal, setIsLoading3)
+          getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=` + year, setExistingData, setTotal, setIsLoading3)
           setIsImportLoading(false)
           setIsOpenImport(false)
         }
@@ -233,6 +234,7 @@ const AddMarks = ({ uName, year }) => {
           [sStatus]: statusStudent,
           [StaffIn]: staffIntial,
           year: year,
+          sem:currentSem,
           exam: examType,
           ...marksAsNumbers,
         };
@@ -246,6 +248,7 @@ const AddMarks = ({ uName, year }) => {
           status: statusStudent,
           exam: "ASG",
           year: year,
+          sem:currentSem,
           [StaffIn]: staffIntial,
           [typeDe]: parseInt(Assignment, 10),
         };
@@ -267,7 +270,7 @@ const AddMarks = ({ uName, year }) => {
                 setIsLoading(false);
 
                 toast.success("Mark saved successfully", { duration: 1500 });
-                getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&year=` + year, setExistingData, setIsLoading3)
+                getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sem=${currentSem}&year=` + year, setExistingData, setIsLoading3)
                 if (editStudent === -1) {
                   const last3Digits = parseInt(regNo, 10);
                   const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
@@ -353,9 +356,9 @@ const AddMarks = ({ uName, year }) => {
     setdepartment(item.departmentCode);
     setIsOpen2(false);
     if (Uname === 'admin') {
-      getApi(`staff/searchCode?question=${item.departmentCode}&year=${year}`, setCourseData, setIsLoading2)
+      getApi(`staff/searchCode?question=${item.departmentCode}&year=${year}&sem=${currentSem}`, setCourseData, setIsLoading2)
     } else {
-      getStaffCourse(`staff/getStaff?department=${item.departmentCode}&uname=${Uname}&year=${year}`, setCourseData, setIsLoading2)
+      getStaffCourse(`staff/getStaff?department=${item.departmentCode}&uname=${Uname}&year=${year}&sem=${currentSem}`, setCourseData, setIsLoading2)
     }
 
   };
@@ -396,7 +399,7 @@ const AddMarks = ({ uName, year }) => {
   //#region hanledOnselectCource
   const handleCourseOnslect = (e) => {
     setCourseCode(e.target.value)
-    getCourseApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}&sortby=${SortBy}&year=` + year, setExistingData, setTotal, setIsLoading3)
+    getCourseApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=` + year, setExistingData, setTotal, setIsLoading3)
   }
   //#endregion
 
@@ -500,7 +503,7 @@ const AddMarks = ({ uName, year }) => {
     DeleteApi('staff/deleteMark?year=' + year, { id: markId, exam: examType }, setIsLoading).then(res => {
       if (res?.status === 200) {
         toast.success('mark deleted successfully')
-        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=` + year, setExistingData, setIsLoading3)
+        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=` + year, setExistingData, setIsLoading3)
         handleClear()
         setRegNo('')
         setEditstudent(-1)
@@ -528,7 +531,8 @@ const AddMarks = ({ uName, year }) => {
       code: courseCode,
       department: deparment,
       regNo: String(year).slice(2) + deparment + regNo,
-      year: year
+      year: year,
+      sem:currentSem
     }
 
     let temp = {}
@@ -580,7 +584,7 @@ const AddMarks = ({ uName, year }) => {
   useEffect(() => {
     setActive(1)
     if (courseCode && deparment && year) {
-      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&year=` + year, setExistingData, setTotal, setIsLoading3)
+      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=` + year, setExistingData, setTotal, setIsLoading3)
     }
 
   }, [SortBy])
@@ -589,7 +593,7 @@ const AddMarks = ({ uName, year }) => {
   //#region useEffect paginationChange
   useEffect(() => {
     if (courseCode && deparment && year) {
-      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}&year=` + year, setExistingData, setTotal, setIsLoading3)
+      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}&sem=${currentSem}&year=` + year, setExistingData, setTotal, setIsLoading3)
     }
   }, [active])
   //#endregion

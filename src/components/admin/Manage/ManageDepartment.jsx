@@ -1,14 +1,14 @@
 
 
 import React, { useEffect, useRef, useState } from 'react'
-import { AddNewCourse, AddNewProgram, deleteCourse, deleteDep, excelApi, getCourseApi, searchData } from '../../api/api';
-import { Pagination } from '../addMarks/pagiNation';
-import loading from "../../assets/loading.svg";
+import { AddNewCourse, AddNewProgram, deleteCourse, deleteDep, excelApi, getCourseApi, searchData } from '../../../api/api';
+import { Pagination } from '../../addMarks/pagiNation';
+import loading from "../../../assets/loading.svg";
 import { debounce } from 'lodash';
 import toast from 'react-hot-toast';
-import sampleCSV from '../../assets/program.csv';
+import sampleCSV from '../../../assets/program.csv';
 
-function ManageDepartment({ year }) {
+function ManageDepartment({ year,currentSem }) {
   const [CourseData, setCourseData] = useState([]);
   const [Total, setTotal] = useState(0);
   const [Active, setActive] = useState(1);
@@ -61,7 +61,7 @@ function ManageDepartment({ year }) {
   const uploading = progress > 0 && progress < 100;
 
   useEffect(() => {
-    getCourseApi(`staff/getAllDepartment?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
+    getCourseApi(`staff/getAllDepartment?page=${Active}&sem=${currentSem}&year=` + year, setCourseData, setTotal, setIsLoading)
   }, [Active])
 
   const handleSubmit = () => {

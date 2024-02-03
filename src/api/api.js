@@ -316,7 +316,7 @@ export const setYearApi = async (year) => {
   }
 }
 
-export const getYearApi = async (year) => {
+export const getYearApi = async () => {
   try {
     const res = await axios.get(api + 'staff/getYear');
     return res

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { getCourseApi, searchData } from '../../api/api';
+import { getCourseApi, searchData } from '../../../api/api';
 import { debounce } from 'lodash';
 import toast, { LoaderIcon } from 'react-hot-toast';
-import loading from "../../assets/loading.svg";
-import { Pagination } from '../addMarks/pagiNation';
+import loading from "../../../assets/loading.svg";
+import { Pagination } from '../../addMarks/pagiNation';
 import * as XLSX from 'xlsx';
 
-function Entryreports({ year }) {
+function PSOreports({ year ,currentSem}) {
     const [CourseData, setCourseData] = useState([]);
     const [printData, setPrintData] = useState([]);
     const [Total, setTotal] = useState(0);
@@ -23,7 +23,7 @@ function Entryreports({ year }) {
     const [focusedOptionIndex, setFocusedOptionIndex] = useState(0);
 
     useEffect(() => {
-        getCourseApi(`staff/Entryreport?pageNo=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/PSOReport?pageNo=${Active}&sem=${currentSem}&year=` + year, setCourseData, setTotal, setIsLoading)
     }, [Active])
 
     //#region departmentOnSelect
@@ -38,10 +38,10 @@ function Entryreports({ year }) {
     //#region apicall
     const handleInputChange = debounce(async (value) => {
         if (value.length % 2 !== 0) {
-            getCourseApi(`staff/Entryreport?pageNo=&search=${value}&year=` + year, setCourseData, setTotal, setIsLoading)
+            getCourseApi(`staff/PSOReport?pageNo=&search=${value}&sem=${currentSem}&year=` + year, setCourseData, setTotal, setIsLoading)
         }
         else if (value.length == 0) {
-            getCourseApi(`staff/Entryreport?pageNo=&year=${year}&search=`, setCourseData, setTotal, setIsLoading)
+            getCourseApi(`staff/PSOReport?pageNo=&year=${year}&sem=${currentSem}&search=`, setCourseData, setTotal, setIsLoading)
         }
     }, 500);
     //#endregion
@@ -77,7 +77,7 @@ function Entryreports({ year }) {
 
     //#region handlePrint
     const handlePrint = () => {
-        getCourseApi(`staff/EntryReportBydepartment?search=${deparment}&year=` + year, setPrintData, setTotal, setIsLoading).then(res => {
+        getCourseApi(`staff/PSOReportBydepartment?search=${deparment}&sem=${currentSem}&year=` + year, setPrintData, setTotal, setIsLoading).then(res => {
             if (res?.status === 200 && res?.data?.data?.length > 0) {
 
                 const data = res?.data?.data?.map(item => ({
@@ -91,7 +91,7 @@ function Entryreports({ year }) {
                 const ws = XLSX.utils.json_to_sheet(data);
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-                XLSX.writeFile(wb, "entry_report_data.xlsx");
+                XLSX.writeFile(wb, "pso_data.xlsx");
 
                 setIsOpen(false)
             }
@@ -116,13 +116,13 @@ function Entryreports({ year }) {
                     </div>
                 </div>
 
-                <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg text-white font-normal'>Print</button>
+                <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black rounded-lg font-medium text-white'>Print</button>
 
             </div>
 
             <div className=' w-full grow flex flex-col items-center py-2'>
-                <div className=' w-[70%] px-2  font-semibold grid grid-cols-6 h-11 bg-slate-300 gap-2 place-content-center place-items-center rounded-lg'>
-                    <p className='text-start w-full'>No.</p>
+                <div className=' w-[70%] px-2 font-semibold grid gap-2 grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+                    <p className='text-start w-full'>Id</p>
                     <p className='text-start w-full'>Course Code</p>
                     <p className='text-start w-full col-span-2'>Course Name</p>
                     <p className='text-start w-full'>Department</p>
@@ -130,12 +130,12 @@ function Entryreports({ year }) {
                 </div>
                 {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
                     CourseData.map((item, index) =>
-                        <div key={index} className={` w-[70%] px-2 font-medium text-sm grid gap-2 grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
+                        <div key={index} className={` w-[70%] px-2 gap-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
                             <p className='text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
                             <p className='text-start w-full'>{item.code}</p>
-                            <p className='text-start w-full  truncate overflow-hidden pr-3 col-span-2'>{item.name.toLowerCase()}</p>
+                            <p className=' text-start truncate overflow-hidden w-full pr-4 col-span-2'>{item.name.toLowerCase()}</p>
                             <p className='text-start w-full'>{item?.department?.departmentCode}</p>
-                            <p className='text-start w-full truncate overflow-hidden '>{item.staff[0]?.staffName || '-'}</p>
+                            <p className=' text-start truncate overflow-hidden w-full'>{item.staff[0]?.staffName || '-'}</p>
                         </div>
                     )
                 )
@@ -214,4 +214,4 @@ function Entryreports({ year }) {
     )
 }
 
-export default Entryreports
+export default PSOreports

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AddNewCourse, addStaff, deleteCourse, deleteStaff, deleteStaffCourse, excelApi, getApi, getCourseApi, passChangeApi, searchData, staffCourseAssign } from '../../api/api';
-import { Pagination } from '../addMarks/pagiNation';
-import loading from "../../assets/loading.svg";
+import { AddNewCourse, addStaff, deleteCourse, deleteStaff, deleteStaffCourse, excelApi, getApi, getCourseApi, passChangeApi, searchData, staffCourseAssign } from '../../../api/api';
+import { Pagination } from '../../addMarks/pagiNation';
+import loading from "../../../assets/loading.svg";
 import { debounce } from 'lodash';
 import toast, { LoaderIcon } from 'react-hot-toast';
-import sampleCSV from '../../assets/Staff.csv';
+import sampleCSV from '../../../assets/Staff.csv';
 
-function ManageStaff({ year }) {
+function ManageStaff({ year, currentSem }) {
   const [StaffData, setStaffData] = useState([]);
   const [CourseData, setCourseData] = useState([]);
   const [Total, setTotal] = useState(0);
@@ -58,7 +58,7 @@ function ManageStaff({ year }) {
 
     data.append('Excel', fileList);
 
-    excelApi('staff/addStaffByExcel?year=' + year, data, setProgress, setFileList, setIsImportLoading).then((res) => {
+    excelApi(`staff/addStaffByExcel?&sem=${currentSem}year=` + year, data, setProgress, setFileList, setIsImportLoading).then((res) => {
       if (res?.status === 200) {
         setIsImportLoading(false)
         toast.success("Imported successfully", { duration: 1500 });
@@ -149,7 +149,7 @@ function ManageStaff({ year }) {
     staffCourseAssign(data, setIsLoading3).then((res) => {
       if (res?.status === 200) {
         toast.success('Course assigned successfully')
-        getApi(`staff/getStaffsDetails?uname=${instantAdd ? AddNewCourse?.uname : StaffData[isPopup]?.uname}&year=` + year, setCourseData, setIsLoading4)
+        getApi(`staff/getStaffsDetails?uname=${instantAdd ? AddNewCourse?.uname : StaffData[isPopup]?.uname}&sem=${currentSem}&year=` + year, setCourseData, setIsLoading4)
       }
     })
   }
@@ -158,7 +158,7 @@ function ManageStaff({ year }) {
     deleteStaffCourse(ItemId, setIsLoading).then(res => {
       if (res?.status === 200) {
         toast.success(res.data.success)
-        getApi(`staff/getStaffsDetails?uname=${StaffData[isPopup].uname}&year=` + year, setCourseData, setIsLoading4)
+        getApi(`staff/getStaffsDetails?uname=${StaffData[isPopup].uname}&sem=${currentSem}&year=` + year, setCourseData, setIsLoading4)
       }
     })
   }
@@ -174,7 +174,7 @@ function ManageStaff({ year }) {
   const handlePopup = (ItemId) => {
     setIsPopup(ItemId)
     const userId = StaffData[ItemId].uname
-    getApi(`staff/getStaffsDetails?uname=${userId}&year=` + year, setCourseData, setIsLoading4)
+    getApi(`staff/getStaffsDetails?uname=${userId}&sem=${currentSem}&year=` + year, setCourseData, setIsLoading4)
   }
 
   const handleDeletePop = (ItemId) => {
@@ -214,7 +214,7 @@ function ManageStaff({ year }) {
   //#region search
   const handleCourseSearch = debounce(async (val) => {
     if (val.length > 0) {
-      searchData('staff/searchCourse?question=' + val + '&year=' + year, setSearchValue, setIsLoading2)
+      searchData(`staff/searchCourse?&sem=${currentSem}&question=` + val + '&year=' + year, setSearchValue, setIsLoading2)
     }
 
   }, 500);

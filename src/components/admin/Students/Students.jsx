@@ -5,7 +5,7 @@ import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
 import ReactToPrint from 'react-to-print';
 
-function Students({ year }) {
+function Students({ year, currentSem }) {
     const [regNo, setRegNo] = useState("");
     const [isLoading1, setIsLoading1] = useState(false)
     const [outComeData, setOutcomeData] = useState([]);
@@ -14,9 +14,7 @@ function Students({ year }) {
 
     //#region handleGet
     const handleGet = () => {
-        putApi2(`staff/getStudent`, setOutcomeData, { RegNO: regNo, year: year }, setIsLoading1).then(res => {
-
-        })
+        putApi2(`staff/getStudent`, setOutcomeData, { RegNO: regNo, year: year, sem: currentSem }, setIsLoading1)
     }
     //#endregion
 
@@ -105,7 +103,7 @@ function Students({ year }) {
                     <div class="print-only" style={{ display: "none" }}>
                         <div style={{ width: '100%', padding: '1px', paddingLeft: '4px', paddingRight: '10px', margin: '20px auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'between', fontSize: '20px' }}>
                             <div style={{ height: '50%%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center', marginBottom: '50px' }}>
-                                <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center',fontWeight: 'bold' }}>{'Jamal Mohamed College (Autonomous)'}</p>
+                                <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center', fontWeight: 'bold' }}>{'Jamal Mohamed College (Autonomous)'}</p>
                                 <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center' }}>{`Accredited with 'A++' Grade by NAAC (4th cycle) with CGPA 3.69 out of 4.0`}</p>
                                 <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center' }}>{`Affiliated to Bharathidasan University`}</p>
                                 <p style={{ width: '100%', margin: 'auto', borderCollapse: 'collapse', textAlign: 'center' }}>Student Outcome for {regNo}</p>

@@ -12,26 +12,25 @@ import {
   UserCircleIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
-import AddMarks from '../addMarks/addMarks';
-import Entryreports from './Entryreports';
-import PSOreports from './PSOreports';
+import Entryreports from './Reports/Entryreports';
+import PSOreports from './Reports/PSOreports';
 
 
-function Reports({ year }) {
+function Reports({ year,currentSem }) {
   const [activeTab, setActiveTab] = React.useState("Entry report");
   const data = [
     {
       label: "Entry report",
       value: "Entry report",
       icon: DocumentDuplicateIcon,
-      desc: <Entryreports year={year} />,
+      desc: <Entryreports year={year} currentSem={currentSem} />,
     },
 
     {
       label: "PSO reports",
       value: "PSO reports",
       icon: DocumentDuplicateIcon,
-      desc: <PSOreports year={year} />,
+      desc: <PSOreports year={year} currentSem={currentSem} />,
     },
   ];
 

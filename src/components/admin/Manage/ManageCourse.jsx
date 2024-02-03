@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AddNewCourse, deleteCourse, excelApi, getApi, getCourseApi, searchData } from '../../api/api';
-import { Pagination } from '../addMarks/pagiNation';
-import loading from "../../assets/loading.svg";
+import { AddNewCourse, deleteCourse, excelApi, getApi, getCourseApi, searchData } from '../../../api/api';
+import { Pagination } from '../../addMarks/pagiNation';
+import loading from "../../../assets/loading.svg";
 import { debounce } from 'lodash';
 import toast, { LoaderIcon } from 'react-hot-toast';
-import sampleCSV from '../../assets/course.csv';
+import sampleCSV from '../../../assets/course.csv';
 
 
-function ManageCourse({ year }) {
+function ManageCourse({ year, currentSem }) {
   const [CourseData, setCourseData] = useState([]);
   const [StaffData, setStaffData] = useState([]);
   const [Total, setTotal] = useState(0);
@@ -52,12 +52,13 @@ function ManageCourse({ year }) {
 
     data.append('Excel', fileList);
     data.append('year', year)
+    data.append('sem', currentSem)
 
     excelApi('staff/addCourseByExcel', data, setProgress, setFileList, setIsImportLoading).then((res) => {
       if (res?.status === 200) {
         setIsImportLoading(false)
         toast.success(res.data.success, { duration: 1500 });
-        getCourseApi(`staff/getAllCourses?page=1&year=` + year, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=1&year=` + year + '&sem=' + currentSem, setCourseData, setTotal, setIsLoading)
         setIsOpenImport(false)
       }
     })
@@ -68,13 +69,13 @@ function ManageCourse({ year }) {
 
 
   useEffect(() => {
-    getCourseApi(`staff/getAllCourses?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
+    getCourseApi(`staff/getAllCourses?page=1&year=` + year + '&sem=' + currentSem, setCourseData, setTotal, setIsLoading)
   }, [Active])
 
   //#region search
   const handleDepSearch = debounce(async (val) => {
     if (val.length > 0) {
-      searchData('staff/searchDepartment/?question=' + val + '&year=' + year, setSearchValue, setIsLoading2)
+      searchData('staff/searchDepartment/?question=' + val + `&sem=${currentSem}&year=` + year, setSearchValue, setIsLoading2)
     }
 
   }, 500);
@@ -111,7 +112,8 @@ function ManageCourse({ year }) {
       code: CourseCode,
       name: CourseName,
       depCode: deparment,
-      year: year
+      year: year,
+      sem:currentSem
     }
 
     AddNewCourse(data, setIsLoading3).then((res) => {
@@ -122,7 +124,7 @@ function ManageCourse({ year }) {
         setCourseName('');
         setdepartment('');
         setIsEdit(-1);
-        getCourseApi(`staff/getAllCourses?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=1&year=` + year + '&sem='+currentSem, setCourseData, setTotal, setIsLoading)
       }
       // else {
       //   toast.error('Please try again later')
@@ -150,7 +152,7 @@ function ManageCourse({ year }) {
       if (res?.status === 200) {
         setIsDeletePopup(-1)
         toast.success(res.data.success)
-        getCourseApi(`staff/getAllCourses?page=${Active}&year=` + year, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=${Active}&sem=${currentSem}&year=` + year, setCourseData, setTotal, setIsLoading)
       }
     })
   }
@@ -172,10 +174,10 @@ function ManageCourse({ year }) {
   //#region apicall
   const handleInputChange = debounce(async (value) => {
     if (value.length % 2 !== 0) {
-      getCourseApi(`staff/getAllCourses?page=1&question=${value}&year=` + year, setCourseData, setTotal, setIsLoading)
+      getCourseApi(`staff/getAllCourses?page=1&question=${value}&sem=${currentSem}&year=` + year, setCourseData, setTotal, setIsLoading)
     }
     else if (value.length == 0) {
-      getCourseApi(`staff/getAllCourses?page=1&year=${year}&question=`, setCourseData, setTotal, setIsLoading)
+      getCourseApi(`staff/getAllCourses?page=1&year=${year}&sem=${currentSem}&question=`, setCourseData, setTotal, setIsLoading)
     }
   }, 500);
   //#endregion
@@ -352,10 +354,10 @@ function ManageCourse({ year }) {
                   <p>index</p>
                   <p>UserId</p>
                   <div className=' col-span-2 flex justify-start w-full '>
-                    
-                      Course Name
-                    
-                    </div>
+
+                    Course Name
+
+                  </div>
                 </div>
                 {isLoading4 ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> :
                   (<div className=' w-full h-[78%] overflow-y-scroll '>
@@ -379,7 +381,7 @@ function ManageCourse({ year }) {
               <button className=" px-4 py-2 rounded-md bg-[#4f72cc] text-white hover:shadow-lg hover:shadow-[#4f72cc] transition-all duration-700" onClick={() => setIsPopup(-1)}>Close</button>
 
             </div>
-            
+
           </div>
         </div>
       }

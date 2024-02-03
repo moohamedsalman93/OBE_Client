@@ -8,12 +8,14 @@ import jwtDecode from "jwt-decode";
 import { toast } from "react-hot-toast";
 import '../App.css'
 import { getYearApi, setYearApi } from "../api/api";
+import { Option, Radio, Select } from "@material-tailwind/react";
 
-function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year, setCurrentYear }) {
+function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year, setCurrentYear, currentSem, setCurrentSem }) {
 
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
-  const [dateData, setDataData] = useState([2023, 2024, 2025, 2026, 2027, 2028]);
+  const dateData = [2023, 2024, 2025, 2026, 2027, 2028];
+  const semData = ["odd", "even"];
 
   useEffect(() => {
     if (!token) {
@@ -75,8 +77,13 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
   //#region hanledOnselectDate
   const handleCourseOnDate = (e) => {
-    setDate(e.target.value)
-    // setYearApi(e.target.value)
+    setDate(e)
+  }
+  //#endregion
+
+  //#region handleCourseOnSem
+  const handleCourseOnSem = (e) => {
+    setCurrentSem(e.target.value)
   }
   //#endregion
 
@@ -89,6 +96,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
             setDate(res?.data.data)
             setCurrentYear(res?.data.data)
             navigate('/');
+            toast.success('Year set successfully')
           }
         })
       }
@@ -103,7 +111,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
       <div className=" w-[19%]   overflow-hidden absolute border-r border-white left-0 top-0 h-full z-0  p-1 flex flex-col bg-gradient-to-br from-[#4f72cc] to-[#58caea] ">
 
-        <div className=" w-full space-y-4 flex flex-col justify-start items-center border border-white rounded-lg bg-white/75 py-2 px-3 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
+        <div className=" w-full space-y-4 flex flex-col justify-start items-center border border-white rounded-lg bg-white/75 py-2 px-3 shadow-lg shadow-black/5 saturate-200 backdrop-blur-md">
           <div className="w-full flex justify-start space-x-2 items-start ">
             <img src={logo} alt="" className=" h-16 " />
             <div className=" w-full h-22 space-y-2">
@@ -112,32 +120,8 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
             </div>
           </div>
-          <div className=" flex justify-start space-x-2 font-medium w-full">
-            <p>Acadmeic year :</p>
-            <p>{year}-{year+1}</p>
-          </div>
-          <div className=" flex justify-start space-x-2 font-normal w-full">
-            <p className=" font-medium">Preview :</p>
-            <div className=" flex space-x-2">
-              <div className=" space-x-2 flex items-center ">
 
-                <select
-                  value={date}
-                  onChange={handleCourseOnDate}
-                  className={`bg-[#f8fcff00] shadow-sm border h-fit w-[5rem] font-medium rounded px-2 ${date === '' ? 'text-gray-400' : 'text-black'}`}
-                >
-                  {dateData.map((eachDate, index) => (
-                    <option key={index} value={eachDate} className="rounded font-medium">
-                      {eachDate}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className=" bg-blue-500 h-6 rounded-md px-2 text-white font-normal cursor-pointer" onClick={() => handlesetOnDate()}>
-                Set
-              </div>
-            </div>
-          </div>
+
         </div>
 
         <div className=" w-full grow py-4 px-2 text-white space-y-3">
@@ -154,9 +138,9 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
                 menus.map((item, index) =>
                   <NavLink
                     to={item.path}
-                    className=' space-x-4 text-xl pl-[5px] flex items-center h-[45px] transition-all duration-800 hover:bg-black hover:rounded-[5px] hover:bg-opacity-50' >
+                    className=' space-x-4 text-2xl pl-[5px] flex items-center h-[45px] transition-all duration-800 hover:bg-black hover:rounded-[5px] hover:bg-opacity-50' >
                     <ion-icon name={item.icon}></ion-icon>
-                    <label className=' text-center cursor-pointer text-sm text-white relative z-10'>{item.name}</label>
+                    <label className=' text-center cursor-pointer text-sm font-medium text-white relative z-10'>{item.name}</label>
                   </NavLink>
                 )
               }
@@ -173,7 +157,43 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
         </div>
 
+        <div className=" w-full bg-white rounded-md p-2 flex flex-col space-y-2">
+          <div className=" flex justify-start space-x-2 font-medium w-full">
+            <p>Acadmeic year :</p>
+            <p>{year}-{year + 1}</p>
+          </div>
 
+          <div className=" flex flex-col justify-start space-y-2 font-normal w-full">
+            <p className=" font-medium">Semester :</p>
+
+            <div className=" font-medium">
+              <Radio label="Odd" checked={currentSem === 'odd'} onChange={() => setCurrentSem("odd")} />
+              <Radio label="Even" checked={currentSem === 'even'} onChange={() => setCurrentSem("even")} />
+            </div>
+
+          </div>
+
+
+          <div className=" flex flex-col justify-start space-y-2 font-normal w-full">
+            <p className=" font-medium">Preview :</p>
+            <Select value={date} onChange={handleCourseOnDate} >
+              {dateData.map((eachDate, index) => (
+                <Option key={index} value={eachDate} className="rounded font-medium">
+                  {eachDate}-{eachDate + 1}
+                </Option>))
+              }
+            </Select>
+          </div>
+
+          <div className=" flex justify-center">
+            <div className=" bg-[#4f72cc] h-10 w-fit rounded-md px-4 flex items-center text-white font-medium cursor-pointer" onClick={() => handlesetOnDate()}>
+              Set year
+            </div>
+          </div>
+
+
+
+        </div>
 
       </div>
 

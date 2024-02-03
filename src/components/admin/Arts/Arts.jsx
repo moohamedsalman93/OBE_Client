@@ -10,14 +10,15 @@ import {
 import studentMarksImg from "../../../assets/studentMark.png";
 import loading from "../../../assets/loading.svg";
 
-function Arts({ year }) {
+function Arts({ year,currentSem }) {
   const [outComeData, setCourseData] = useState([]);
   const [isLoading, setIsloading] = useState(false);
 
   useEffect(() => {
     const data = {
       catagory: "Arts",
-      year: year
+      year: year,
+      sem:currentSem
     }
 
     getCatagoryOut('staff/getByCategory', setCourseData, data, setIsloading)

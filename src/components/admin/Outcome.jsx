@@ -20,40 +20,40 @@ import Science from './Science/Science';
 import Arts from './Arts/Arts';
 import AdminCourseOutcome from './Course/CourseOutcome';
 
-function Outcome({ year }) {
+function Outcome({ year,currentSem }) {
     const [activeTab, setActiveTab] = React.useState("Student");
     const data = [
         {
             label: "Student",
             value: "Student",
             icon: UserIcon,
-            desc: <Students year={year} />,
+            desc: <Students year={year} currentSem={currentSem} />,
         },
         {
             label: "Course",
             value: "Course",
             icon: AcademicCapIcon,
-            desc: <AdminCourseOutcome year={year} />,
+            desc: <AdminCourseOutcome year={year} currentSem={currentSem} />,
         },
 
         {
             label: "Program",
             value: "Program",
             icon: DocumentDuplicateIcon,
-            desc: <Programs year={year} />,
+            desc: <Programs year={year} currentSem={currentSem} />,
         },
 
         {
             label: "Science",
             value: "Science",
             icon: DocumentDuplicateIcon,
-            desc: <Science year={year} />,
+            desc: <Science year={year} currentSem={currentSem} />,
         },
         {
             label: "Arts",
             value: "Arts",
             icon: DocumentDuplicateIcon,
-            desc: <Arts year={year} />,
+            desc: <Arts year={year} currentSem={currentSem} />,
         },
 
     ];

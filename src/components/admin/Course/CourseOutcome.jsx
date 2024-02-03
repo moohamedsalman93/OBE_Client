@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
 
-function AdminCourseOutcome({ year }) {
+function AdminCourseOutcome({ year, currentSem }) {
 
     const dropdownRef2 = useRef(null);
     const [courseCode, setCourseCode] = useState("");
@@ -38,7 +38,7 @@ function AdminCourseOutcome({ year }) {
     const departmentOnSelect = item => {
         setdepartment(item.departmentCode);
         setIsOpen2(false);
-        getApi(`staff/searchCode?question=${item.departmentCode}&year=` + year, setCourseData, setIsLoading2)
+        getApi(`staff/searchCode?question=${item.departmentCode}&sem=${currentSem}&year=` + year, setCourseData, setIsLoading2)
 
     };
     //#endregion
@@ -52,7 +52,7 @@ function AdminCourseOutcome({ year }) {
     //#region search
     const handleDepSearch = debounce(async (val) => {
         console.log('searching..')
-        searchData('staff/searchDepartment/?question=' + val + '&year=' + year, setSearchValue, setIsLoading2)
+        searchData('staff/searchDepartment/?question=' + val + `&sem=${currentSem}&year=` + year, setSearchValue, setIsLoading2)
     }, 500);
     //#endregion
 
@@ -100,7 +100,8 @@ function AdminCourseOutcome({ year }) {
         const data = {
             department: deparment,
             code: courseCode,
-            year:year
+            year: year,
+            sem: currentSem
         }
         putApi(`staff/getMarks`, setOutcomeData, data, setIsLoading1).then(res => {
         })
