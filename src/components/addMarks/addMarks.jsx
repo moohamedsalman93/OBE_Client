@@ -10,10 +10,11 @@ import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
 import sampleCSV from '../../assets/sampleMark.xlsx';
+import { Radio } from "@material-tailwind/react";
 
 const api = process.env.REACT_APP_API_URL;
 
-const AddMarks = ({ uName, year,currentSem }) => {
+const AddMarks = ({ uName, year, currentSem }) => {
 
   //#region  Variables
   const dropdownRef2 = useRef(null);
@@ -32,7 +33,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
   const [Uname, setUname] = useState('');
   const [studentStatus, setStudentStatus] = useState('');
   const [totalMarks, setTotalMarks] = useState(0);
-
+  const [inYear, setInYear] = useState(year % 100)
   const [isLoading, setIsLoading] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
   const [isLoading3, setIsLoading3] = useState(false);
@@ -50,6 +51,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
   const [shouldHighlight, setShouldHighlight] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isImportLoading, setIsImportLoading] = useState(false);
+  const [presentYear, setPresentYear] = useState();
 
   const preventDefaultHandler = (e) => {
     e.preventDefault();
@@ -77,12 +79,12 @@ const AddMarks = ({ uName, year,currentSem }) => {
       data.append('courseCode', courseCode)
       data.append('year', year)
       data.append('staff', uName)
-      data.append('sem',currentSem)
+      data.append('sem', currentSem)
 
       excelApi('staff/addMarksByExcel', data, setProgress, setFileList, setIsImportLoading).then((res) => {
         if (res?.status === 200) {
           toast.success("Imported successfully", { duration: 1500 });
-          getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=` + year, setExistingData, setTotal, setIsLoading3)
+          getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
           setIsImportLoading(false)
           setIsOpenImport(false)
         }
@@ -182,6 +184,13 @@ const AddMarks = ({ uName, year,currentSem }) => {
   };
   //#endregion
 
+  //#region clearEditClickonsortby
+  const clearEditOnsortby = (value) => {
+    handleClear()
+    setSortby(value)
+  }
+  //#endregion
+
   //#region  HandleSubmit
   const handleSubmit = (e) => {
 
@@ -225,7 +234,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
         var typeDe = examType
 
         const newDataforMark = {
-          regNo: '23' + deparment + regNo,
+          regNo: String((year - (presentYear - 1)) % 100) + deparment + regNo,
           department: deparment,
           code: courseCode,
           claass: deparment,
@@ -234,13 +243,13 @@ const AddMarks = ({ uName, year,currentSem }) => {
           [sStatus]: statusStudent,
           [StaffIn]: staffIntial,
           year: year,
-          sem:currentSem,
+          sem: currentSem,
           exam: examType,
           ...marksAsNumbers,
         };
 
         const newDataforAss = {
-          regNo: '23' + deparment + regNo,
+          regNo: String((year - (presentYear - 1)) % 100) + deparment + regNo,
           department: deparment,
           code: courseCode,
           claass: deparment,
@@ -248,7 +257,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
           status: statusStudent,
           exam: "ASG",
           year: year,
-          sem:currentSem,
+          sem: currentSem,
           [StaffIn]: staffIntial,
           [typeDe]: parseInt(Assignment, 10),
         };
@@ -264,13 +273,13 @@ const AddMarks = ({ uName, year,currentSem }) => {
 
         try {
           await axios
-            .post(api+"staff/addMarks", newData)
+            .post(api + "staff/addMarks", newData)
             .then((res) => {
               if (res?.status === 200) {
                 setIsLoading(false);
 
                 toast.success("Mark saved successfully", { duration: 1500 });
-                getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sem=${currentSem}&year=` + year, setExistingData, setIsLoading3)
+                getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
                 if (editStudent === -1) {
                   const last3Digits = parseInt(regNo, 10);
                   const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
@@ -300,7 +309,6 @@ const AddMarks = ({ uName, year,currentSem }) => {
 
   };
   //#endregion
-
 
   //#region Handle Outside Click
   const handleOutsideClick2 = event => {
@@ -382,6 +390,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
   //#region departmentOnChange
   const departmentOnChange = event => {
     setEditstudent(-1)
+    setPresentYear()
     setdepartment(event.target.value.toUpperCase());
     handleDepSearch(event.target.value.toUpperCase());
     setMarks({})
@@ -399,7 +408,30 @@ const AddMarks = ({ uName, year,currentSem }) => {
   //#region hanledOnselectCource
   const handleCourseOnslect = (e) => {
     setCourseCode(e.target.value)
-    getCourseApi(`staff/getMarkByCode?code=${e.target.value}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=` + year, setExistingData, setTotal, setIsLoading3)
+    setPresentYear()
+    setExistingData()
+    handleClear()
+    setRegNo("")
+  }
+  //#endregion
+
+  //#region hanledOnYear
+  const handleOnslectYear = (y) => {
+    if (deparment) {
+      if (courseCode) {
+        setPresentYear(y)
+        handleClear()
+        setRegNo("")
+        setInYear((year - (y - 1)) % 100)
+        getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (y - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
+      }
+      else {
+        toast.error('Select Course Code')
+      }
+    }
+    else {
+      toast.error('Select Department first')
+    }
   }
   //#endregion
 
@@ -503,7 +535,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
     DeleteApi('staff/deleteMark?year=' + year, { id: markId, exam: examType }, setIsLoading).then(res => {
       if (res?.status === 200) {
         toast.success('mark deleted successfully')
-        getApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=` + year, setExistingData, setIsLoading3)
+        getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
         handleClear()
         setRegNo('')
         setEditstudent(-1)
@@ -530,9 +562,9 @@ const AddMarks = ({ uName, year,currentSem }) => {
     const params = {
       code: courseCode,
       department: deparment,
-      regNo: String(year).slice(2) + deparment + regNo,
+      regNo: String(inYear) + deparment + regNo,
       year: year,
-      sem:currentSem
+      sem: currentSem
     }
 
     let temp = {}
@@ -584,7 +616,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
   useEffect(() => {
     setActive(1)
     if (courseCode && deparment && year) {
-      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=` + year, setExistingData, setTotal, setIsLoading3)
+      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
     }
 
   }, [SortBy])
@@ -593,7 +625,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
   //#region useEffect paginationChange
   useEffect(() => {
     if (courseCode && deparment && year) {
-      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&page=${active}&sem=${currentSem}&year=` + year, setExistingData, setTotal, setIsLoading3)
+      getCourseApi(`staff/getMarkByCode?code=${courseCode}&page=${active}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
     }
   }, [active])
   //#endregion
@@ -633,7 +665,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
               </div>
             </div>
 
-            <div className=" flex justify-between w-full items-center">
+            <div className=" flex flex-wrap justify-between w-full items-start  gap-2">
               <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
                 <h1 className="text-[#676060]">Department :</h1>
                 <input
@@ -667,7 +699,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
                 )}
               </div>
 
-              <div className=" space-y-2 ">
+              <div className=" space-y-2 bg-slate-500x`">
                 <h1 className="text-[#676060]">Course Code :</h1>
                 <select
                   value={courseCode}
@@ -687,10 +719,20 @@ const AddMarks = ({ uName, year,currentSem }) => {
                 </select>
               </div>
 
+              <div className=" space-y-2 ">
+                <h1 className="text-[#676060]">Year :</h1>
+
+                <div className=" font-medium">
+                  <Radio label="1 year" checked={presentYear === 1} onChange={() => handleOnslectYear(1)} />
+                  <Radio label="2 year" checked={presentYear === 2} onChange={() => handleOnslectYear(2)} />
+                  <Radio disabled={deparment[0] === 'M' || deparment[0] === 'P'} label="3 year" checked={presentYear === 3} onChange={() => handleOnslectYear(3)} />
+                </div>
+              </div>
+
               <div className=" space-y-2">
                 <h1 className="text-[#676060]">Register No:</h1>
                 <div className=" flex bg-[#F8FCFF] border rounded px-2 items-center min-w-[100px] max-w-fit space-x-1">
-                  <h1 className=" font-medium">{String(year).slice(2)}{deparment !== '' ? deparment : 'MCA'}</h1>
+                  <h1 className=" font-medium">{inYear}{deparment !== '' ? deparment : 'MCA'}</h1>
                   <input
                     type="tel"
                     placeholder="XXX"
@@ -709,7 +751,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
 
               </div>
 
-              <div className=" bg-slate-200 py-2 col-span-2 space-x-2 flex items-center shadow-md border justify-center rounded-md  px-3 h-fit w-fit">
+              <div className=" bg-slate-200 py-2 col-span-2 space-x-2 mt-2 flex items-center shadow-md border justify-center rounded-md  px-3 h-fit w-fit">
 
                 <h1 className="">Status :</h1>
 
@@ -732,6 +774,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
                   Absent
                 </button>
               </div>
+
             </div>
 
           </div>
@@ -850,7 +893,7 @@ const AddMarks = ({ uName, year,currentSem }) => {
 
         </div>
 
-        <ExistingStudent isLoading3={isLoading3} courseCode={courseCode} typeData={typeData} editStudent={editStudent} handleEditClick={handleEditClick} examType={examType} Sortby={SortBy} setSortby={setSortby} active={active} setActive={setActive} total={total} setIsOpenImport={setIsOpenImport} />
+        <ExistingStudent isLoading3={isLoading3} courseCode={courseCode} presentYear={presentYear} typeData={typeData} editStudent={editStudent} handleEditClick={handleEditClick} examType={examType} Sortby={SortBy} setSortby={clearEditOnsortby} active={active} setActive={setActive} total={total} setIsOpenImport={setIsOpenImport} />
 
       </div>
       {open &&

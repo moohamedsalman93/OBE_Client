@@ -4,7 +4,7 @@ import loadingImg from '../../assets/loading.svg'
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-function RelationalMatrix({ userId,year }) {
+function RelationalMatrix({ userId,year,currentSem }) {
 
   const [indexOfAdd, setIndexOfAdd] = useState(-1)
   const [isHideDiv, setIsHideDiv] = useState(false)
@@ -81,7 +81,7 @@ function RelationalMatrix({ userId,year }) {
   }
 
   useEffect(() => {
-    getApi(`staff/getStaffsDetails?uname=${userId}&year=`+year, setCourse, setLoading2)
+    getApi(`staff/getStaffsDetails?uname=${userId}&sem=${currentSem}&year=`+year, setCourse, setLoading2)
   }, [])
 
   const handleMarkChange = (question, value) => {

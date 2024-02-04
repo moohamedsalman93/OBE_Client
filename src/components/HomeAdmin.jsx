@@ -167,8 +167,14 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
             <p className=" font-medium">Semester :</p>
 
             <div className=" font-medium">
-              <Radio label="Odd" checked={currentSem === 'odd'} onChange={() => setCurrentSem("odd")} />
-              <Radio label="Even" checked={currentSem === 'even'} onChange={() => setCurrentSem("even")} />
+              <Radio label="Odd" checked={currentSem === 'odd'} onChange={() => {
+                setCurrentSem("odd")
+                navigate('/');
+              }} />
+              <Radio label="Even" checked={currentSem === 'even'} onChange={() => {
+                setCurrentSem("even")
+                navigate('/');
+              }} />
             </div>
 
           </div>

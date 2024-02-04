@@ -58,7 +58,7 @@ function ManageStaff({ year, currentSem }) {
 
     data.append('Excel', fileList);
 
-    excelApi(`staff/addStaffByExcel?&sem=${currentSem}year=` + year, data, setProgress, setFileList, setIsImportLoading).then((res) => {
+    excelApi(`staff/addStaffByExcel?&sem=${currentSem}&year=` + year, data, setProgress, setFileList, setIsImportLoading).then((res) => {
       if (res?.status === 200) {
         setIsImportLoading(false)
         toast.success("Imported successfully", { duration: 1500 });

@@ -37,18 +37,22 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        <Route path="/" element={<Home Role={Role} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} currentSem={currentSem}/>} >
-          <Route path="/" element={<AddMarks uName={userName} year={date} currentSem={currentSem}/>} />
-          <Route path="/Account" element={<Account userId={userId} year={date} currentSem={currentSem}/>} />
-          <Route path="/Outcome/Course" element={<CourseOutcome userId={userId} year={date} currentSem={currentSem}/>} />
-          <Route path="/RelationalMatrix" element={<RelationalMatrix userId={userId} year={date} currentSem={currentSem}/>} />
+        <Route path="/" element={<Home Role={Role} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} currentSem={currentSem} setCurrentSem={setCurrentSem} />} >
+          {currentYear && date && (
+            <Route path="/" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
+          )}
+          <Route path="/Account" element={<Account userId={userId} year={date} currentSem={currentSem} />} />
+          <Route path="/Outcome/Course" element={<CourseOutcome userId={userId} year={date} currentSem={currentSem} />} />
+          <Route path="/RelationalMatrix" element={<RelationalMatrix userId={userId} year={date} currentSem={currentSem} />} />
         </Route>
 
         <Route path="/Admin" element={<HomeAdmin Role={Role} date={date} setDate={setDate} year={currentYear} setCurrentYear={setCurrentYear} currentSem={currentSem} setCurrentSem={setCurrentSem} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} />} >
-          <Route path="/Admin/" element={<AddMarks uName={userName} year={date} currentSem={currentSem}/>} />
-          <Route path="/Admin/Outcome/" element={<Outcome year={date} currentSem={currentSem}/>} />
-          <Route path="/Admin/reports" element={<Reports year={date} currentSem={currentSem}/>} />
-          <Route path="/Admin/manage" element={<Manage year={date} currentSem={currentSem}/>} />
+          {currentYear && date && (
+            <Route path="/Admin" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
+          )}
+          <Route path="/Admin/Outcome/" element={<Outcome year={date} currentSem={currentSem} />} />
+          <Route path="/Admin/reports" element={<Reports year={date} currentSem={currentSem} />} />
+          <Route path="/Admin/manage" element={<Manage year={date} currentSem={currentSem} />} />
         </Route>
 
         <Route path="/login" exact element={<LoginPage />} />

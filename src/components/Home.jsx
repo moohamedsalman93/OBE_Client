@@ -8,13 +8,14 @@ import jwtDecode from "jwt-decode";
 import { toast } from "react-hot-toast";
 import '../App.css'
 import { getYearApi } from "../api/api";
+import { Radio } from "@material-tailwind/react";
 
-function Home({ Role, setRole, setuserName, userName, setuserId, userId }) {
+function Home({ Role, setRole, setuserName, userName, setuserId, userId, currentSem, setCurrentSem  }) {
 
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
   const [logOutBtn, setlogOutBtn] = useState(false);
-  const [date,setDate]=useState()
+  const [date, setDate] = useState()
 
   const handleLogOutbtn = () => {
 
@@ -85,7 +86,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId }) {
       name: "Relational Matrix",
       path: "/RelationalMatrix"
     },
-    
+
     {
       icon: "settings",
       name: "Account",
@@ -109,13 +110,27 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId }) {
                 <p className="">ID : {userId}</p>
               </div>
             </div>
+            <div className=" flex flex-col justify-start space-y-2 font-normal w-full">
+              <p className=" font-medium">Semester :</p>
 
+              <div className=" font-medium">
+                <Radio label="Odd" checked={currentSem === 'odd'} onChange={() => {
+                  setCurrentSem("odd")
+                  navigate('/');
+                }} />
+                <Radio label="Even" checked={currentSem === 'even'} onChange={() => {
+                  setCurrentSem("even")
+                  navigate('/');
+                }} />
+              </div>
+
+            </div>
           </div>
 
           <div className=" w-full grow py-4 px-2 text-white">
             <div className=" w-full space-y-7">
-                <p className=" text-medium font-semibold">Menus</p>
-                
+              <p className=" text-medium font-semibold">Menus</p>
+
               <div className=" space-y-2">
                 {
                   menus.map((item, index) =>

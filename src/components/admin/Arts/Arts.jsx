@@ -10,7 +10,7 @@ import {
 import studentMarksImg from "../../../assets/studentMark.png";
 import loading from "../../../assets/loading.svg";
 
-function Arts({ year,currentSem }) {
+function Arts({ year, currentSem }) {
   const [outComeData, setCourseData] = useState([]);
   const [isLoading, setIsloading] = useState(false);
 
@@ -18,7 +18,7 @@ function Arts({ year,currentSem }) {
     const data = {
       catagory: "Arts",
       year: year,
-      sem:currentSem
+      sem: currentSem
     }
 
     getCatagoryOut('staff/getByCategory', setCourseData, data, setIsloading)
@@ -55,8 +55,8 @@ function Arts({ year,currentSem }) {
               <tr key={index} className=' font-medium'>
                 <td className="border p-2">{index + 1}</td>
                 <td className="border p-2">{item.depTitle}</td>
-                <td className="border p-2">{item.overAtain < 0.01 ? '-' : Number(item.overAtain).toFixed(2)}</td>
-                <td className="border p-2">{item.overAtain < 0.01 ? '-' : (item.overAtain < 1.5 ? 'Low' : (item.overAtain > 2.5 ? 'High' : 'Moderate'))}
+                <td className="border p-2">{item.overAtain !== 'NaN' ? item.overAtain < 0.01 ? '-' : Number(item.overAtain).toFixed(2) : '-'}</td>
+                <td className="border p-2">{item.overAtain !== 'NaN' ? item.overAtain < 0.01 ? '-' : (item.overAtain < 1.5 ? 'Low' : (item.overAtain > 2.5 ? 'High' : 'Moderate')) : "-"}
                 </td>
               </tr>
             ))}

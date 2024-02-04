@@ -3,7 +3,7 @@ import loading from "../../assets/loading.svg";
 import studentMarksImg from "../../assets/studentMark.png";
 import { Pagination } from './pagiNation';
 
-function ExistingStudent({ isLoading3, courseCode, typeData, editStudent, handleEditClick, examType, setSortby, Sortby, active, setActive, total, setIsOpenImport }) {
+function ExistingStudent({ isLoading3, courseCode,presentYear, typeData, editStudent, handleEditClick, examType, setSortby, Sortby, active, setActive, total, setIsOpenImport }) {
     return (
         <div className="bg-white p-2 flex flex-col rounded h-full w-[28%] ">
             <div className=" h-10 border-b  flex justify-between py-5 items-center font-semibold">
@@ -17,7 +17,7 @@ function ExistingStudent({ isLoading3, courseCode, typeData, editStudent, handle
             <div className=" w-full grow flex flex-col justify-start items-center">
                 {isLoading3 ? <img src={loading} alt="" className=" w-10 h-10 animate-spin" /> :
                     (
-                        courseCode === '' ?
+                        presentYear === null ?
                             (
                                 <div className="h-full w-full flex flex-col items-center justify-center text-base font-semibold">
                                     <div className="w-fit grow flex flex-col items-center justify-center relative">

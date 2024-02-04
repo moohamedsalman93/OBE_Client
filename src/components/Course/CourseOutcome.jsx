@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import loading from "../../assets/loading.svg";
 import studentMarksImg from "../../assets/studentMark.png";
 
-function CourseOutcome({ userId,year }) {
+function CourseOutcome({ userId,year,currentSem }) {
 
     const dropdownRef2 = useRef(null);
     const [courseCode, setCourseCode] = useState("");
@@ -15,7 +15,7 @@ function CourseOutcome({ userId,year }) {
 
     //#region useEffect
     useEffect(() => {
-        getApi(`staff/getStaffsDetails?uname=${userId}&year=`+year, setCourseData, setIsLoading1)
+        getApi(`staff/getStaffsDetails?uname=${userId}&sem=${currentSem}&year=`+year, setCourseData, setIsLoading1)
     }, []);
     //#endregion
 

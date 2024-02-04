@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
 
-function Programs({ year, currenSem }) {
+function Programs({ year, currentSem }) {
 
     const dropdownRef2 = useRef(null);
     const [departmentName, setDepartmentName] = useState("");
@@ -100,7 +100,7 @@ function Programs({ year, currenSem }) {
         const data = {
             department: deparment,
             year: year,
-            sem:currenSem
+            sem:currentSem
         }
 
         getDepOut(`staff/getByDepartment`, setOutcomeData, data, setIsLoading1)
