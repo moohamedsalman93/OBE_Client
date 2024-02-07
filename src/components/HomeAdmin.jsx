@@ -111,8 +111,8 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
       <div className=" w-[19%]   overflow-hidden absolute border-r border-white left-0 top-0 h-full z-0  p-1 flex flex-col bg-gradient-to-br from-[#4f72cc] to-[#58caea] ">
 
-        <div className=" w-full space-y-4 flex flex-col justify-start items-center border border-white rounded-lg bg-white/75 py-2 px-3 shadow-lg shadow-black/5 saturate-200 backdrop-blur-md">
-          <div className="w-full flex justify-start space-x-2 items-start ">
+        <div className=" w-full space-y-4 flex flex-col justify-start items-center border border-white rounded-lg bg-white/75 shadow-lg shadow-black/5 saturate-200 backdrop-blur-md">
+          <div className="w-full flex justify-start space-x-2 items-start  py-2 px-3 bg-white rounded-md">
             <img src={logo} alt="" className=" h-16 " />
             <div className=" w-full h-22 space-y-2">
               <p className=" text-lg font-bold">OBE Software</p>
@@ -120,17 +120,60 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
             </div>
           </div>
+          <div className=" w-full  rounded-md p-2 flex flex-col space-y-2">
+            <div className=" flex justify-start space-x-2 font-medium w-full">
+              <p>Acadmeic year :</p>
+              <p>{year}-{year + 1}</p>
+            </div>
+
+            <div className=" flex flex-col justify-start space-y-2 font-normal w-full">
+              <p className=" font-medium">Semester :</p>
+
+              <div className=" font-medium">
+                <Radio label="Odd" checked={currentSem === 'odd'} onChange={() => {
+                  setCurrentSem("odd")
+                  navigate('/');
+                }} />
+                <Radio label="Even" checked={currentSem === 'even'} onChange={() => {
+                  setCurrentSem("even")
+                  navigate('/');
+                }} />
+              </div>
+
+            </div>
+
+
+            <div className=" flex flex-col justify-end space-y-2 font-normal w-full z-40 relative">
+              <p className=" font-medium">Preview :</p>
+              <Select value={date} onChange={handleCourseOnDate} className=" z-50 relative bg-white border-[0px]">
+
+                {dateData.map((eachDate, index) => (
+                  <Option key={index} value={eachDate} className="rounded font-medium flex !bg-white ">
+                    {eachDate}-{eachDate + 1}
+                  </Option>))
+                }
+
+
+              </Select>
+
+              <div className=" bg-[#46ae38] right-1 bottom-1  absolute z-50 w-fit rounded-md gap-1 px-2 py-1  flex items-center text-white font-medium cursor-pointer" onClick={() => handlesetOnDate()}>
+                <ion-icon name="checkmark-circle"></ion-icon>
+                set
+              </div>
+            </div>
+
+
+          </div>
 
 
         </div>
 
+
+
         <div className=" w-full grow py-4 px-2 text-white space-y-3">
 
           <div className=" w-full space-y-3 ">
-            <div className=" w-full flex justify-between ">
-              <p className=" text-lg font-bold text-black">Menus</p>
 
-            </div>
 
 
             <div className=" space-y-1">
@@ -138,7 +181,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
                 menus.map((item, index) =>
                   <NavLink
                     to={item.path}
-                    className=' space-x-4 text-2xl pl-[5px] flex items-center h-[45px] transition-all duration-800 hover:bg-black hover:rounded-[5px] hover:bg-opacity-50' >
+                    className=' z-0 space-x-4 text-2xl pl-[5px] flex items-center h-[45px] transition-all duration-800 hover:bg-black hover:rounded-[5px] hover:bg-opacity-50' >
                     <ion-icon name={item.icon}></ion-icon>
                     <label className=' text-center cursor-pointer text-sm font-medium text-white relative z-10'>{item.name}</label>
                   </NavLink>
@@ -157,49 +200,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
         </div>
 
-        <div className=" w-full bg-white rounded-md p-2 flex flex-col space-y-2">
-          <div className=" flex justify-start space-x-2 font-medium w-full">
-            <p>Acadmeic year :</p>
-            <p>{year}-{year + 1}</p>
-          </div>
 
-          <div className=" flex flex-col justify-start space-y-2 font-normal w-full">
-            <p className=" font-medium">Semester :</p>
-
-            <div className=" font-medium">
-              <Radio label="Odd" checked={currentSem === 'odd'} onChange={() => {
-                setCurrentSem("odd")
-                navigate('/');
-              }} />
-              <Radio label="Even" checked={currentSem === 'even'} onChange={() => {
-                setCurrentSem("even")
-                navigate('/');
-              }} />
-            </div>
-
-          </div>
-
-
-          <div className=" flex flex-col justify-start space-y-2 font-normal w-full">
-            <p className=" font-medium">Preview :</p>
-            <Select value={date} onChange={handleCourseOnDate} >
-              {dateData.map((eachDate, index) => (
-                <Option key={index} value={eachDate} className="rounded font-medium">
-                  {eachDate}-{eachDate + 1}
-                </Option>))
-              }
-            </Select>
-          </div>
-
-          <div className=" flex justify-center">
-            <div className=" bg-[#4f72cc] h-10 w-fit rounded-md px-4 flex items-center text-white font-medium cursor-pointer" onClick={() => handlesetOnDate()}>
-              Set year
-            </div>
-          </div>
-
-
-
-        </div>
 
       </div>
 
