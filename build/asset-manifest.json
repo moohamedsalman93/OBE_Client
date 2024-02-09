@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/static/css/main.95b8c26d.css",
+    "main.js": "/static/js/main.77a586c1.js",
+    "static/media/SAQ.jpg": "/static/media/SAQ.d21988f081a9cd60643e.jpg",
+    "static/media/illustrate.svg": "/static/media/illustrate.cb3a4d39822842fe8f65dc212dde0d53.svg",
+    "static/media/siraj.JPG": "/static/media/siraj.f063cc07e4cbb926e812.JPG",
+    "static/media/jp.png": "/static/media/jp.d42df0861994959992ca.png",
+    "static/media/Logo.jpeg": "/static/media/Logo.002a098b09d97abbb9e7.jpeg",
+    "static/media/salman.png": "/static/media/salman.4f12e51da32075ab5048.png",
+    "static/media/basith.png": "/static/media/basith.b7f77438a2b45639c482.png",
+    "static/media/Staff.csv": "/static/media/Staff.d4f2336ae9a56482000c.csv",
+    "static/media/studentMark.png": "/static/media/studentMark.ae230a9c9f879633f3ed.png",
+    "static/media/Logo.png": "/static/media/Logo.c2dd578e14decee43915.png",
+    "static/media/course.csv": "/static/media/course.d36b4c166e7cc612981d.csv",
+    "static/media/add cources.png": "/static/media/add cources.0291d9b729acab1dd2bf.png",
+    "static/media/sampleMark.xlsx": "/static/media/sampleMark.15673b2c49c62d328ea6.xlsx",
+    "static/media/results.png": "/static/media/results.c08d602e8e3a9441c161.png",
+    "static/media/add marks.png": "/static/media/add marks.0f8f1c40bd0f60c404c9.png",
+    "static/media/program.csv": "/static/media/program.3974afb5051d15d8bcbc.csv",
+    "index.html": "/index.html",
+    "static/media/loading.svg": "/static/media/loading.a5a2338844ead9d1635615fc109edfb9.svg",
+    "main.95b8c26d.css.map": "/static/css/main.95b8c26d.css.map",
+    "main.77a586c1.js.map": "/static/js/main.77a586c1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.95b8c26d.css",
+    "static/js/main.77a586c1.js"
+  ]
+}
