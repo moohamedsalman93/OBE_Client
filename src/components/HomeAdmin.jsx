@@ -112,7 +112,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
       <div className=" w-[19%]   overflow-hidden absolute border-r border-white left-0 top-0 h-full z-0  p-1 flex flex-col bg-gradient-to-br from-[#4f72cc] to-[#58caea] ">
 
         <div className=" w-full space-y-4 flex flex-col justify-start items-center border border-white rounded-lg bg-white/75 shadow-lg shadow-black/5 saturate-200 backdrop-blur-md">
-          <div className="w-full flex justify-start space-x-2 items-start  py-2 px-3 bg-white rounded-md">
+          <div className="w-full flex justify-start space-x-2 items-start  py-2 px-3  rounded-md">
             <img src={logo} alt="" className=" h-16 " />
             <div className=" w-full h-22 space-y-2">
               <p className=" text-lg font-bold">OBE Software</p>
@@ -121,12 +121,13 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
             </div>
           </div>
           <div className=" w-full  rounded-md p-2 flex flex-col space-y-2">
-            <div className=" flex justify-start space-x-2 font-medium w-full">
-              <p>Academic year :</p>
-              <p>{year}-{year + 1}</p>
-            </div>
 
-            <div className=" flex flex-col space-y-2 bg-white p-2 rounded-lg">
+
+            <div className=" flex flex-col space-y-3 bg-white p-2 rounded-lg">
+              <div className=" flex justify-center space-x-2 font-medium w-full">
+                <p>Academic year :</p>
+                <p>{year}-{year + 1}</p>
+              </div>
               <p className=" font-medium w-full flex justify-center">Semester </p>
 
               <div className=" w-full flex justify-center space-x-4">

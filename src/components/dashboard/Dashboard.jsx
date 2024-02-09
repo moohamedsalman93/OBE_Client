@@ -35,7 +35,7 @@ function Dashboard() {
       dataLabels: {
         enabled: false,
       },
-      colors: ["#6777ef", "#FF5733", "#66FF66"], // This is now moved to plotOptions.bar.colors
+      colors: ["#6777ef", "#FF5733", "#66FF66","#2563eb","#ffa528"], // This is now moved to plotOptions.bar.colors
       plotOptions: {
         bar: {
           columnWidth: "30%",
@@ -44,7 +44,7 @@ function Dashboard() {
           colors: {
             backgroundBarColors: [], // Optional: Use if you want to set background colors for the bars
             backgroundBarOpacity: 1,
-            colors: ["#6777ef", "#FF5733", "#66FF66"], // Define colors for each bar here
+            colors: ["#6777ef", "#FF5733", "#66FF66","#2563eb","#ffa528"],  // Define colors for each bar here
           },
         },
       },

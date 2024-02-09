@@ -51,8 +51,9 @@ function App() {
 
         <Route path="/Admin" element={<HomeAdmin Role={Role} date={date} setDate={setDate} year={currentYear} setCurrentYear={setCurrentYear} currentSem={currentSem} setCurrentSem={setCurrentSem} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} />} >
           {currentYear && date && (
-            <Route path="/Admin" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
+            <Route path="/Admin" element={<Dashboard uName={userName} year={date} currentSem={currentSem} />} />
           )}
+          <Route path="/Admin/addmarks" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
           <Route path="/Admin/Outcome/" element={<Outcome year={date} currentSem={currentSem} />} />
           <Route path="/Admin/reports" element={<Reports year={date} currentSem={currentSem} />} />
           <Route path="/Admin/manage" element={<Manage year={date} currentSem={currentSem} />} />
