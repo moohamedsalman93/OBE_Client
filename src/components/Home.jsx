@@ -140,7 +140,10 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
                       type="radio"
                       value='odd'
                       checked={currentSem === 'odd'}
-                      onChange={() => setCurrentSem('odd')}
+                      onChange={() => {
+                        setCurrentSem('odd')
+                        navigate('/')
+                      }}
                       className="sr-only" // Hide the actual radio button
                     />
                     Odd
@@ -155,7 +158,10 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
                       type="radio"
                       value='even'
                       checked={currentSem === 'even'}
-                      onChange={() => setCurrentSem('even')}
+                      onChange={() => {
+                        setCurrentSem('even')
+                        navigate('/')
+                      }}
                       className="sr-only" // Hide the actual radio button
                     />
                     Even
