@@ -5,7 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { DeleteApi, excelApi, getApi, getCourseApi, getRegMarksApi, getStaffCourse, searchData } from "../../api/api";
 import { debounce } from 'lodash';
-import { useNavigate } from "react-router-dom";
+
 import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";

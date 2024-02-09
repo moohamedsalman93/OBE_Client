@@ -54,7 +54,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
     {
       icon: "menu",
       name: "Dashboard",
-      path: "/Admin"
+      path: "/Admin/"
     },
     {
       icon: "add-circle",
@@ -148,7 +148,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
                     checked={currentSem === 'odd'}
                     onChange={() =>{
                       setCurrentSem('odd')
-                      navigate('/Admin')
+                      navigate('/Admin/')
                     } }
                     className="sr-only" // Hide the actual radio button
                   />
@@ -166,7 +166,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
                     checked={currentSem === 'even'}
                     onChange={() => {
                       setCurrentSem('even')
-                      navigate('/Admin')
+                      navigate('/Admin/')
                     }}
                     className="sr-only" // Hide the actual radio button
                   />
