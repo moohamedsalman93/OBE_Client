@@ -21,17 +21,17 @@ function Manage({year,currentSem}) {
     const [activeTab, setActiveTab] = React.useState("Course");
     const data = [
         {
+            label: "Programme",
+            value: "Program",
+            icon: DocumentDuplicateIcon,
+            desc: <ManageDepartment year={year} currentSem={currentSem}/>,
+        },
+
+        {
             label: "Course",
             value: "Course",
             icon: AcademicCapIcon,
             desc: <ManageCourse year={year} currentSem={currentSem}/>,
-        },
-
-        {
-            label: "Program",
-            value: "Program",
-            icon: DocumentDuplicateIcon,
-            desc: <ManageDepartment year={year} currentSem={currentSem}/>,
         },
         {
             label: "Staff",

@@ -144,7 +144,7 @@ function ManageDepartment({ year,currentSem }) {
   return (
     <div className=' h-full w-full xl:h-[45rem] 2xl:h-[39rem] flex flex-col bg-white rounded-md shadow-md p-2'>
       <div className=' h-12 px-2  py-2 w-full flex justify-between items-end space-x-2'>
-        <p className=' font-semibold text-xl grow'>Program List</p>
+        <p className=' font-semibold text-xl grow'>Programme List</p>
 
         <div className=' flex relative w-fit h-fit'>
           <input
@@ -159,16 +159,16 @@ function ManageDepartment({ year,currentSem }) {
           </div>
         </div>
 
-        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black font-medium rounded-lg text-white'>New Program</button>
+        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black font-medium rounded-lg text-white'>New Programme</button>
       </div>
 
       <div className=' w-full grow flex flex-col items-center py-2'>
         <div className=' w-[70%] px-2 font-medium  grid grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
-          <p className=' text-start w-full'>No.</p>
-          <p className=' text-start w-full'>Program Code</p>
-          <p className=' text-start w-full col-span-2'>Program name</p>
+          <p className=' text-start w-full'>S. No.</p>
+          <p className=' text-start w-full'>Programme Code</p>
+          <p className=' text-start w-full col-span-2'>Programme Name</p>
           <p className=' text-start w-full'>Catagory</p>
-          <p className=' text-center w-full'>Actions</p>
+          <p className=' text-center w-full'>Action</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : CourseData.map((item, index) =>
           <div key={index} className={` w-[70%] px-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
@@ -204,13 +204,13 @@ function ManageDepartment({ year,currentSem }) {
 
               <div className=" flex space-x-2 text-xl font-semibold items-center border-b py-2">
                 <ion-icon name="add-circle"></ion-icon>
-                <p className=' text-base' >New Program</p>
+                <p className=' text-base' >New Programme</p>
               </div>
 
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Program Category :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Programmme Category :</h1>
                   <select
                     value={Cat}
                     onChange={(e) => setCat(e.target.value)}
@@ -227,7 +227,7 @@ function ManageDepartment({ year,currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-center relative ' >
-                  <h1 className="text-[#676060] w-[40%]">Program Code :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Programme Code :</h1>
                   <input
                     type="text"
                     value={Code}
@@ -242,7 +242,7 @@ function ManageDepartment({ year,currentSem }) {
 
 
                 <div className=' w-full space-x-2 flex items-start '>
-                  <h1 className="text-[#676060] w-[40%]">Program Name :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Programme Name :</h1>
                   <textarea
                     type="text"
                     value={Name}
@@ -304,13 +304,13 @@ function ManageDepartment({ year,currentSem }) {
 
               <div className=" flex space-x-2 text-xl font-semibold items-center border-b py-2">
                 <ion-icon name="add"></ion-icon>
-                <p >Edit Program</p>
+                <p >Edit Programme</p>
               </div>
 
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Program Category :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Programme Category :</h1>
                   <select
                     value={Cat}
                     onChange={(e) => setCat(e.target.value)}
@@ -327,7 +327,7 @@ function ManageDepartment({ year,currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-center relative ' >
-                  <h1 className="text-[#676060] w-[40%]">Program Code :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Programme Code :</h1>
                   <input
                     type="text"
                     value={Code}

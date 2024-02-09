@@ -46,7 +46,7 @@ function Account({ userId,year,currentSem }) {
             className={`bg-white text-black h-10 w-[16rem] rounded-md px-3 border-2  placeholder-neutral-500 placeholder:font-normal  focus:border-blue-500 outline-none `}
             type='password'
             name={'username'}
-            placeholder={"Confirm new Password"}
+            placeholder={"Confirm New Password"}
             value={p2}
             onChange={(e) => setP2(e.target.value)}
             maxLength={20}
@@ -67,16 +67,16 @@ function Account({ userId,year,currentSem }) {
         </div>
 
         <div className=' w-full  grow py-10'>
-          <p className=' text-lg font-semibold  text-black'>Course Details</p>
+          <p className=' text-lg font-semibold  text-black'>Course Handle</p>
           {isLoading2 ?
             <div className=' w-full flex justify-center items-center'> <img src={loadingImg} alt=""  className=' h-8'/></div> : 
             (<div className=' w-full py-3 gap-3 flex flex-wrap'>
               {
                 Course.map((item, index) =>
-                  <div key={index} className=' h-[7rem] shadow-md bg-[#346fe1] bg-opacity-10 saturate-200 after:translate-x-3 before:translate-x-8 duration-300 rounded-lg w-[14rem] border flex flex-col justify-start items-center p-2 space-y-1'>
-                    <p className=' text-md font-medium'>{item.code.code}</p>
+                  <div key={index} className=' h-[7rem] shadow-md bg-[#346fe1] bg-opacity-10 saturate-200 after:translate-x-3 before:translate-x-8 duration-300 rounded-lg w-[14rem] border flex flex-col justify-center items-center p-2 space-y-1'>
                     <p className=' text-sm font-medium'>{item.code.department.departmentCode}</p>
-                    <p className=' text-sm font-medium h-full w-full flex items-center justify-center text-center'>{item.code.name}</p>
+                    <p className=' text-md font-medium'>{item.code.code}</p>
+                    <p className=' text-sm font-medium  w-full flex items-center justify-center text-center'>{item.code.name}</p>
                   </div>)
               }
             </div>)

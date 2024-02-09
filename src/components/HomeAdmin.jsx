@@ -116,28 +116,50 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
             <img src={logo} alt="" className=" h-16 " />
             <div className=" w-full h-22 space-y-2">
               <p className=" text-lg font-bold">OBE Software</p>
-              <p className=" font-medium">Admin Panel</p>
+              <p className=" font-medium">Admin</p>
 
             </div>
           </div>
           <div className=" w-full  rounded-md p-2 flex flex-col space-y-2">
             <div className=" flex justify-start space-x-2 font-medium w-full">
-              <p>Acadmeic year :</p>
+              <p>Academic year :</p>
               <p>{year}-{year + 1}</p>
             </div>
 
-            <div className=" flex flex-col justify-start space-y-2 font-normal w-full">
-              <p className=" font-medium">Semester :</p>
+            <div className=" flex flex-col space-y-2 bg-white p-2 rounded-lg">
+              <p className=" font-medium w-full flex justify-center">Semester </p>
 
-              <div className=" font-medium">
-                <Radio label="Odd" checked={currentSem === 'odd'} onChange={() => {
-                  setCurrentSem("odd")
-                  navigate('/');
-                }} />
-                <Radio label="Even" checked={currentSem === 'even'} onChange={() => {
-                  setCurrentSem("even")
-                  navigate('/');
-                }} />
+              <div className=" w-full flex justify-center space-x-4">
+                <label
+                  className={`transition-all duration-300 ${currentSem === 'odd'
+                    ? "bg-[#4f72cc] text-white"
+                    : "bg-slate-200"
+                    } hover:bg-[#4f72cc] hover:text-white px-2 py-1 rounded-md cursor-pointer font-medium`}
+                >
+                  <input
+                    type="radio"
+                    value='odd'
+                    checked={currentSem === 'odd'}
+                    onChange={() => setCurrentSem('odd')}
+                    className="sr-only" // Hide the actual radio button
+                  />
+                  Odd
+                </label>
+                <label
+                  className={`transition-all duration-300 ${currentSem === 'even'
+                    ? "bg-[#4f72cc] text-white"
+                    : "bg-slate-200"
+                    } hover:bg-[#4f72cc] hover:text-white px-2 py-1 rounded-md cursor-pointer font-medium`}
+                >
+                  <input
+                    type="radio"
+                    value='even'
+                    checked={currentSem === 'even'}
+                    onChange={() => setCurrentSem('even')}
+                    className="sr-only" // Hide the actual radio button
+                  />
+                  Even
+                </label>
               </div>
 
             </div>
@@ -183,7 +205,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
                     to={item.path}
                     className=' z-0 space-x-4 text-2xl pl-[5px] flex items-center h-[45px] transition-all duration-800 hover:bg-black hover:rounded-[5px] hover:bg-opacity-50' >
                     <ion-icon name={item.icon}></ion-icon>
-                    <label className=' text-center cursor-pointer text-sm font-medium text-white relative z-10'>{item.name}</label>
+                    <label className=' text-center cursor-pointer text-base font-medium text-white relative z-10'>{item.name}</label>
                   </NavLink>
                 )
               }

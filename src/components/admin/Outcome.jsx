@@ -37,8 +37,8 @@ function Outcome({ year,currentSem }) {
         },
 
         {
-            label: "Program",
-            value: "Program",
+            label: "Programme",
+            value: "Programme",
             icon: DocumentDuplicateIcon,
             desc: <Programs year={year} currentSem={currentSem} />,
         },

@@ -4,6 +4,8 @@ import loadingImg from '../../assets/loading.svg'
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
+const api = process.env.REACT_APP_API_URL;
+
 function RelationalMatrix({ userId,year,currentSem }) {
 
   const [indexOfAdd, setIndexOfAdd] = useState(-1)
@@ -135,12 +137,12 @@ function RelationalMatrix({ userId,year,currentSem }) {
 
       try {
         await axios
-          .post("http://localhost:3000/staff/addPso", newData)
+          .post(api + "staff/addPso", newData)
           .then((res) => {
             if (res?.status === 200) {
               setIsLoading(false);
               toast.success(`PSO saved successfully ${Course[indexOfAdd]?.code?.code}`, { duration: 1500 });
-              getApi(`staff/getStaffsDetails?uname=${userId}&year=`+year, setCourse, setLoading2).then((res) => {
+              getApi(`staff/getStaffsDetails?uname=${userId}&sem=${currentSem}&year=`+year, setCourse, setLoading2).then((res) => {
                 setIndexOfAdd(-1)
                 setMarks({})
               })
@@ -178,7 +180,7 @@ function RelationalMatrix({ userId,year,currentSem }) {
   return (
     <div className=' w-full h-full flex flex-col p-5 bg-white'>
       <div className=' w-full  grow py-10'>
-        <p className=' text-2xl font-semibold  text-black'>Relation Matrix</p>
+        <p className=' text-2xl font-semibold  text-black'>Relationship Matrix</p>
         {isLoading2 ?
           <div className=' w-full flex justify-center items-center'> <img src={loadingImg} alt="" className=' h-8' /></div> :
           (
@@ -191,9 +193,9 @@ function RelationalMatrix({ userId,year,currentSem }) {
                   {
                     Course.map((item, index) => item.code.pso.length === 0 && (
                       <div key={index} onClick={() => setIndexOfAdd(index)} className=' h-[7rem] shadow-md bg-[#e13434] cursor-pointer bg-opacity-10 saturate-200 after:translate-x-3 before:translate-x-8 duration-300 rounded-lg w-[14rem] border flex flex-col justify-start items-center p-2 space-y-1'>
-                        <p className=' text-md font-medium'>{item.code.code}</p>
                         <p className=' text-sm font-medium'>{item.code.department.departmentCode}</p>
-                        <p className=' text-sm font-medium h-full w-full flex items-center justify-center text-center'>{item.code.name}</p>
+                        <p className=' text-md font-medium'>{item.code.code}</p>
+                        <p className=' text-sm font-medium  w-full flex items-center justify-center text-center'>{item.code.name}</p>
                       </div>))
                   }
 

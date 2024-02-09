@@ -10,7 +10,7 @@ import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
 import sampleCSV from '../../assets/sampleMark.xlsx';
-import { Radio } from "@material-tailwind/react";
+import * as XLSX from 'xlsx';
 
 const api = process.env.REACT_APP_API_URL;
 
@@ -52,6 +52,8 @@ const AddMarks = ({ uName, year, currentSem }) => {
   const [progress, setProgress] = useState(0);
   const [isImportLoading, setIsImportLoading] = useState(false);
   const [presentYear, setPresentYear] = useState();
+  const myElementRef = useRef(null);
+
 
   const preventDefaultHandler = (e) => {
     e.preventDefault();
@@ -62,8 +64,13 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
     let extention = (fileList.name).split('.')[(fileList.name).split('.').length - 1]
 
-    if (extention !== 'csv') {
-      toast.error("Please upload only csv file", { duration: 1500 });
+    // if (extention !== 'csv') {
+    //   toast.error("Please upload only csv file", { duration: 1500 });
+    //   return
+    // }
+
+    if (extention !== 'xlsx') {
+      toast.error("Please upload only xlsx file", { duration: 1500 });
       return
     }
 
@@ -72,24 +79,34 @@ const AddMarks = ({ uName, year, currentSem }) => {
       toast.error("Please fill Pepartment and Course code", { duration: 1500 });
     } else {
 
-      const data = new FormData();
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const csv = XLSX.utils.sheet_to_csv(workbook.Sheets[workbook.SheetNames[0]]);
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const datat = new FormData();
+        datat.append('Excel', blob, fileList.name.replace('.xlsx', '.csv'));
+        datat.append('depCode', deparment);
+        datat.append('courseCode', courseCode)
+        datat.append('year', year)
+        datat.append('staff', uName)
+        datat.append('sem', currentSem)
 
-      data.append('Excel', fileList);
-      data.append('depCode', deparment);
-      data.append('courseCode', courseCode)
-      data.append('year', year)
-      data.append('staff', uName)
-      data.append('sem', currentSem)
+        excelApi('staff/addMarksByExcel', datat, setProgress, setFileList, setIsImportLoading).then((res) => {
+          if (res?.status === 200) {
+            toast.success("Imported successfully", { duration: 1500 });
+            getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
+            setIsImportLoading(false)
+            setIsOpenImport(false)
+          }
+        })
+      };
+      reader.readAsArrayBuffer(fileList);
 
-      excelApi('staff/addMarksByExcel', data, setProgress, setFileList, setIsImportLoading).then((res) => {
-        if (res?.status === 200) {
-          toast.success("Imported successfully", { duration: 1500 });
-          getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
-          setIsImportLoading(false)
-          setIsOpenImport(false)
-        }
-      })
+      console.log(existingData)
     }
+
   };
 
   const uploading = progress > 0 && progress < 100;
@@ -287,6 +304,13 @@ const AddMarks = ({ uName, year, currentSem }) => {
                   setRegNo(newLast3Digits);
                   handleClear()
                   setStudentStatus('')
+                  if (examType === 'ASG1' || examType === 'ASG2') {
+
+                  }
+                  else {
+                    myElementRef.current.focus();
+                  }
+
                 }
                 else {
                   setRegNo('')
@@ -298,7 +322,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
               }
             });
         } catch (err) {
-          toast.error(err.response.data.msg, { duration: 1500 });
+          toast.error(err?.response?.data?.msg, { duration: 1500 });
           setIsLoading(false);
         }
       };
@@ -306,9 +330,9 @@ const AddMarks = ({ uName, year, currentSem }) => {
       addData();
     }
 
-
   };
   //#endregion
+
 
   //#region Handle Outside Click
   const handleOutsideClick2 = event => {
@@ -394,6 +418,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
     setdepartment(event.target.value.toUpperCase());
     handleDepSearch(event.target.value.toUpperCase());
     setMarks({})
+    setIsOpen2(true)
   };
   //#endregion
 
@@ -444,7 +469,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
       setTypeData(sData)
     }
     setIsLoading3(false)
-  }, [existingData, examType])
+  }, [existingData])
   //#endregion
 
   //#region handleEditClick
@@ -480,6 +505,9 @@ const AddMarks = ({ uName, year, currentSem }) => {
     setSection('')
     setExamType(e.target.value)
     setAssignment('')
+    setExistingData([])
+    setTypeData([])
+    setPresentYear()
   }
   //#endregion
 
@@ -548,7 +576,8 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
   //#region handleReg
   const handleReg = (e) => {
-    setRegNo(e.target.value)
+    const regNo = e.target.value.replace(/\D/g, ''); // Only get input in number
+    setRegNo(regNo)
     if (editStudent !== -1) {
       setEditstudent(-1)
       handleClear()
@@ -636,7 +665,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = sampleCSV;
-    link.setAttribute('download', 'sampleMark.xlsx');
+    link.setAttribute('download', 'OBEMarkEntryExcelsheet.xlsx');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -650,24 +679,31 @@ const AddMarks = ({ uName, year, currentSem }) => {
       <div className="flex flex-row w-full h-full gap-3 justify-between">
         <div className="flex flex-col  space-y-4 bg-white p-2 rounded-lg w-[72%] border-r shadow-md">
 
-          <div className="flex flex-wrap gap-4 pt-20 w-full h-fit px-5">
+          <div className="flex flex-wrap gap-7 pt-20 w-full h-fit px-5">
 
-            <div className=" space-y-2">
-              <h1 className="text-base font-medium text-[#676060]">
-                OBE Components :
-              </h1>
-              <div className=" flex space-x-4 items-end ">
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C1'} textlabel={'CIA-1'} />
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C2'} textlabel={'CIA-2'} />
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ESE'} textlabel={'ESE'} />
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG1'} textlabel={'OC-1'} />
-                <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG2'} textlabel={'OC-2'} />
+
+            <div className=" w-full flex justify-between ">
+              <div className=" space-y-3">
+                <h1 className="text-xl text-center font-medium text-[#676060]">
+                  OBE Assesment Components
+                </h1>
+                <div className=" flex space-x-4 items-end ">
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C1'} textlabel={'CIA-1'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'C2'} textlabel={'CIA-2'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ESE'} textlabel={'ESE'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG1'} textlabel={'OC-1'} />
+                  <ObComponents examType={examType} handleSetExamtype={handleSetExamtype} value={'ASG2'} textlabel={'OC-2'} />
+                </div>
+
               </div>
+
+
+
             </div>
 
-            <div className=" flex flex-wrap justify-between w-full items-start  gap-2">
+            <div className=" flex flex-wrap justify-start w-full items-start  gap-10">
               <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
-                <h1 className="text-[#676060]">Department :</h1>
+                <h1 className="text-[#676060] text-lg">Department </h1>
                 <input
                   type="text"
                   value={deparment}
@@ -700,7 +736,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
               </div>
 
               <div className=" space-y-2 bg-slate-500x`">
-                <h1 className="text-[#676060]">Course Code :</h1>
+                <h1 className="text-[#676060] text-lg">Course Code</h1>
                 <select
                   value={courseCode}
                   onChange={handleCourseOnslect}
@@ -719,126 +755,276 @@ const AddMarks = ({ uName, year, currentSem }) => {
                 </select>
               </div>
 
-              <div className=" space-y-2 ">
-                <h1 className="text-[#676060]">Year :</h1>
 
-                <div className=" font-medium">
-                  <Radio label="1 year" checked={presentYear === 1} onChange={() => handleOnslectYear(1)} />
-                  <Radio label="2 year" checked={presentYear === 2} onChange={() => handleOnslectYear(2)} />
-                  <Radio disabled={deparment[0] === 'M' || deparment[0] === 'P'} label="3 year" checked={presentYear === 3} onChange={() => handleOnslectYear(3)} />
+              <div className=" space-y-3">
+                <h1 className="text-xl text-center font-medium text-[#676060]">
+                  Year
+                </h1>
+                <div className=" flex space-x-4 items-end ">
+
+
+                  <label
+                    className={`transition-all duration-300 ${presentYear === 1
+                      ? "bg-[#4f72cc] text-white"
+                      : "bg-slate-200"
+                      } hover:bg-[#4f72cc] hover:text-white px-2 py-1 rounded-md cursor-pointer font-medium`}
+                  >
+                    <input
+                      type="radio"
+                      value={1}
+                      checked={presentYear === 1}
+                      onChange={() => handleOnslectYear(1)}
+                      className="sr-only" // Hide the actual radio button
+                    />
+                    I Year
+                  </label>
+
+                  <label
+                    className={`transition-all duration-300 ${presentYear === 2
+                      ? "bg-[#4f72cc] text-white"
+                      : "bg-slate-200"
+                      } hover:bg-[#4f72cc] hover:text-white px-2 py-1 rounded-md cursor-pointer font-medium`}
+                  >
+                    <input
+                      type="radio"
+                      value={2}
+                      checked={presentYear === 2}
+                      onChange={() => handleOnslectYear(2)}
+                      className="sr-only" // Hide the actual radio button
+                    />
+                    II Year
+                  </label>
+
+                  <label
+                    className={`transition-all duration-300 ${presentYear === 3
+                      ? "bg-[#4f72cc] text-white"
+                      : `bg-slate-200 `
+                      } ${deparment[0] === 'M' || deparment[0] === 'P' ? ' cursor-not-allowed' : 'hover:bg-[#4f72cc] hover:text-white cursor-pointer'}   px-2 py-1 rounded-md  font-medium`}
+                  >
+                    <input
+                      type="radio"
+                      value={3}
+                      checked={presentYear === 3}
+                      disabled={deparment[0] === 'M' || deparment[0] === 'P'}
+                      onChange={() => handleOnslectYear(3)}
+                      className="sr-only" // Hide the actual radio button
+                    />
+                    III Year
+                  </label>
+
+
                 </div>
-              </div>
-
-              <div className=" space-y-2">
-                <h1 className="text-[#676060]">Register No:</h1>
-                <div className=" flex bg-[#F8FCFF] border rounded px-2 items-center min-w-[100px] max-w-fit space-x-1">
-                  <h1 className=" font-medium">{inYear}{deparment !== '' ? deparment : 'MCA'}</h1>
-                  <input
-                    type="tel"
-                    placeholder="XXX"
-                    value={regNo}
-                    onBlur={handleGetreg}
-                    onChange={handleReg}
-                    maxLength={3}
-                    max={3}
-                    required
-                    className="bg-[#F8FCFF] shadow-sm border  h-10 w-[2rem] xl:w-[2rem] rounded  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
-                    style={{ border: 'none', outline: 'none' }}
-                    tabIndex={3}
-                  />
-
-                </div>
-
-              </div>
-
-              <div className=" bg-slate-200 py-2 col-span-2 space-x-2 mt-2 flex items-center shadow-md border justify-center rounded-md  px-3 h-fit w-fit">
-
-                <h1 className="">Status :</h1>
-
-                <button disabled={examType === 'ASG1' || examType === 'ASG2' ? true : false}
-                  className={`${examType === 'ASG1' || examType === 'ASG2' ? 'bg-opacity-20 cursor-not-allowed' : 'opacity-100'} transition-all duration-300  shadow-sm border h-10 w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? 'bg-[#4f72cc] text-white' : 'text-black bg-[#F8FCFF]'}`}
-                  onClick={() => {
-                    if (studentStatus === 'absent') {
-                      setStudentStatus('');
-                      handleClear()
-                    }
-                    else {
-                      setStudentStatus('absent');
-                      setMarks({
-                        ...marks,
-                        ...Object.fromEntries(questions.map(q => [q, 0]))
-                      });
-                    }
-                  }}
-                >
-                  Absent
-                </button>
               </div>
 
             </div>
 
           </div>
 
-          <div className="w-full flex  relative justify-center grow  p-3 border-b ">
+          <div className="w-full flex flex-col items-center  relative justify-center space-y-7 p-3 h-[45%] ">
             {examType === 'ASG1' || examType === 'ASG2' ?
-              (<div className="flex items-center space-x-2 ">
-                <h1 className="text-[#676060] font-semibold">{examType === 'ASG1' ? 'OC1' : 'OC2'} :</h1>
-
-                <input
-                  type="text"
-                  placeholder="0"
-                  value={Assignment}
-                  onChange={handleAssignment}
-                  maxLength={1}
-                  tabIndex={4}
-                  required
-                  className="bg-[#F8FCFF] shadow-sm border border-black   h-10 w-[10rem] xl:w-[10rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
-                />
-              </div>) :
               (
-                <div className=" flex space-x-5">
+                <div className=" flex space-x-5 items-center">
 
-                  <div className=" space-x-2 flex items-center">
-                    <h1 className="text-[#e2401b] font-bold">LOT :</h1>
-                    <input
-                      type="text"
-                      placeholder="0"
-                      value={marks['LOT']}
-                      tabIndex={4}
-                      onChange={(e) => handleMarkChange('LOT', e.target.value)}
-                      className='bg-[#F8FCFF] shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium'
-                    />
+                  <div className=" flex items-end space-x-8">
+
+                    <div className=" space-y-2">
+                      <h1 className="text-[#676060]">Register No</h1>
+                      <div className=" flex bg-[#F8FCFF] shadow-sm border h-10  rounded border-black px-2 items-center min-w-[100px] max-w-fit space-x-1">
+                        <h1 className=" font-medium min-w-[55px]">{inYear}{deparment !== '' ? deparment : 'MCA'}</h1>
+                        <input
+                          type="tel"
+                          placeholder="XXX"
+                          value={regNo}
+                          onBlur={handleGetreg}
+                          onChange={handleReg}
+                          maxLength={3}
+                          max={3}
+                          required
+                          className="h-8 w-[2.5rem] pl-1  rounded text-black font-medium bg-[#F8FCFF]"
+                          style={{ border: 'none', outline: 'none' }}
+                          tabIndex={3}
+                        />
+
+                      </div>
+
+                    </div>
+
+                    <div className="flex space-y-2 flex-col ">
+                      <h1 className="text-[#676060] font-semibold">{examType === 'ASG1' ? 'OC1' : 'OC2'}</h1>
+
+                      <input
+                        type="text"
+                        placeholder="0"
+                        value={Assignment}
+                        onChange={handleAssignment}
+                        maxLength={1}
+                        tabIndex={4}
+                        required
+                        className="bg-[#F8FCFF] shadow-sm border border-black   h-10 w-[6rem] xl:w-[6rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                      />
+                    </div>
+
+                    <div className=" flex">
+                      <button disabled={examType === 'ASG1' || examType === 'ASG2' ? true : false}
+                        className={`transition-all duration-300  bg-slate-200 
+                           hover:bg-orange-600 hover:text-white cursor-pointer h-10 px-2 py-1 rounded-md  font-medium`}
+                        onClick={() => {
+                          if (regNo !== '') {
+                            const last3Digits = parseInt(regNo, 10);
+                            const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
+                            setRegNo(newLast3Digits);
+                            toast.success('Skipped the Register Number')
+                          }
+                          setStudentStatus('')
+
+                        }}
+                      >
+                        NOR
+                      </button>
+                    </div>
+
                   </div>
 
-                  <div className=" space-x-2 flex items-center">
-                    <h1 className="text-[#1c54b7] font-bold">MOT :</h1>
-                    <input
-                      type="text"
-                      placeholder="0"
-                      value={marks['MOT']}
-                      tabIndex={5}
-                      onChange={(e) => handleMarkChange('MOT', e.target.value)}
-                      className='bg-[#F8FCFF] shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium'
-                    />
-                  </div>
+                </div>
+              ) :
+              (
+                <div className=" h-full flex justify-center flex-col space-y-10 items-center">
+                  <div className=" flex space-x-5 items-end h-fit">
 
-                  <div className=" space-x-2 flex items-center">
-                    <h1 className="text-[#0b7d4b] font-bold">HOT :</h1>
-                    <input
-                      type="text"
-                      placeholder="0"
-                      value={marks['HOT']}
-                      tabIndex={6}
-                      onChange={(e) => handleMarkChange('HOT', e.target.value)}
-                      className='bg-[#F8FCFF] shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium'
-                    />
+                    <div className=" space-y-2 flex flex-col justify-end h-fit">
+                      <h1 className="text-[#676060]">Register No</h1>
+                      <div className=" flex bg-[#F8FCFF] shadow-sm border h-10  rounded border-black px-2 items-center min-w-[100px] max-w-fit space-x-1">
+                        <h1 className=" font-medium min-w-[55px]">{inYear}{deparment !== '' ? deparment : 'MCA'}</h1>
+                        <input
+                          type="tel"
+                          placeholder="XXX"
+                          value={regNo}
+                          onBlur={handleGetreg}
+                          onChange={handleReg}
+                          maxLength={3}
+                          max={3}
+                          required
+                          className="h-8 w-[2.5rem] pl-1  rounded text-black font-medium bg-[#F8FCFF]"
+                          style={{ border: 'none', outline: 'none' }}
+                          tabIndex={3}
+                        />
+
+                      </div>
+
+                    </div>
+
+
+                    <div className="  space-y-2 flex  items-start h-fit flex-col">
+                      <h1 className="text-[#e2401b] font-bold">LOT</h1>
+                      <input
+                        type="text"
+                        placeholder="0"
+                        disabled={studentStatus === 'absent'}
+                        value={marks['LOT']}
+                        tabIndex={4}
+                        onChange={(e) => handleMarkChange('LOT', e.target.value)}
+                        className={` shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium ${studentStatus === 'absent' ? 'opacity-25 bg-slate-500' : 'bg-[#F8FCFF]'}`}
+                      />
+                    </div>
+
+                    <div className=" space-y-2  flex items-start h-fit flex-col">
+                      <h1 className="text-[#1c54b7] font-bold">MOT</h1>
+                      <input
+                        type="text"
+                        placeholder="0"
+                        value={marks['MOT']}
+                        disabled={studentStatus === 'absent'}
+                        tabIndex={5}
+                        onChange={(e) => handleMarkChange('MOT', e.target.value)}
+                        className={` shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium ${studentStatus === 'absent' ? 'opacity-25 bg-slate-500' : 'bg-[#F8FCFF]'}`}
+                      />
+                    </div>
+
+                    <div className=" space-y-2  flex items-start h-fit flex-col">
+                      <h1 className="text-[#0b7d4b] font-bold">HOT</h1>
+                      <input
+                        type="text"
+                        placeholder="0"
+                        value={marks['HOT']}
+                        disabled={studentStatus === 'absent'}
+                        tabIndex={6}
+                        onChange={(e) => handleMarkChange('HOT', e.target.value)}
+                        className={` shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium ${studentStatus === 'absent' ? 'opacity-25 bg-slate-500' : 'bg-[#F8FCFF]'}`}
+                      />
+                    </div>
+
+
+                    <div className=" flex">
+                      <button disabled={examType === 'ASG1' || examType === 'ASG2' ? true : false}
+                        className={`${examType === 'ASG1' || examType === 'ASG2' ? ' cursor-not-allowed' : 'opacity-100'} transition-all duration-300  shadow-sm border h-10  w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? ' bg-red-600 text-white' : 'text-black bg-slate-200'}`}
+                        onClick={() => {
+                          if (studentStatus === 'absent') {
+                            setStudentStatus('');
+                            handleClear()
+                          }
+                          else {
+                            setStudentStatus('absent');
+                            setMarks({
+                              ...marks,
+                              ...Object.fromEntries(questions.map(q => [q, 0]))
+                            });
+                          }
+                        }}
+                      >
+                        Absent
+                      </button>
+                    </div>
+
+                    <div className=" flex">
+                      <button disabled={examType === 'ASG1' || examType === 'ASG2' ? true : false}
+                        className={`transition-all duration-300  bg-slate-200 
+                           hover:bg-orange-600 hover:text-white cursor-pointer h-10 px-2 py-1 rounded-md  font-medium`}
+                        onClick={() => {
+                          if (regNo !== '') {
+                            const last3Digits = parseInt(regNo, 10);
+                            const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
+                            setRegNo(newLast3Digits);
+                            toast.success('Skipped the Register Number')
+                          }
+                          setStudentStatus('')
+
+                        }}
+                      >
+                        NOR
+                      </button>
+                    </div>
+
                   </div>
+                  {
+                    examType === 'ASG1' || examType === 'ASG2' ? <div></div> :
+                      <div className="flex space-x-2 items-center text-xl font-semibold">
+
+                        {/* <div className=" h-10 px-4 bg-slate-800 flex items-center justify-center rounded-lg text-white" onClick={handleFillmark}> Fill marks</div> */}
+                        <p>Total Marks: </p>
+                        <div className=" h-10 w-[7rem]  border-black bg-slate-200 border rounded shadow-sm flex items-center justify-center">
+                          {totalMarks}
+                        </div>
+                      </div>
+                  }
                 </div>
               )
             }
-            {studentStatus !== '' &&
-              <div className=" bg-slate-500 transition-all duration-300 opacity-25 cursor-not-allowed absolute  w-full h-full top-0"></div>
-            }
+            <div className=" flex w-full justify-center items-center px-[10rem] space-x-2">
+              <div className=" w-full h-[0.1px] bg-black bg-opacity-20"></div>
+              <p>OR</p>
+              <div className=" w-full h-[0.1px] bg-black bg-opacity-20"></div>
+
+            </div>
+
+            <div className=' w-fit flex justify-center items-end h-fit'>
+              <button className=' px-4 py-2 bg-[#4f72cc] rounded-md text-white font-medium flex  items-center space-x-2' onClick={() => setIsOpenImport(true)}>
+                <ion-icon name="cloud-upload"></ion-icon>
+                <p>
+                  Import Excel
+                </p>
+              </button>
+            </div>
+
           </div>
 
           <div className=" flex justify-between items-center ">
@@ -859,18 +1045,6 @@ const AddMarks = ({ uName, year, currentSem }) => {
                 {editStudent === -1 ? 'Clear All' : 'Cancel'}
               </div>
             </div>
-
-
-
-
-            {
-              examType === 'ASG1' || examType === 'ASG2' ? <div></div> :
-                <div className="flex space-x-2 items-center">
-
-                  {/* <div className=" h-10 px-4 bg-slate-800 flex items-center justify-center rounded-lg text-white" onClick={handleFillmark}> Fill marks</div> */}
-                  <p>Total Marks: {totalMarks}</p>
-                </div>
-            }
 
             <button
               disabled={isLoading}
@@ -1057,7 +1231,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
             </div>
             <div className=" w-full space-x-2 flex justify-between items-center font-medium ">
               <div className="cursor-pointer text-[#4f72cc] hover:text-black transition-colors duration-300" onClick={handleDownload}>
-                Sample format
+                OBE Mark Entry Excel sheet
               </div>
 
               <button className=" px-3 py-2 rounded-md hover:bg-red-700 text-red-700 hover:bg-opacity-10 transition-all duration-700" onClick={() => setIsOpenImport(false)}>Close</button>

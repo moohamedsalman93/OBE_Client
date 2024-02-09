@@ -37,7 +37,7 @@ function Science({ year, currentSem }) {
 
     return (
         <div className=' w-full xl:h-[45rem] 2xl:h-[39rem] overflow-y-auto space-y-2 flex flex-col items-center bg-white rounded-md shadow-md'>
-            <h1 className=' text-center font-medium mt-3 text-[18px]'>Program Outcome for Science</h1>
+            <h1 className=' text-center font-medium mt-3 text-[18px]'>Programme Outcome for Science</h1>
 
             {isLoading ? <div className=' w-full flex items-center justify-center h-full'>
                 <img src={loading} alt="" className=' w-12' />
@@ -45,9 +45,9 @@ function Science({ year, currentSem }) {
                 <table className=" table-auto border-collapse border text-center mt-4 w-[60rem]">
                     <thead className=' bg-[#4f72cc]  text-white'>
                         <tr>
-                            <th className="border p-2">S.No</th>
-                            <th className="border p-2">Program</th>
-                            <th className="border p-2"> OBE Level</th>
+                            <th className="border p-2">S. No.</th>
+                            <th className="border p-2">Programme</th>
+                            <th className="border p-2">OBE Level</th>
                             <th className="border p-2">Course Outcome</th>
                         </tr>
                     </thead>

@@ -199,7 +199,7 @@ function ManageCourse({ year, currentSem }) {
   return (
     <div className=' h-full w-full xl:h-[45rem] 2xl:h-[39.5rem] flex flex-col bg-white rounded-md shadow-md p-2'>
       <div className=' h-12 px-2  py-2 w-full flex justify-between items-end space-x-2'>
-        <p className=' font-semibold text-xl grow'>Courses List</p>
+        <p className=' font-semibold text-xl grow'>Course List</p>
 
         <div className=' flex relative w-fit h-fit'>
           <input
@@ -219,10 +219,10 @@ function ManageCourse({ year, currentSem }) {
 
       <div className=' w-full grow flex flex-col items-center py-2'>
         <div className=' text-start w-[75%] px-2 font-semibold  grid gap-2 grid-cols-7 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
-          <p className=' text-start w-full'>No.</p>
+          <p className=' text-start w-full'>S. No.</p>
           <p className='text-start w-full'>Course Code</p>
-          <p className=' col-span-2 text-start w-full'>Course Name</p>
-          <p className=' text-start w-full'>Department</p>
+          <p className=' col-span-2 text-start w-full'>Course Title</p>
+          <p className=' text-start w-full'>Dep Code</p>
           <p className=' text-center w-full'>Staff</p>
           <p>Actions</p>
         </div>
@@ -231,7 +231,7 @@ function ManageCourse({ year, currentSem }) {
             <div key={index} className={` text-start w-[75%] px-2 font-medium text-sm gap-2 grid grid-cols-7 h-11 border-b place-content-center place-items-center rounded-lg`}>
               <p className=' text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
               <p className=' text-start w-full'>{item.code}</p>
-              <p className=' text-start truncate overflow-hidden w-full col-span-2 pr-4'>{item.name.toLowerCase()}</p>
+              <p className=' text-start truncate overflow-hidden w-full col-span-2 pr-4'>{item.name.toUpperCase()}</p>
               <p className=' text-start w-full'>{item?.department?.departmentCode}</p>
               <div className=' bg-blue-500 px-4 py-1 rounded-md text-white cursor-pointer' onClick={() => handlePopup(index)}>
                 show
@@ -271,7 +271,7 @@ function ManageCourse({ year, currentSem }) {
 
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
                 <div className=' w-full space-x-2 flex items-center relative ' ref={dropdownRef2}>
-                  <h1 className="text-[#676060] w-[40%]">Department :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Dep Code :</h1>
                   <input
                     type="text"
                     value={deparment}
@@ -316,7 +316,7 @@ function ManageCourse({ year, currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-start '>
-                  <h1 className="text-[#676060] w-[40%]">Course Name :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Course Title :</h1>
                   <textarea
                     type="text"
                     value={CourseName}
@@ -344,19 +344,17 @@ function ManageCourse({ year, currentSem }) {
         <div className=" fixed z-20 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
           <div className=" w-[40%] h-[60%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
             <div className=' flex w-full justify-between h-12 border-b items-center'>
-              <p className=' font-bold'>Staffs </p>
+              <p className=' font-bold text-lg'>Staff Assigned </p>
               <p className=' font-medium'>{CourseData[isPopup].name}</p>
             </div>
 
             <div className="w-full grow max-h-[82%] flex flex-col">
               <div className=' w-full grow flex flex-col items-center py-4 overflow-hidden'>
                 <div className=' w-full font-semibold text-base grid grid-cols-4 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
-                  <p>index</p>
-                  <p>UserId</p>
+                  <p>S. No</p>
+                  <p>User ID</p>
                   <div className=' col-span-2 flex justify-start w-full '>
-
-                    Course Name
-
+                    Staff Name
                   </div>
                 </div>
                 {isLoading4 ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> :
@@ -426,7 +424,7 @@ function ManageCourse({ year, currentSem }) {
 
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
                 <div className=' w-full space-x-2 flex items-center relative ' ref={dropdownRef2}>
-                  <h1 className="text-[#676060] w-[40%]">Department :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Dep Code :</h1>
                   <input
                     type="text"
                     value={deparment}
@@ -473,7 +471,7 @@ function ManageCourse({ year, currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-start '>
-                  <h1 className="text-[#676060] w-[40%]">Course Name :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Course Title :</h1>
                   <textarea
                     type="text"
                     value={CourseName}

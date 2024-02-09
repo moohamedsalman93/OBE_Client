@@ -257,18 +257,18 @@ function ManageStaff({ year, currentSem }) {
 
       <div className=' w-full grow flex flex-col items-center py-2'>
         <div className=' w-[70%] font-semibold  px-2 grid grid-cols-6 h-11 bg-slate-300 place-content-center place-items-center rounded-lg'>
-          <p className='text-start w-full'>No.</p>
-          <p className='text-start w-full'>Uname</p>
-          <p className='text-start w-full'>Course Name</p>
+          <p className='text-start w-full'>S. No.</p>
+          <p className='text-start w-full'>User ID</p>
+          <p className='text-start w-full'>Staff Name</p>
           <p className=' '>Action</p>
-          <p className=' '>Details</p>
+          <p className=' '>Staff</p>
           <p className=' '>Password</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-11 absolute top-1/2' /> : (StaffData.length === 0 ? <div className=' font-medium mt-5'>No Data Found</div> : StaffData.map((item, index) =>
           <div key={index} className={` w-[70%] px-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
             <p className=' text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
             <p className='text-start w-full'>{item.uname}</p>
-            <p className=' text-start truncate overflow-hidden w-full'>{item.name}</p>
+            <p className=' text-start truncate overflow-hidden w-full'>{item.name.toUpperCase()}</p>
             <div className=' flex space-x-2'>
               <div className=' flex space-x-3'>
                 <div className=' text-lg text-red-500 cursor-pointer ' onClick={() => handleDeletePop(index)}>
@@ -311,12 +311,24 @@ function ManageStaff({ year, currentSem }) {
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Staff Code :</h1>
+                  <h1 className="text-[#676060] w-[40%]">Staff Name :</h1>
+                  <input
+                    type="text"
+                    value={Name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Salman"
+                    className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[60%] rounded px-2 text-black font-medium'
+                  />
+                </div>
+
+                <div className=' w-full space-x-2 flex items-center '>
+                  <h1 className="text-[#676060] w-[40%]">User ID :</h1>
                   <input
                     type="text"
                     value={Code}
                     onChange={(e) => setCode(e.target.value)}
-                    placeholder="232421"
+                    placeholder="
+                    JMCMTS070"
                     className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[60%] rounded px-2 text-black font-medium'
                   />
 
@@ -334,17 +346,7 @@ function ManageStaff({ year, currentSem }) {
 
                 </div>
 
-                <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Staff Name :</h1>
-                  <input
-                    type="text"
-                    value={Name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Salman"
-                    className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[60%] rounded px-2 text-black font-medium'
-                  />
 
-                </div>
 
               </div>
 
@@ -370,10 +372,10 @@ function ManageStaff({ year, currentSem }) {
             <div className="w-full grow max-h-[82%] flex flex-col">
               <div className=' w-full grow flex flex-col items-center py-4 overflow-hidden'>
                 <div className=' w-full font-semibold text-base grid grid-cols-5 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
-                  <p>index</p>
-                  <p>depCode</p>
+                  <p>S. No.</p>
+                  <p>Dep Code</p>
                   <p>Course Code</p>
-                  <p>Course Name</p>
+                  <p>Course Title</p>
                   <p>Action</p>
                 </div>
                 {isLoading4 ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> :
@@ -432,7 +434,7 @@ function ManageStaff({ year, currentSem }) {
                     </ul>
                   )}
                 </div>
-                <button className=" px-2 py-2 rounded-md bg-black text-white hover:shadow-lg hover:shadow-[#4f72cc] transition-all duration-700" onClick={() => handleAssign(false)}>Assign</button>
+                <button className=" px-2 py-2 rounded-md bg-black text-white hover:shadow-lg hover:shadow-black transition-all duration-700" onClick={() => handleAssign(false)}>Assign</button>
 
               </div>
               <button className=" px-2 py-2 rounded-md bg-[#4f72cc] text-white hover:shadow-lg hover:shadow-[#4f72cc] transition-all duration-700" onClick={() => setIsPopup(-1)}>Close</button>

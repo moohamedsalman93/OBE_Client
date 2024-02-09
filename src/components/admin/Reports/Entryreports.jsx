@@ -122,20 +122,20 @@ function Entryreports({ year,currentSem }) {
 
             <div className=' w-full grow flex flex-col items-center py-2'>
                 <div className=' w-[70%] px-2  font-semibold grid grid-cols-6 h-11 bg-slate-300 gap-2 place-content-center place-items-center rounded-lg'>
-                    <p className='text-start w-full'>No.</p>
+                    <p className='text-start w-full'>S. No.</p>
                     <p className='text-start w-full'>Course Code</p>
-                    <p className='text-start w-full col-span-2'>Course Name</p>
-                    <p className='text-start w-full'>Department</p>
-                    <p className='text-start w-full'>Staff</p>
+                    <p className='text-start w-full col-span-2'>Course Tille</p>
+                    <p className='text-start w-full'>Dep Code</p>
+                    <p className='text-start w-full'>Staff Name</p>
                 </div>
                 {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
                     CourseData.map((item, index) =>
                         <div key={index} className={` w-[70%] px-2 font-medium text-sm grid gap-2 grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
                             <p className='text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
                             <p className='text-start w-full'>{item.code}</p>
-                            <p className='text-start w-full  truncate overflow-hidden pr-3 col-span-2'>{item.name.toLowerCase()}</p>
+                            <p className='text-start w-full  truncate overflow-hidden pr-3 col-span-2'>{item.name.toUpperCase()}</p>
                             <p className='text-start w-full'>{item?.department?.departmentCode}</p>
-                            <p className='text-start w-full truncate overflow-hidden '>{item.staff[0]?.staffName || '-'}</p>
+                            <p className='text-start w-full truncate overflow-hidden '>{item.staff[0]?.staffName.toUpperCase() || '-'}</p>
                         </div>
                     )
                 )

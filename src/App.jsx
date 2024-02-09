@@ -13,6 +13,8 @@ import Reports from './components/admin/Reports';
 import Manage from './components/admin/Manage';
 import Outcome from './components/admin/Outcome';
 import AboutUs from './components/AboutUs';
+import Dashboard from './components/dashboard/Dashboard';
+
 
 
 function App() {
@@ -37,10 +39,11 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        <Route path="/" element={<Home Role={Role} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} currentSem={currentSem} setCurrentSem={setCurrentSem} />} >
+        <Route path="/" element={<Home Role={Role} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} currentSem={currentSem} setCurrentSem={setCurrentSem} currentYear={currentYear} />} >
           {currentYear && date && (
-            <Route path="/" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
+            <Route path="/" element={<Dashboard uName={userName} year={date} currentSem={currentSem} />} />
           )}
+          <Route path="/addmarks" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
           <Route path="/Account" element={<Account userId={userId} year={date} currentSem={currentSem} />} />
           <Route path="/Outcome/Course" element={<CourseOutcome userId={userId} year={date} currentSem={currentSem} />} />
           <Route path="/RelationalMatrix" element={<RelationalMatrix userId={userId} year={date} currentSem={currentSem} />} />
