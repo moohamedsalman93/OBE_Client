@@ -125,10 +125,10 @@ function PSOreports({ year ,currentSem}) {
                     <p className='text-start w-full'>S. No.</p>
                     <p className='text-start w-full'>Course Code</p>
                     <p className='text-start w-full col-span-2'>Course Title</p>
-                    <p className='text-start w-full'>Dep Code</p>
+                    <p className='text-start w-full'>Dept Code</p>
                     <p className='text-start w-full'>Staff Name</p>
                 </div>
-                {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
+                {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data Found</div> :
                     CourseData.map((item, index) =>
                         <div key={index} className={` w-[70%] px-2 gap-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
                             <p className='text-start w-full'>{index + 1 + (Active - 1) * 10}</p>

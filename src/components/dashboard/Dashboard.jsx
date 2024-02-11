@@ -106,7 +106,7 @@ function Dashboard() {
 
   const outcomesData = [
     {
-      title: "Course Outcome",
+      title: "CIA Component",
       values: [
         { label: "CIA I", value: 253, maxValue: 280 },
         { label: "CIA II", value: 197, maxValue: 280 },
@@ -131,7 +131,7 @@ function Dashboard() {
         <div className=" w-[300px] flex justify-between items-center bg-white rounded-lg shadow-lg p-4">
           <div>
             <Typography variant="h6" color="blue-gray">
-              Total Students
+              Total Student
             </Typography>
             <CountUp
               end={4110}
@@ -149,7 +149,7 @@ function Dashboard() {
         <div className=" w-[300px] flex justify-between items-center bg-white rounded-lg shadow-lg p-4">
           <div>
             <Typography variant="h6" color="blue-gray">
-              Total Staffs
+              Total Staff
             </Typography>
             <CountUp
               end={455}
@@ -215,7 +215,7 @@ function Dashboard() {
               </div>
               <div>
                 <Typography variant="h6" color="blue-gray">
-                  Programme Outcomes
+                  Programme Outcome
                 </Typography>
                 <Typography
                   variant="small"

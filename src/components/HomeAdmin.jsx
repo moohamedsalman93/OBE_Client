@@ -238,7 +238,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
       </div>
 
-      <div className="  w-full pl-[20%] bg-gradient-to-r from-slate-200 to-white h-full">
+      <div className="  w-full pl-[20%] bg-gradient-to-r from-slate-200 to-white h-full overflow-y-auto">
         <Outlet />
       </div>
 

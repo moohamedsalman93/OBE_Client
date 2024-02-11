@@ -56,9 +56,10 @@ function LoginPage() {
                         <img src={logo} alt="" className=' h-[100px]' />
                         <div className=' flex  flex-col items-center text-[#052c7b]'>
                             <p className=' text-3xl font-semibold'>Jamal Mohamed College </p>
-                            <p className=' text-sm font-semibold'>{`(Autonomous) Tiruchirappalli-620020`}</p>
-                            <p className=' text-sm font-semibold text-center'>{`Acredited with 'A++' Grade by NAAC (4th Cycle) with CGPA 3.69 out of 4.0`}</p>
+                            <p className=' text-sm font-semibold'>{`(Autonomous)`}</p>
+                            <p className='text-sm font-semibold text-center'>Accredited with 'A++' Grade by NAAC (4<sup>th</sup> Cycle) with CGPA 3.69 out of 4.0</p>
                             <p className=' text-sm font-semibold'>Affiliated to Bharathidasan University</p>
+                            <p className=' text-sm font-semibold'>Tiruchirappalli-620020</p>
                         </div>
 
                     </div>
@@ -66,7 +67,7 @@ function LoginPage() {
 
 
                     <div className='w-[25rem] ml-6 space-y-5 mt-10 h-fit flex flex-col items-center border-2 py-6 rounded-lg'>
-                        <p className=' text-xl text-neutral-500 font-medium'>Login</p>
+                        <p className=' text-xl text-neutral-500 font-medium'>LogIn</p>
 
                         <input
                             className={`bg-[#e8f0fe] text-black h-11 w-[20rem] rounded px-3  placeholder-neutral-500 placeholder:font-medium border-b-2 border-white focus:border-[#4f72cc] outline-none ${emailerr && ' border-red-600 placeholder:text-red-600'}`}
@@ -99,7 +100,7 @@ function LoginPage() {
                             </div>
                         </div>
 
-                        <button disabled={isLoading} onClick={handleSumbit} className=' h-11 w-[20rem] flex justify-center items-center bg-[#4f72cc] rounded-lg text-lg font-medium text-white hover:scale-[0.95] transition'>{isLoading ? <img src={loading} alt="" className=' w-8 text-zinc-50' /> : 'Log In'}</button>
+                        <button disabled={isLoading} onClick={handleSumbit} className=' h-11 w-[20rem] flex justify-center items-center bg-[#4f72cc] rounded-lg text-lg font-medium text-white hover:scale-[0.95] transition'>{isLoading ? <img src={loading} alt="" className=' w-8 text-zinc-50' /> : 'Login'}</button>
                         <span className=' text-[#4f72cc] hover:text-black transition-colors duration-500 cursor-pointer font-medium' onClick={() => Navigate('/AboutUs')}>About Us</span>
                     </div>
 
@@ -107,9 +108,9 @@ function LoginPage() {
                 <div className=' w-3/5 h-full flex items-center justify-center relative'>
 
                     <img src={illustrate} alt="" className=' scale-[1.5]' />
-                    <div className=' absolute bottom-1 right-2 flex flex-col items-start'>
+                    <div className=' absolute bottom-1 right-2 flex flex-col items-start animate-bounce'>
                         <p className=' font-medium text-neutral-500'>Developed By MCA students</p>
-                        <p className=' font-semibold text-neutral-500'>Guided By <span>Abdul Qadir S,</span><span className=' text-xs '> Asst. COE</span></p>
+                        <p className=' font-semibold text-neutral-500'>Guided By <span>Dr. O.S. Abdul Qadir ,</span><span className=' text-xs '> Asst. COE</span></p>
                     </div>
                 </div>
 

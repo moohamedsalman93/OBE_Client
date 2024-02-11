@@ -124,8 +124,8 @@ function Entryreports({ year,currentSem }) {
                 <div className=' w-[70%] px-2  font-semibold grid grid-cols-6 h-11 bg-slate-300 gap-2 place-content-center place-items-center rounded-lg'>
                     <p className='text-start w-full'>S. No.</p>
                     <p className='text-start w-full'>Course Code</p>
-                    <p className='text-start w-full col-span-2'>Course Tille</p>
-                    <p className='text-start w-full'>Dep Code</p>
+                    <p className='text-start w-full col-span-2'>Course Title</p>
+                    <p className='text-start w-full'>Dept Code</p>
                     <p className='text-start w-full'>Staff Name</p>
                 </div>
                 {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :

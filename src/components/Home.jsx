@@ -207,7 +207,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
 
         </div>
 
-        <div className="  w-full pl-[20%] bg-gradient-to-r from-slate-200 to-white h-full">
+        <div className="  w-full pl-[20%] bg-gradient-to-r from-slate-200 to-white h-full overflow-y-auto">
           {OpenInstruction ? <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
             <div className=" w-[60%] h-[85%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
               <div className=" relative w-full px-4 py-2">
