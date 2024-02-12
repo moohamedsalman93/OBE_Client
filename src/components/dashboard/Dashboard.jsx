@@ -12,15 +12,78 @@ import {
 } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
 import { VscGraph } from "react-icons/vsc";
+import { dashboardApi, getCatagoryOut, getPgOutcomeCount } from "../../api/api";
 
-function Dashboard() {
+function Dashboard({ year, currentSem }) {
+  const [Data, setData] = useState([]);
+  const [outComeData, setCourseData] = useState([]);
+  const [PGCourseData, setPGCourseData] = useState([]);
+  const [isLoading, setIsloading] = useState(false);
+
+  const [ugscience, setugscience] = useState();
+  const [pgscience, setpgscience] = useState();
+  const [ugarts, setugarts] = useState();
+  const [pgarts, setpgarts] = useState();
+
+
+  useEffect(() => {
+    const data = {
+      catagory: "Science",
+      year: year,
+      sem: currentSem,
+    };
+
+    dashboardApi(`staff/dashboard?sem=${currentSem}&year=${year}`, setData);
+    getCatagoryOut("staff/getByCategory", setCourseData, data, setIsloading);
+    const data1 = {
+      catagory: "Arts",
+      year: year,
+      sem: currentSem,
+    };
+    getPgOutcomeCount("staff/getByCategory", setPGCourseData, data1);
+  }, [year, currentSem]);
+
+  const avgAttain = (filteredData) => {
+    let total = 0;
+    filteredData.forEach((item) => {
+      total += parseFloat(item.overAtain) || 0;
+    });
+    return total / filteredData.length || 0;
+  };
+
+  useEffect(() => {
+    const UGRecords = outComeData.filter((item) =>
+      item.depCode.startsWith("U")
+    );
+    const PGRecords = outComeData.filter(
+      (item) => !item.depCode.startsWith("U")
+    );
+    const UGartsRecords = PGCourseData.filter((item) =>
+      item.depCode.startsWith("U")
+    );
+    const PGartsRecords = PGCourseData.filter(
+      (item) => !item.depCode.startsWith("U")
+    );
+
+    const avgAttainUG = avgAttain(UGRecords);
+    const avgAttainPG = avgAttain(PGRecords);
+
+    const avgAttainUGarts = avgAttain(UGartsRecords);
+    const avgAttainPGarts = avgAttain(PGartsRecords);
+
+    setugscience(avgAttainUG);
+    setpgscience(avgAttainPG);
+    setugarts(avgAttainUGarts);
+    setpgarts(avgAttainPGarts);
+  }, [outComeData, PGCourseData]);
+
   const chartConfig = {
     type: "bar",
     height: 250,
     series: [
       {
         name: "Sales",
-        data: [2, 1, 3, 2.5, 1],
+        data: [ugarts || 0, ugscience || 0, pgarts || 0, pgscience || 0, 3],
       },
     ],
     options: {
@@ -35,7 +98,7 @@ function Dashboard() {
       dataLabels: {
         enabled: false,
       },
-      colors: ["#6777ef", "#FF5733", "#66FF66","#2563eb","#ffa528"], // This is now moved to plotOptions.bar.colors
+      colors: ["#6777ef", "#FF5733", "#66FF66", "#2563eb", "#ffa528"], // This is now moved to plotOptions.bar.colors
       plotOptions: {
         bar: {
           columnWidth: "30%",
@@ -44,7 +107,7 @@ function Dashboard() {
           colors: {
             backgroundBarColors: [], // Optional: Use if you want to set background colors for the bars
             backgroundBarOpacity: 1,
-            colors: ["#6777ef", "#FF5733", "#66FF66","#2563eb","#ffa528"],  // Define colors for each bar here
+            colors: ["#6777ef", "#FF5733", "#66FF66", "#2563eb", "#ffa528"], // Define colors for each bar here
           },
         },
       },
@@ -108,20 +171,20 @@ function Dashboard() {
     {
       title: "CIA Component",
       values: [
-        { label: "CIA I", value: 253, maxValue: 280 },
-        { label: "CIA II", value: 197, maxValue: 280 },
+        { label: "CIA I", value: 253, maxValue: Data.coures },
+        { label: "CIA II", value: 197, maxValue: Data.coures },
       ],
     },
     {
       title: "Other Component",
       values: [
-        { label: "OC I", value: 140, maxValue: 280 },
-        { label: "OC II", value: 100, maxValue: 280 },
+        { label: "OC I", value: 140, maxValue: Data.coures },
+        { label: "OC II", value: 100, maxValue: Data.coures },
       ],
     },
     {
       title: "End Semester",
-      values: [{ label: "ESE", value: 55, maxValue: 280 }],
+      values: [{ label: "ESE", value: 55, maxValue: Data.coures }],
     },
   ];
 
@@ -134,7 +197,7 @@ function Dashboard() {
               Total Student
             </Typography>
             <CountUp
-              end={4110}
+              end={Data ? Data.studentCount : 0}
               duration={2}
               separator=","
               className="text-[28px] font-bold"
@@ -152,7 +215,7 @@ function Dashboard() {
               Total Staff
             </Typography>
             <CountUp
-              end={455}
+              end={Data ? Data.staff : 0}
               duration={2}
               separator=","
               className="text-[28px] font-bold"
@@ -170,7 +233,7 @@ function Dashboard() {
               Total Course
             </Typography>
             <CountUp
-              end={280}
+              end={Data ? Data.coures : 0}
               duration={2}
               separator=","
               className="text-[28px] font-bold"
@@ -188,7 +251,7 @@ function Dashboard() {
               Total Programme
             </Typography>
             <CountUp
-              end={43}
+              end={Data ? Data.department : 0}
               duration={2}
               separator=","
               className="text-[28px] font-bold"
@@ -251,7 +314,6 @@ function Dashboard() {
                   {/* Adjust 'ml-4' as needed for spacing */}
                   {outcome.values.map((item, itemIndex) => (
                     <div key={itemIndex} className="mb-4 ">
-
                       <div className="flex items-center justify-between gap-4 mb-2">
                         <Typography
                           color="blue-gray"
@@ -279,21 +341,18 @@ function Dashboard() {
                             width: ` ${(item.value / item.maxValue) * 100}%`,
                           }}
                           className="bg-blue-600 h-3 rounded-full transition-all ease-out duration-1000"
-                        >
-
-                        </div>
+                        ></div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-          ))
-          }
+          ))}
         </Card>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
 
-export default Dashboard
+export default Dashboard;

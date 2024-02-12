@@ -44,18 +44,18 @@ function Outcome({ year,currentSem }) {
         },
 
         {
-            label: "Science",
-            value: "Science",
-            icon: DocumentDuplicateIcon,
-            desc: <Science year={year} currentSem={currentSem} />,
-        },
-        {
             label: "Arts",
             value: "Arts",
             icon: DocumentDuplicateIcon,
             desc: <Arts year={year} currentSem={currentSem} />,
         },
 
+        {
+            label: "Science",
+            value: "Science",
+            icon: DocumentDuplicateIcon,
+            desc: <Science year={year} currentSem={currentSem} />,
+        },
     ];
 
     return (

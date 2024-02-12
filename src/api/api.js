@@ -16,6 +16,14 @@ export const searchData = async (path, setData, setisLoading) => {
   }
 };
 
+export const dashboardApi = async (path, setData) => {
+  try {
+    const res = await axios.put(api + path);
+    setData(res.data);
+  } catch (err) {
+  }
+};
+
 export const getApi = async (path, setData, setisLoading) => {
   console.log(api)
   setisLoading(true);
@@ -29,6 +37,20 @@ export const getApi = async (path, setData, setisLoading) => {
   }
 };
 
+export const getStudentOutcomeApi = async (path, setOutcomeData) => {
+  console.log(api)
+  // setisLoading(true);
+  try {
+    const res = await axios.get(api + path);
+    setOutcomeData(res.data.data);
+    // setTotal(res.data.totalPages)
+    // setisLoading(false);/
+    return res
+  } catch (err) {
+    setOutcomeData([]);
+    // setisLoading(false);
+  }
+};
 export const getCourseApi = async (path, setData, setTotal, setisLoading) => {
   console.log(api)
   setisLoading(true);
@@ -104,8 +126,18 @@ export const getDepOut = async (path, setData, data, setisLoading) => {
   }
 };
 
+export const getPgOutcomeCount = async (path, setPGCourseData, data1) => {
+  try {
+    const res = await axios.put(api + path, data1);
+    setPGCourseData(res.data.returnDepData);
+    // setisLoading(false);
+    return res
+  } catch (err) {
+    setPGCourseData([]);
+    // setisLoading(false);
+  }
+};
 export const getCatagoryOut = async (path, setData, data, setisLoading) => {
-  console.log(api)
   setisLoading(true);
   try {
     const res = await axios.put(api + path, data);

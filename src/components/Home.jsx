@@ -77,13 +77,18 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
     },
 
     {
+      icon: "people",
+      name: "Student Outcomes",
+      path: "/Outcome/Student"
+    },
+    {
       icon: "albums",
       name: "Course Outcomes",
       path: "/Outcome/Course"
     },
     {
       icon: "extension-puzzle",
-      name: "Relationship Matrix",
+      name: "Relationship M atrix",
       path: "/RelationalMatrix"
     },
 

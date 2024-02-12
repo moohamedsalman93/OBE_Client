@@ -13,7 +13,8 @@ import Reports from './components/admin/Reports';
 import Manage from './components/admin/Manage';
 import Outcome from './components/admin/Outcome';
 import AboutUs from './components/AboutUs';
-import Dashboard from './components/dashboard/Dashboard';
+import Dashboard from './components/Dashboard/Dashboard';
+import { StudentOutcome } from './components/StudentOutcome/StudentOutcome';
 
 
 
@@ -24,6 +25,7 @@ function App() {
   const [date, setDate] = useState()
   const [currentYear, setCurrentYear] = useState()
   const [currentSem, setCurrentSem] = useState('odd')
+  
 
   useEffect(() => {
     getYearApi().then(res => {
@@ -41,17 +43,18 @@ function App() {
 
         <Route path="/" element={<Home Role={Role} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} currentSem={currentSem} setCurrentSem={setCurrentSem} currentYear={currentYear} />} >
           {currentYear && date && (
-            <Route path="/" element={<Dashboard uName={userName} year={date} currentSem={currentSem} />} />
+            <Route path="/" element={<Dashboard  year={date} currentSem={currentSem} />} />
           )}
           <Route path="/addmarks" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
           <Route path="/Account" element={<Account userId={userId} year={date} currentSem={currentSem} />} />
+          <Route path="/Outcome/Student" element={<StudentOutcome userId={userId} year={date} currentSem={currentSem} />} />
           <Route path="/Outcome/Course" element={<CourseOutcome userId={userId} year={date} currentSem={currentSem} />} />
           <Route path="/RelationalMatrix" element={<RelationalMatrix userId={userId} year={date} currentSem={currentSem} />} />
         </Route>
 
         <Route path="/Admin" element={<HomeAdmin Role={Role} date={date} setDate={setDate} year={currentYear} setCurrentYear={setCurrentYear} currentSem={currentSem} setCurrentSem={setCurrentSem} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} />} >
           {currentYear && date && (
-            <Route path="/Admin/" element={<Dashboard uName={userName} year={date} currentSem={currentSem} />} />
+            <Route path="/Admin/" element={<Dashboard year={date} currentSem={currentSem} />} />
           )}
           <Route path="/Admin/addmarks" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
           <Route path="/Admin/Outcome" element={<Outcome year={date} currentSem={currentSem} />} />
