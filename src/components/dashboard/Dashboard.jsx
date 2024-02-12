@@ -107,7 +107,7 @@ function Dashboard({ year, currentSem }) {
           colors: {
             backgroundBarColors: [], // Optional: Use if you want to set background colors for the bars
             backgroundBarOpacity: 1,
-            colors: ["#6777ef", "#FF5733", "#66FF66", "#2563eb", "#ffa528"], // Define colors for each bar here
+            colors: ["#6777ef", "#FF5733", "#66FF66", "#2563eb", "#ffa528"],  // Define colors for each bar here
           },
         },
       },

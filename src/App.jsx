@@ -8,7 +8,7 @@ import Account from './components/Account/Account';
 import CourseOutcome from './components/Course/CourseOutcome';
 import HomeAdmin from './components/HomeAdmin';
 import RelationalMatrix from './components/RelationalMatrix/RelationalMatrix';
-import { getYearApi } from './api/api';
+import { getCatagoryOut, getYearApi } from './api/api';
 import Reports from './components/admin/Reports';
 import Manage from './components/admin/Manage';
 import Outcome from './components/admin/Outcome';
@@ -27,14 +27,22 @@ function App() {
   const [currentSem, setCurrentSem] = useState('odd')
   
 
+ 
+
   useEffect(() => {
+
+
+
     getYearApi().then(res => {
       if (res?.status === 200) {
         setDate(res?.data.data)
         setCurrentYear(res?.data.data)
-      }
+         }
     })
+
   }, [])
+
+
 
 
   return (

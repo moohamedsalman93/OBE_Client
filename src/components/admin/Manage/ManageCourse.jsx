@@ -69,7 +69,7 @@ function ManageCourse({ year, currentSem }) {
 
 
   useEffect(() => {
-    getCourseApi(`staff/getAllCourses?page=1&year=` + year + '&sem=' + currentSem, setCourseData, setTotal, setIsLoading)
+    getCourseApi(`staff/getAllCourses?page=${Active}&year=` + year + '&sem=' + currentSem, setCourseData, setTotal, setIsLoading)
   }, [Active])
 
   //#region search

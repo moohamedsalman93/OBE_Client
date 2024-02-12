@@ -83,7 +83,11 @@ const AddMarks = ({ uName, year, currentSem }) => {
       reader.onload = (e) => {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: 'array' });
-        const csv = XLSX.utils.sheet_to_csv(workbook.Sheets[workbook.SheetNames[0]]);
+        if (workbook.SheetNames['LMH'] === undefined) {
+          toast.error('Sheet name must be LMH')
+          return
+        }
+        const csv = XLSX.utils.sheet_to_csv(workbook.Sheets[workbook.SheetNames['LMH']]);
         const blob = new Blob([csv], { type: 'text/csv' });
         const datat = new FormData();
         datat.append('Excel', blob, fileList.name.replace('.xlsx', '.csv'));
