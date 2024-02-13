@@ -30,7 +30,7 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
       `staff/EachStudentOutcome?code=${data.code}&dep=${data.department}&sem=${currentSem}&year=${year}`,
       setOutcomeData
     ).then((res) => {
-      console.log(res);
+     
     });
   };
   //#endregion

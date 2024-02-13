@@ -4,7 +4,7 @@ import loadingImg from '../../assets/loading.svg'
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-const api = process.env.REACT_APP_API_URL;
+const api = import.meta.env.VITE_APP_API_URL;
 
 function RelationalMatrix({ userId,year,currentSem }) {
 

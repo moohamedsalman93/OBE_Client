@@ -7,10 +7,7 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 import {
-  Square3Stack3DIcon,
   DocumentDuplicateIcon,
-  UserCircleIcon,
-  Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
 import Entryreports from './Reports/Entryreports';
 import PSOreports from './Reports/PSOreports';

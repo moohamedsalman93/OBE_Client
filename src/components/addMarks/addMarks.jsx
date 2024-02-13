@@ -9,10 +9,9 @@ import { debounce } from 'lodash';
 import ObComponents from "./obComponents";
 import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
-import sampleCSV from '../../assets/sampleMark.xlsx';
 import * as XLSX from 'xlsx';
 
-const api = process.env.REACT_APP_API_URL;
+const api =  import.meta.env.VITE_APP_API_URL;
 
 const AddMarks = ({ uName, year, currentSem }) => {
 
@@ -108,7 +107,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
     };
     reader.readAsArrayBuffer(fileList);
 
-      console.log(existingData)
+    
     }
 
   };
@@ -483,7 +482,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
     let temp = {}
     setEditstudent(index)
     setRegNo(typeData[index].regNo.slice(-3))
-    console.log(examType)
+   
     if (examType === 'ASG1') {
       setAssignment(typeData[index].marks[0].ASG1)
     }
@@ -670,7 +669,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = sampleCSV;
+    link.href = "/datasampleMark.xlxs";
     link.setAttribute('download', 'OBEMarkEntryExcelsheet.xlsx');
     document.body.appendChild(link);
     link.click();

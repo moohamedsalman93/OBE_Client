@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getCatagoryOut, putApi } from "../../../api/api";
+import { getCatagoryOut } from "../../../api/api";
 import studentMarksImg from "../../../assets/studentMark.png";
 import loading from "../../../assets/loading.svg";
 import {
   Card,
-  CardBody,
-  CardHeader,
-  Typography,
+  CardBody
 } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
-import { VscGraph } from "react-icons/vsc";
 
 function Science({ year, currentSem }) {
 
@@ -53,7 +50,6 @@ function Science({ year, currentSem }) {
       item.overAtain !== "NaN" ? Number(item.overAtain).toFixed(2) : 0
     );
     setData(newData);
-    console.log(newData)
   }, [currentTab]);
 
 

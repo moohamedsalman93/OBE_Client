@@ -3,8 +3,7 @@ import { AddNewCourse, deleteCourse, excelApi, getApi, getCourseApi, searchData 
 import { Pagination } from '../../addMarks/pagiNation';
 import loading from "../../../assets/loading.svg";
 import { debounce } from 'lodash';
-import toast, { LoaderIcon } from 'react-hot-toast';
-import sampleCSV from '../../../assets/course.csv';
+import toast from 'react-hot-toast';
 
 
 function ManageCourse({ year, currentSem }) {
@@ -139,7 +138,7 @@ function ManageCourse({ year, currentSem }) {
   //#region toDownload Sample csv
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = sampleCSV;
+    link.href = "/data/course.csv";
     link.setAttribute('download', 'sampleCourse.csv');
     document.body.appendChild(link);
     link.click();

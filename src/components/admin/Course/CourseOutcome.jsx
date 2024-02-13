@@ -51,7 +51,6 @@ function AdminCourseOutcome({ year, currentSem }) {
 
     //#region search
     const handleDepSearch = debounce(async (val) => {
-        console.log('searching..')
         searchData('staff/searchDepartment/?question=' + val + `&sem=${currentSem}&year=` + year, setSearchValue, setIsLoading2)
     }, 500);
     //#endregion

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { getCourseApi, searchData } from '../../../api/api';
 import { debounce } from 'lodash';
-import toast, { LoaderIcon } from 'react-hot-toast';
 import loading from "../../../assets/loading.svg";
 import { Pagination } from '../../addMarks/pagiNation';
 import * as XLSX from 'xlsx';

@@ -1,7 +1,6 @@
 import React from 'react'
 import loading from "../../assets/loading.svg";
 import studentMarksImg from "../../assets/studentMark.png";
-import { Pagination } from './pagiNation';
 
 function ExistingStudent({ isLoading3, courseCode,presentYear, typeData, editStudent, handleEditClick, examType, setSortby, Sortby, active, setActive, total, setIsOpenImport }) {
     return (

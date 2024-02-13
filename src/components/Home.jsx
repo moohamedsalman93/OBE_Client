@@ -34,8 +34,6 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
       let decodedToken = jwtDecode(token);
       let currentTime = Date.now() / 1000;
 
-      console.log(decodedToken)
-
       setRole(decodedToken.role)
       setuserName(decodedToken.name)
       setuserId(decodedToken.uname)

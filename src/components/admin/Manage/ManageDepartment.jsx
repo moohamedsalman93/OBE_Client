@@ -1,12 +1,11 @@
 
 
 import React, { useEffect, useRef, useState } from 'react'
-import { AddNewCourse, AddNewProgram, deleteCourse, deleteDep, excelApi, getCourseApi, searchData } from '../../../api/api';
+import {  AddNewProgram,  deleteDep, excelApi, getCourseApi } from '../../../api/api';
 import { Pagination } from '../../addMarks/pagiNation';
 import loading from "../../../assets/loading.svg";
 import { debounce } from 'lodash';
 import toast from 'react-hot-toast';
-import sampleCSV from '../../../assets/program.csv';
 
 function ManageDepartment({ year,currentSem }) {
   const [CourseData, setCourseData] = useState([]);
@@ -133,7 +132,7 @@ function ManageDepartment({ year,currentSem }) {
   //#region toDownload Sample csv
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = sampleCSV;
+    link.href = "/data/program.csv";
     link.setAttribute('download', 'sampleProgram.csv');
     document.body.appendChild(link);
     link.click();

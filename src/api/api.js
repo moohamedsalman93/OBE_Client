@@ -1,10 +1,10 @@
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-const api = process.env.REACT_APP_API_URL;
+export const api = import.meta.env.VITE_APP_API_URL;
 
 export const searchData = async (path, setData, setisLoading) => {
-  console.log(api)
+ 
   setisLoading(true);
   try {
     const res = await axios.get(api + path);
@@ -25,7 +25,7 @@ export const dashboardApi = async (path, setData) => {
 };
 
 export const getApi = async (path, setData, setisLoading) => {
-  console.log(api)
+ 
   setisLoading(true);
   try {
     const res = await axios.get(api + path);
@@ -38,7 +38,7 @@ export const getApi = async (path, setData, setisLoading) => {
 };
 
 export const getStudentOutcomeApi = async (path, setOutcomeData) => {
-  console.log(api)
+  
   // setisLoading(true);
   try {
     const res = await axios.get(api + path);
@@ -52,7 +52,7 @@ export const getStudentOutcomeApi = async (path, setOutcomeData) => {
   }
 };
 export const getCourseApi = async (path, setData, setTotal, setisLoading) => {
-  console.log(api)
+  
   setisLoading(true);
   try {
     const res = await axios.get(api + path);
@@ -67,7 +67,7 @@ export const getCourseApi = async (path, setData, setTotal, setisLoading) => {
 };
 
 export const getStaffCourse = async (path, setData, setisLoading) => {
-  console.log(api)
+
   setisLoading(true);
   try {
     const res = await axios.get(api + path);
@@ -113,7 +113,7 @@ export const putApi2 = async (path, setData, data, setisLoading) => {
 };
 
 export const getDepOut = async (path, setData, data, setisLoading) => {
-  console.log(api)
+  
   setisLoading(true);
   try {
     const res = await axios.put(api + path, data);
@@ -151,7 +151,7 @@ export const getCatagoryOut = async (path, setData, data, setisLoading) => {
 };
 
 export const getRegMarksApi = async (path, setData, data, setisLoading) => {
-  console.log(api)
+  
   setisLoading(true);
   try {
     const res = await axios.put(api + path, data);
@@ -199,7 +199,7 @@ export const passChangeApi = async (path, setisLoading) => {
 
 export const DeleteApi = async (path, data, setisLoading) => {
   setisLoading(true);
-  console.log(data)
+ 
   try {
     const res = await axios.put(api + path, data);
     setisLoading(false);

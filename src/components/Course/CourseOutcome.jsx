@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { getApi, putApi, searchData } from '../../api/api';
-import { debounce } from 'lodash';
-import loading from "../../assets/loading.svg";
 import studentMarksImg from "../../assets/studentMark.png";
 
 function CourseOutcome({ userId,year,currentSem }) {
@@ -27,7 +25,7 @@ function CourseOutcome({ userId,year,currentSem }) {
             year:year
         }
         putApi(`staff/getMarks`, setOutcomeData, data, setIsLoading1).then(res => {
-            console.log(res)
+           
         })
     }
     //#endregion

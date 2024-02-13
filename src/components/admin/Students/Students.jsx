@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, {  useRef, useState } from 'react'
 import { putApi2 } from '../../../api/api';
-import { debounce } from 'lodash';
 import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
-import ReactToPrint from 'react-to-print';
+
 
 function Students({ year, currentSem }) {
     const [regNo, setRegNo] = useState("");

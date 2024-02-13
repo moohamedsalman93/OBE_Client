@@ -7,9 +7,6 @@ import {
     TabPanel,
 } from "@material-tailwind/react";
 import {
-    Square3Stack3DIcon,
-    UserCircleIcon,
-    Cog6ToothIcon,
     DocumentDuplicateIcon,
     AcademicCapIcon,
     UserIcon 

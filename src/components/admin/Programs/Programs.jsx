@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { getApi, getDepOut, putApi, searchData } from '../../../api/api';
+import { getDepOut,  searchData } from '../../../api/api';
 import { debounce } from 'lodash';
 import loading from "../../../assets/loading.svg";
 import studentMarksImg from "../../../assets/studentMark.png";
@@ -51,7 +51,7 @@ function Programs({ year, currentSem }) {
 
     //#region search
     const handleDepSearch = debounce(async (val) => {
-        console.log('searching..')
+       
         searchData('staff/searchDepartment/?question=' + val + '&year=' + year, setSearchValue, setIsLoading2)
     }, 500);
     //#endregion
@@ -118,7 +118,6 @@ function Programs({ year, currentSem }) {
             }
         })
 
-        console.log(i)
         return i / l.toFixed(2)
     }
 

@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import results from "../assets/results.png";
-import marks from "../assets/add marks.png";
-import course from "../assets/add cources.png";
 import logo from "../assets/Logo.png";
-import { NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-hot-toast";
 import '../App.css'
 import { getYearApi, setYearApi } from "../api/api";
-import { Option, Radio, Select } from "@material-tailwind/react";
+import { Option, Select } from "@material-tailwind/react";
 
-function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year, setCurrentYear, currentSem, setCurrentSem }) {
+function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCurrentYear, currentSem, setCurrentSem }) {
 
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
@@ -28,7 +25,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
       let decodedToken = jwtDecode(token);
       let currentTime = Date.now() / 1000;
 
-      console.log(decodedToken)
+
 
       setRole(decodedToken.role)
       setuserName(decodedToken.name)

@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { AddNewCourse, addStaff, deleteCourse, deleteStaff, deleteStaffCourse, excelApi, getApi, getCourseApi, passChangeApi, searchData, staffCourseAssign } from '../../../api/api';
+import {  addStaff,  deleteStaff, deleteStaffCourse, excelApi, getApi, getCourseApi, passChangeApi, searchData, staffCourseAssign } from '../../../api/api';
 import { Pagination } from '../../addMarks/pagiNation';
 import loading from "../../../assets/loading.svg";
 import { debounce } from 'lodash';
-import toast, { LoaderIcon } from 'react-hot-toast';
-import sampleCSV from '../../../assets/Staff.csv';
+import toast from 'react-hot-toast';
 
 function ManageStaff({ year, currentSem }) {
   const [StaffData, setStaffData] = useState([]);
@@ -72,7 +71,7 @@ function ManageStaff({ year, currentSem }) {
   //#region toDownload Sample csv
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = sampleCSV;
+    link.href = "/data/Staff.csv";
     link.setAttribute('download', 'sampleStaff.csv');
     document.body.appendChild(link);
     link.click();

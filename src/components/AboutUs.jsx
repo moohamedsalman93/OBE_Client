@@ -1,6 +1,5 @@
 import React from 'react'
 import salman from '../assets/salman.png'
-import siraj from '../assets/siraj.JPG'
 import SAQ from '../assets/SAQ.jpg'
 import JP from '../assets/jp.png'
 import basith from '../assets/basith.png'
@@ -42,7 +41,7 @@ function AboutUs() {
                         <a href="https://abdsirajofficial.github.io/portfolio/" target="_blank" rel="noopener noreferrer">
                             <div className=' w-full flex flex-col items-center space-y-3 animate-slideinsiraj'>
                                 <div className='  rounded-full h-40 w-40'>
-                                    <img src={siraj} alt="" className=' object-cover h-40 w-40 rounded-full' />
+                                    <img src="/images/siraj.JPG" alt="" className=' object-cover h-40 w-40 rounded-full' />
                                 </div>
                                 <div className=' flex flex-col items-center '>
                                     <p className=' text-xl text-neutral-500 font-semibold'>Abdul Sirajudeen S, MCA</p>

@@ -31,7 +31,7 @@ function LoginPage() {
 
         loginApi('staff/login', { email: email, password: password }, setIsloading).then((res) => {
             if (res) {
-                console.log(res)
+               
 
                 if (res?.status === 200) {
                     toast.success('login success')

@@ -8,7 +8,7 @@ import Account from './components/Account/Account';
 import CourseOutcome from './components/Course/CourseOutcome';
 import HomeAdmin from './components/HomeAdmin';
 import RelationalMatrix from './components/RelationalMatrix/RelationalMatrix';
-import { getCatagoryOut, getYearApi } from './api/api';
+import { getYearApi } from './api/api';
 import Reports from './components/admin/Reports';
 import Manage from './components/admin/Manage';
 import Outcome from './components/admin/Outcome';
@@ -30,8 +30,6 @@ function App() {
  
 
   useEffect(() => {
-
-
 
     getYearApi().then(res => {
       if (res?.status === 200) {
@@ -74,6 +72,7 @@ function App() {
         <Route path="/AboutUs" exact element={<AboutUs />} />
       </Routes>
     </BrowserRouter>
+    
   );
 }
 

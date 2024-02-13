@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getCatagoryOut } from "../../../api/api";
-import { Tooltip, BarChart, Bar, XAxis, CartesianGrid } from "recharts";
 import studentMarksImg from "../../../assets/studentMark.png";
 import loading from "../../../assets/loading.svg";
 import {
   Card,
   CardBody,
-  CardHeader,
-  Typography,
 } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
-import { VscGraph } from "react-icons/vsc";
 
 function Arts({ year, currentSem }) {
   const [outComeData, setCourseData] = useState([]);
