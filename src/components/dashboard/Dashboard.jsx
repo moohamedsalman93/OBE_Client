@@ -71,10 +71,10 @@ function Dashboard({ year, currentSem }) {
     const avgAttainUGarts = avgAttain(UGartsRecords);
     const avgAttainPGarts = avgAttain(PGartsRecords);
 
-    setugscience(avgAttainUG);
-    setpgscience(avgAttainPG);
-    setugarts(avgAttainUGarts);
-    setpgarts(avgAttainPGarts);
+    setugscience(avgAttainUG.toFixed(2));
+    setpgscience(avgAttainPG.toFixed(2));
+    setugarts(avgAttainUGarts.toFixed(2));
+    setpgarts(avgAttainPGarts.toFixed(2));
   }, [outComeData, PGCourseData]);
 
   const chartConfig = {
@@ -83,7 +83,7 @@ function Dashboard({ year, currentSem }) {
     series: [
       {
         name: "Sales",
-        data: [ugarts || 0, ugscience || 0, pgarts || 0, pgscience || 0, 3],
+        data: [ugarts || 0, ugscience || 0, pgarts || 0, pgscience || 0, ((ugarts + ugscience + pgarts + pgscience) / 4 || 0)],
       },
     ],
     options: {
@@ -171,20 +171,20 @@ function Dashboard({ year, currentSem }) {
     {
       title: "CIA Component",
       values: [
-        { label: "CIA I", value: 253, maxValue: Data.coures },
-        { label: "CIA II", value: 197, maxValue: Data.coures },
+        { label: "CIA I", value: Data.cia1, maxValue: Data.coures },
+        { label: "CIA II", value: Data.cia2, maxValue: Data.coures },
       ],
     },
     {
       title: "Other Component",
       values: [
-        { label: "OC I", value: 140, maxValue: Data.coures },
-        { label: "OC II", value: 100, maxValue: Data.coures },
+        { label: "OC I", value: Data.oc1, maxValue: Data.coures },
+        { label: "OC II", value: Data.oc2, maxValue: Data.coures },
       ],
     },
     {
       title: "End Semester",
-      values: [{ label: "ESE", value: 55, maxValue: Data.coures }],
+      values: [{ label: "ESE", value: Data.ese, maxValue: Data.coures }],
     },
   ];
 

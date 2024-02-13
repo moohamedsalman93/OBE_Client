@@ -13,7 +13,7 @@ import Reports from './components/admin/Reports';
 import Manage from './components/admin/Manage';
 import Outcome from './components/admin/Outcome';
 import AboutUs from './components/AboutUs';
-import Dashboard from './components/Dashboard/Dashboard';
+import Dashboard from './components/dashboard/Dashboard';
 import { StudentOutcome } from './components/StudentOutcome/StudentOutcome';
 
 

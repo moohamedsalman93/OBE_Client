@@ -7,7 +7,7 @@ function ExistingStudent({ isLoading3, courseCode,presentYear, typeData, editStu
     return (
         <div className="bg-white p-2 flex flex-col rounded h-full w-[28%] overflow-hidden">
             <div className=" h-10 border-b  flex justify-between py-5 items-center font-semibold">
-                <p>Entered Marks</p>
+                <p>{courseCode}</p>
                 <div onClick={() => setSortby(!Sortby)} className=' h-8 w-fit text-[#4f72cc] rounded-md flex justify-center items-center px-3 cursor-pointer'>
                     <p className=' font-medium text-sm '>{Sortby ? 'Asc' : 'Desc'}</p>
                     <ion-icon name={Sortby ? 'arrow-down-outline' : 'arrow-up-outline'}></ion-icon>
@@ -43,7 +43,7 @@ function ExistingStudent({ isLoading3, courseCode,presentYear, typeData, editStu
                                                     <p>Register No</p>
                                                     <p>staff Name</p>
                                                 </div>
-                                                <div className=" w-full  h-[90%] overflow-y-auto">
+                                                <div className=" w-full  h-[98%] overflow-y-auto border-b-2 rounded-md">
                                                     {typeData?.map((item, index) =>
                                                         <div key={index} className={` h-10 mx-2  grid grid-cols-2 px-2 items-center text-center border-b text-sm font-medium hover:border-blue-700 hover:text-blue-600 cursor-pointer ${editStudent === index ? 'font-semibold text-[#4f72cc] border-[#4f72cc]' : (item?.marks[0][examType + 'STATUS'] === 'absent' && 'text-red-600')}`} onClick={() => handleEditClick(index)}>
                                                             <p>{item?.regNo}</p>
@@ -53,16 +53,6 @@ function ExistingStudent({ isLoading3, courseCode,presentYear, typeData, editStu
                                                     }
                                                 </div>
 
-                                            </div>
-
-                                            <div className=' flex flex-col  w-full h-[5rem]'>
-                                                {total !== 0 &&
-                                                    <div className=' w-full flex justify-center items-center'>
-                                                        <Pagination active={active} setActive={setActive} total={total} />
-                                                    </div>
-                                                }
-
-                                               
                                             </div>
 
                                         </div>
