@@ -14,7 +14,7 @@ import Chart from "react-apexcharts";
 import { VscGraph } from "react-icons/vsc";
 import { dashboardApi, getCatagoryOut, getPgOutcomeCount } from "../../api/api";
 
-function Dashboard({ year, currentSem }) {
+function Dashboard({ year, currentSem, Role }) {
   const [Data, setData] = useState([]);
   const [outComeData, setCourseData] = useState([]);
   const [PGCourseData, setPGCourseData] = useState([]);
@@ -34,13 +34,17 @@ function Dashboard({ year, currentSem }) {
     };
 
     dashboardApi(`staff/dashboard?sem=${currentSem}&year=${year}`, setData);
-    getCatagoryOut("staff/getByCategory", setCourseData, data, setIsloading);
+
     const data1 = {
       catagory: "Arts",
       year: year,
       sem: currentSem,
     };
+
+    getCatagoryOut("staff/getByCategory", setCourseData, data, setIsloading);
     getPgOutcomeCount("staff/getByCategory", setPGCourseData, data1);
+
+
   }, [year, currentSem]);
 
   const avgAttain = (filteredData) => {
@@ -83,7 +87,8 @@ function Dashboard({ year, currentSem }) {
     series: [
       {
         name: "Sales",
-        data: [ugarts || 0, ugscience || 0, pgarts || 0, pgscience || 0, ((ugarts + ugscience + pgarts + pgscience) / 4 || 0)],
+        data: Role === 'Admin' ? [ugarts || 0, ugscience || 0, pgarts || 0, pgscience || 0, ((ugarts + ugscience + pgarts + pgscience) / 4 || 0)] : [2, 3, 1, 2.1, 0.5],
+
       },
     ],
     options: {
@@ -189,7 +194,7 @@ function Dashboard({ year, currentSem }) {
   ];
 
   return (
-    <div className="p-5">
+    <div className="p-5 animate-slidein">
       <div className=" flex space-x-5">
         <div className=" w-[300px] flex justify-between items-center bg-white rounded-lg shadow-lg p-4">
           <div>
@@ -340,7 +345,7 @@ function Dashboard({ year, currentSem }) {
                           style={{
                             width: ` ${(item.value / item.maxValue) * 100}%`,
                           }}
-                          className="bg-blue-600 h-3 rounded-full transition-all ease-out duration-1000"
+                          className="bg-[#4f72cc]  h-3 rounded-full transition-all ease-out duration-1000"
                         ></div>
                       </div>
                     </div>

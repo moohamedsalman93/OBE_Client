@@ -100,7 +100,7 @@ function Programs({ year, currentSem }) {
         const data = {
             department: deparment,
             year: year,
-            sem:currentSem
+            sem: currentSem
         }
 
         getDepOut(`staff/getByDepartment`, setOutcomeData, data, setIsLoading1)
@@ -170,44 +170,38 @@ function Programs({ year, currentSem }) {
                 (<div className=' w-full flex space-y-4 flex-col justify-center items-center  grow'>
                     <div className=' space-x-3 text-lg flex items-center'>
                         <p className=' font-medium  '>Attain Level for {departmentName}</p>
-                        <p className=' text-blue-500 font-medium'>{addAttain() || 0}</p>
-                    </div>
-                    <div className=' w-[80%]  grow'>
-                        <table>
-                            <thead>
-                                <tr className=' border-black rounded-lg bg-[#000000] text-white'>
-                                    <th className="px-4 py-2 border" >S no</th>
-                                    <th className="px-4 py-2 border" >Course Code</th>
-                                    <th className="px-4 py-2 border" >Course Title</th>
-                                    <th className="px-4 py-2 border" >CIA AttainLevel</th>
-                                    <th className="px-4 py-2 border" >ESE AttainLevel</th>
-                                    <th className="px-4 py-2 border" >overAll AttainLevel</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {
-                                    outComeData?.map((item, index) => (<tr className={` border rounded-lg  text-black font-medium text-center ${index % 2 === 0 ? 'bg-white' : 'bg-[#e2e8f0]'}`}>
-                                        <td className="px-4 py-2 border" >{index + 1}</td>
-                                        <td className="px-4 py-2 border" >{item.courseCode}</td>
-                                        <td className="px-4 py-2 border" >{item.courseTitle}</td>
-                                        <td className="px-4 py-2 border">
-                                            {item.ciaAttain == 0 && item.eseAtain == 0 ? "-" : (item.ciaAttain)}
-                                        </td>
-                                        <td className="px-4 py-2 border">
-                                            {item.ciaAttain == 0 && item.eseAtain == 0 ? "-" : (item.eseAtain)}
-                                        </td>
-                                        <td className="px-4 py-2 border">
-                                            {item.ciaAttain == 0 && item.eseAtain == 0 ? "-" : (item.overAtain)}
-                                        </td>
-                                    </tr>))
-                                }
-                            </tbody>
-
-                        </table>
-
+                        <p className=' text-[#4f72cc] font-semibold'>{addAttain() || 0}</p>
                     </div>
 
+                    
+
+                    <div className=' w-full grow flex flex-col items-center py-2'>
+                        <div className=' text-start w-[90%] px-4 font-semibold  grid gap-2 grid-cols-7 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+                            <p className=' text-start w-full'>S. No.</p>
+                            <p className=' text-start w-full '>Course Code</p>
+                            <p className=' text-start w-full col-span-2'>Course Title</p>
+                            <p className=' text-start w-full'>CIA AttainLevel</p>
+                            <p className=' text-start w-full'>ESE AttainLevel</p>
+                            <p className=' text-start w-full'>Overall AttainLevel</p>
+                        </div>
+                        <div className=" w-[90%] mt-2 overflow-y-auto flex flex-col justify-start items-center h-[32rem]">
+                            {isLoading1 ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (outComeData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
+                                outComeData.map((item, index) =>
+                                    <div key={index} className={` text-start w-full px-4 font-medium text-sm gap-2 grid grid-cols-7 min-h-[45px] border-b place-content-center place-items-center ${index % 2 === 0 ? 'bg-slate-200' : ''}`}>
+                                        <p className=' text-start w-full'>{index + 1}</p>
+                                        <p className=" w-full text-start ">{item.courseCode}</p>
+                                        <p className=' text-start w-full col-span-2'>{item.courseTitle}</p>
+                                        <p className=' text-start w-full'>{item.ciaAttain == 0 && item.eseAtain == 0 ? "-" : (item.ciaAttain)}</p>
+                                        <p className=' text-start w-full'>{item.ciaAttain == 0 && item.eseAtain == 0 ? "-" : (item.eseAtain)}</p>
+                                        <p className=' text-start w-full'> {item.ciaAttain == 0 && item.eseAtain == 0 ? "-" : (item.overAtain)}</p>
+                                    </div>
+
+                                )
+                            )
+                            }
+                        </div>
+
+                    </div>
 
 
                 </div>) :

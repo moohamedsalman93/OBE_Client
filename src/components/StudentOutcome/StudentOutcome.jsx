@@ -27,7 +27,7 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
       year: year,
     };
     getStudentOutcomeApi(
-      `staff/getMarkByCode?code=${data.code}&department=${data.department}&sem=${currentSem}&year=${year}`,
+      `staff/EachStudentOutcome?code=${data.code}&dep=${data.department}&sem=${currentSem}&year=${year}`,
       setOutcomeData
     ).then((res) => {
       console.log(res);
@@ -36,7 +36,7 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
   //#endregion
 
   return (
-    <div className=" w-full h-full p-5">
+    <div className=" w-full h-full p-5 overflow-hidden">
 
       <div className=" flex justify-start items-center space-x-5">
         <span className="flex items-center space-x-2">
@@ -44,9 +44,8 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
           <select
             value={courseCode}
             onChange={(e) => setCourseCode(e.target.value)}
-            className={` border-2 h-[2.8rem] rounded-md px-2 ${
-              courseCode === "" ? "text-gray-400" : "text-black font-medium"
-            }`}
+            className={` border-2 h-[2.8rem] rounded-md px-2 ${courseCode === "" ? "text-gray-400" : "text-black font-medium"
+              }`}
           >
             <option value="">Select Code</option>
 
@@ -72,78 +71,38 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
       </div>
 
       <div className="w-full flex flex-col items-center py-4 mt-5">
-        <table className="table-auto border-collapse border text-center mt-4 w-full max-w-[60rem]">
-          <thead className="bg-[#4f72cc] text-white">
-            <tr>
-              <th className="border p-2">S. No.</th>
-              <th className="border p-2">Register No</th>
-              <th className="border p-2">LOT</th>
-              <th className="border p-2">MOT</th>
-              <th className="border p-2">HOT</th>
-              <th className="border p-2">Attainment</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading1 ? (
-              <tr>
-                <td colSpan="6" className="p-4">
-                  <img src={loading} alt="" className="mx-auto h-12 w-12" />
-                </td>
-              </tr>
-            ) : outComeData.length === 0 ? (
-              <tr>
-                <td colSpan="6" className="font-medium p-4">
-                  No Data found
-                </td>
-              </tr>
-            ) : (
-              outComeData
-                .sort((a, b) => a.regNo.localeCompare(b.regNo))
-                .map((item, index) => {
-                  // Calculate the required fields
-                  const lotSum =
-                    (item.marks[0].C1LOT +
-                      item.marks[0].C2LOT +
-                      item.marks[0].ESELOT +
-                      item.marks[0].ASG1 +
-                      item.marks[0].ASG2) /
-                    3;
-                  const motSum =
-                    (item.marks[0].C1MOT +
-                      item.marks[0].C2MOT +
-                      item.marks[0].ESEMOT) /
-                    3;
-                  const hotSum =
-                    item.marks[0].C1HOT +
-                    item.marks[0].C2HOT +
-                    item.marks[0].ESEHOT;
 
-                  const averageSum = (lotSum + motSum + hotSum) / 3;
 
-                  return (
-                    <tr key={index} className="font-medium">
-                      <td className="border p-2">{index + 1}</td>
-                      <td className="border p-2">{item.regNo}</td>
-                      <td className="border p-2">
-                        {isNaN(lotSum) ? "N/A" : lotSum.toFixed(2)}
-                      </td>
-                      <td className="border p-2">
-                        {isNaN(motSum) ? "N/A" : motSum.toFixed(2)}
-                      </td>
-                      <td className="border p-2">
-                        {isNaN(hotSum) ? "N/A" : hotSum.toFixed(2)}
-                      </td>
-                      <td className="border p-2">
-                        {isNaN(averageSum) ? "N/A" : averageSum.toFixed(2)}
-                      </td>
-                    </tr>
-                  );
-                })
-            )}
-          </tbody>
-        </table>
+
+        <div className=' w-full grow flex flex-col items-center py-2'>
+          <div className=' text-start w-[75%] px-4 font-semibold  grid gap-2 grid-cols-7 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+            <p className=' text-start w-full'>S. No.</p>
+            <p className=' text-start w-full col-span-2'>Register No</p>
+            <p className=' text-start w-full'>LOT</p>
+            <p className=' text-start w-full'>MOT</p>
+            <p className=' text-start w-full'>HOT</p>
+            <p className=' text-start w-full'>Attainment</p>
+          </div>
+          <div className=" w-[75%] mt-2 overflow-y-auto flex flex-col justify-start items-center h-[32rem] ">
+            {isLoading1 ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (outComeData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
+              outComeData.map((item, index) =>
+                <div key={index} className={` text-start w-full px-4 font-medium text-sm gap-2 grid grid-cols-7 min-h-[45px] border-b place-content-center place-items-center ${index % 2 === 0 ? 'bg-slate-200' : ''}`}>
+                  <p className=' text-start w-full'>{index + 1}</p>
+                  <p className=" w-full text-start col-span-2">{item?.reg}</p>
+                  <p className=' text-start w-full'>{item?.averageAttainLevel?.Mot}</p>
+                  <p className=' text-start w-full'>{item?.averageAttainLevel?.Lot}</p>
+                  <p className=' text-start w-full'>{item?.averageAttainLevel?.Hot}</p>
+                  <p className=' text-start w-full'>{item?.averageAttainLevel?.attain.toFixed(2)}</p>
+                </div>
+
+              )
+            )
+            }
+          </div>
+
+        </div>
       </div>
-      
+
     </div>
   );
 };

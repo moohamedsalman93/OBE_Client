@@ -88,7 +88,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
     },
     {
       icon: "extension-puzzle",
-      name: "Relationship M atrix",
+      name: "Relationship Matrix",
       path: "/RelationalMatrix"
     },
 
@@ -106,7 +106,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
       <div className=" w-full flex h-full  relative">
 
         <div className=" animate-slideinjmc w-[19%] absolute border-r border-white left-0 top-0 h-full z-10  p-1 flex flex-col bg-gradient-to-br from-[#4f72cc] to-[#58caea] ">
-
+        {/* <div className=" animate-slideinjmc w-[19%] absolute border-r border-white left-0 top-0 h-full z-10  p-1 flex flex-col bg-[#3b5f9c] "></div> */}
           <div className=" w-full h-fit space-y-4 flex flex-col justify-between items-center border border-white rounded-lg bg-white/75 py-2 px-3 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
 
             <div className="w-full flex justify-start space-x-1 items-start ">

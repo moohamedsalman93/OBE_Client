@@ -39,13 +39,13 @@ function ExistingStudent({ isLoading3, courseCode,presentYear, typeData, editStu
                                     (
                                         <div className=" w-full h-full   flex flex-col justify-start">
                                             <div className=' w-full h-[44rem] 2xl:h-[36.5rem] '>
-                                                <div className=" h-10 m-2 pr-2  grid grid-cols-2 px-2 items-center text-center font-medium  rounded-md bg-slate-200   shadow-md border">
+                                                <div className=" h-10 m-2 pr-2 mr-6  grid grid-cols-2 px-2 items-center text-center font-medium  rounded-md bg-slate-200   shadow-md border">
                                                     <p>Register No</p>
                                                     <p>staff Name</p>
                                                 </div>
                                                 <div className=" w-full  h-[98%] overflow-y-auto border-b-2 rounded-md">
                                                     {typeData?.map((item, index) =>
-                                                        <div key={index} className={` h-10 mx-2  grid grid-cols-2 px-2 items-center text-center border-b text-sm font-medium hover:border-blue-700 hover:text-blue-600 cursor-pointer ${editStudent === index ? 'font-semibold text-[#4f72cc] border-[#4f72cc]' : (item?.marks[0][examType + 'STATUS'] === 'absent' && 'text-red-600')}`} onClick={() => handleEditClick(index)}>
+                                                        <div key={index} className={` h-10 mx-2  grid grid-cols-2 px-2 items-center text-center border-b text-sm font-medium hover:border-blue-700 hover:text-blue-600 cursor-pointer ${editStudent === index ? 'font-semibold text-[#4f72cc] border-[#4f72cc]' : (item?.marks[0][examType + 'STATUS'] === 'absent' && 'text-red-600')}  `} onClick={() => handleEditClick(index)}>
                                                             <p>{item?.regNo}</p>
                                                             <p className='  w-full h-4 overflow-hidden flex items-start  justify-center'>{item?.marks[0][examType + 'STAFF']}</p>
                                                         </div>

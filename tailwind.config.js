@@ -77,6 +77,17 @@ module.exports = {
             transform: "translateX(0px)",
           },
         },
+        slidein: {
+          from: {
+            opacity: "0",
+            transform: "translateX(0px)",
+
+          },
+          to: {
+            opacity: "1",
+            transform: "translateX(0px)",
+          },
+        },
       },
       animation: {
         slideinSAQ: "slideinSAQ 1s ease 300ms",
@@ -84,7 +95,8 @@ module.exports = {
         slideinbasith: "slideinbasith 3s ease 300ms",
         slideinsalman: "slideinsalman 5s ease 300ms",
         slideinjp: "slideinjp 4s ease 300ms",
-        slideinjmc: "slideinjmc 2s ease 300ms"
+        slideinjmc: "slideinjmc 2s ease 300ms",
+        slidein: "slidein 2s ease 400ms"
       }
     },
   },

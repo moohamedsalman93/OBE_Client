@@ -59,7 +59,7 @@ function Students({ year, currentSem }) {
                     <input type="text" placeholder='23MCAXXX' value={regNo} onChange={(e) => setRegNo((e.target.value)?.toUpperCase())} className='border-2 p-2 rounded-md h-10' />
                 </span>
 
-                <button className=" bg-[#4f72cc] h-10 px-4 rounded-md text-white" onClick={() => handleGet()}>
+                <button className=" bg-[#4f72cc] h-8 px-4 rounded-md text-white font-medium hover:shadow-md hover:shadow-[#4f72cc] transition-all duration-300" onClick={() => handleGet()}>
                     Get
                 </button>
                 <div className=' grow  h-12 flex justify-end items-center'>
@@ -73,32 +73,33 @@ function Students({ year, currentSem }) {
             {outComeData.length !== 0 ?
                 (<div className=' w-full grow'>
 
-                    <div className="flex w-full flex-col justify-start  items-center grow py-4">
 
 
-                        <table className="table-auto rounded-md border mt-2">
-                            <thead className="bg-black text-white">
-                                <tr>
-                                    <th className="px-4 py-2 border">Courses code</th>
-                                    <th className="px-4 py-2 border">Courses Name</th>
-                                    <th className="px-4 py-2 border">Attainment level</th>
+                    <div className=' w-full grow flex flex-col items-center py-2'>
+                        <div className=' text-start w-[75%] px-4 font-semibold  grid gap-2 grid-cols-4 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+                            <p className=' text-start w-full'>Course Code</p>
+                            <p className=' text-start w-full col-span-2'>Course Title</p>
+                            <p className=' text-start w-full'>Attainment Level</p>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {outComeData.map((item, index) =>
-                                    <tr key={index} className=' font-medium'>
-                                        <th className="border px-4 py-2 ">{item?.courseCode}</th>
-                                        <td className="border px-4 py-2 w-72 h-16 overflow-x-hidden text-start">{item?.name}</td>
-                                        <td className="border px-4 py-2">{item?.Attain}</td>
-                                    </tr>
+                        </div>
+                        <div className=" w-[75%] mt-2 overflow-y-auto flex flex-col justify-start items-center h-[32rem] ">
+                            {isLoading1 ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (outComeData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
+                                outComeData.map((item, index) =>
+                                    <div key={index} className={` text-start w-full px-4 font-medium text-sm gap-2 grid grid-cols-4 min-h-[45px] border-b place-content-center place-items-center`}>
+                                        <p className=' text-start w-full'>{item?.courseCode}</p>
+                                        <p className=" w-full text-start col-span-2">{item?.name}</p>
+                                        <p className=' text-start w-full'>{item?.Attain}</p>
+
+                                    </div>
+
                                 )
-
-                                }
-                            </tbody>
-                        </table>
+                            )
+                            }
+                        </div>
 
                     </div>
+
+
 
                     <div class="print-only" style={{ display: "none" }}>
                         <div style={{ width: '100%', padding: '1px', paddingLeft: '4px', paddingRight: '10px', margin: '20px auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'between', fontSize: '20px' }}>

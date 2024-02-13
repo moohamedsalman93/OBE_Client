@@ -18,7 +18,7 @@ import ManageCourse from './Manage/ManageCourse';
 // import { AcademicCapIcon } from '@heroicons/react/solid';
 
 function Manage({year,currentSem}) {
-    const [activeTab, setActiveTab] = React.useState("Course");
+    const [activeTab, setActiveTab] = React.useState("Program");
     const data = [
         {
             label: "Programme",

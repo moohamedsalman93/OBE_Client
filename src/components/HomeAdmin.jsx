@@ -116,7 +116,7 @@ function HomeAdmin({ Role, setRole, setuserName, setuserId, date, setDate, year,
 
       <div className=" w-[19%]   overflow-hidden absolute border-r border-white left-0 top-0 h-full z-0  p-1 flex flex-col bg-gradient-to-br from-[#4f72cc] to-[#58caea] ">
 
-        <div className=" w-full space-y-4 flex flex-col justify-start items-center border border-white rounded-lg bg-white/75 shadow-lg shadow-black/5 saturate-200 backdrop-blur-md">
+        <div className=" w-full space-y-4 flex flex-col justify-start items-center border border-white rounded-lg bg-white/75 shadow-lg shadow-black/5 bg-saturate-200 backdrop-blur-md">
           <div className="w-full flex justify-start space-x-2 items-start  py-2 px-3  rounded-md">
             <img src={logo} alt="" className=" h-16 " />
             <div className=" w-full h-22 space-y-2">

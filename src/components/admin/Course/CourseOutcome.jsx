@@ -173,7 +173,7 @@ function AdminCourseOutcome({ year, currentSem }) {
                     </select>
                 </span>
 
-                <button className=" bg-[#4f72cc] h-10 px-4 rounded-md text-white" onClick={handleGet}>
+                <button className=" bg-[#4f72cc] h-8 px-4 rounded-md font-medium transition-all hover:shadow-md hover:shadaw-[#4f72cc] text-white" onClick={handleGet}>
                     Get
                 </button>
             </div>

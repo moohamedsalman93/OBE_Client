@@ -218,7 +218,7 @@ function ManageCourse({ year, currentSem }) {
       </div>
 
       <div className=' w-full grow flex flex-col items-center py-2'>
-        <div className=' text-start w-[75%] px-2 font-semibold  grid gap-2 grid-cols-7 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+        <div className=' text-start w-[90%] px-2 font-semibold  grid gap-2 grid-cols-7 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
           <p className=' text-start w-full'>S. No.</p>
           <p className='text-start w-full'>Course Code</p>
           <p className=' col-span-2 text-start w-full'>Course Title</p>
@@ -228,12 +228,12 @@ function ManageCourse({ year, currentSem }) {
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
           CourseData.map((item, index) =>
-            <div key={index} className={` text-start w-[75%] px-2 font-medium text-sm gap-2 grid grid-cols-7 h-11 border-b place-content-center place-items-center rounded-lg`}>
+            <div key={index} className={` text-start w-[90%] px-4 font-medium text-sm gap-2 grid grid-cols-7 h-11 border-b place-content-center place-items-center rounded-lg`}>
               <p className=' text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
               <p className=' text-start w-full'>{item.code}</p>
               <p className=' text-start truncate overflow-hidden w-full col-span-2 pr-4'>{item.name.toUpperCase()}</p>
               <p className=' text-start w-full'>{item?.department?.departmentCode}</p>
-              <div className=' bg-blue-500 px-4 py-1 rounded-md text-white cursor-pointer' onClick={() => handlePopup(index)}>
+              <div className=' bg-[#4f72cc]  hover:shadow-md hover:shadow-blue-500 transition-all duration-300 px-4 py-1 rounded-md text-white cursor-pointer' onClick={() => handlePopup(index)}>
                 show
               </div>
               <div className=' flex space-x-3'>

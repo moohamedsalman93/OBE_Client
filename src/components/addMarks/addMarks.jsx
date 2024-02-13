@@ -80,14 +80,11 @@ const AddMarks = ({ uName, year, currentSem }) => {
     } else {
 
       const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        if (workbook.SheetNames['LMH'] === undefined) {
-          toast.error('Sheet name must be LMH')
-          return
-        }
-        const csv = XLSX.utils.sheet_to_csv(workbook.Sheets[workbook.SheetNames['LMH']]);
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      if (workbook.SheetNames.includes('LMH')) {
+        const csv = XLSX.utils.sheet_to_csv(workbook.Sheets['LMH']);
         const blob = new Blob([csv], { type: 'text/csv' });
         const datat = new FormData();
         datat.append('Excel', blob, fileList.name.replace('.xlsx', '.csv'));
@@ -105,8 +102,11 @@ const AddMarks = ({ uName, year, currentSem }) => {
             setIsOpenImport(false)
           }
         })
-      };
-      reader.readAsArrayBuffer(fileList);
+      } else {
+        toast.error('Sheet name must be LMH')
+      }
+    };
+    reader.readAsArrayBuffer(fileList);
 
       console.log(existingData)
     }
@@ -217,7 +217,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
     e.preventDefault();
 
-    if (!deparment || !courseCode || !regNo) {
+    if (!deparment || !courseCode || !regNo || !presentYear) {
       toast.error("Please fill all detail first", { duration: 1500 });
       return;
     }
@@ -326,7 +326,9 @@ const AddMarks = ({ uName, year, currentSem }) => {
               }
             });
         } catch (err) {
-          toast.error(err?.response?.data?.msg, { duration: 1500 });
+          if(err?.response){
+            toast.error(err?.response?.data?.msg, { duration: 1500 });
+          }
           setIsLoading(false);
         }
       };
@@ -688,7 +690,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
             <div className=" w-full flex justify-between ">
               <div className=" space-y-3">
-                <h1 className="text-xl text-center font-medium text-[#676060]">
+                <h1 className="text-xl text-center font-medium text-[#555d6b]">
                   OBE Assesment Components
                 </h1>
                 <div className=" flex space-x-4 items-end ">
@@ -707,7 +709,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
             <div className=" flex flex-wrap justify-start w-full items-start  gap-10">
               <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
-                <h1 className="text-[#676060] text-lg">Department </h1>
+                <h1 className="text-[#555d6b] text-lg">Department </h1>
                 <input
                   type="text"
                   value={deparment}
@@ -715,12 +717,12 @@ const AddMarks = ({ uName, year, currentSem }) => {
                   onChange={departmentOnChange}
                   onFocus={handleDropdownToggle2}
                   placeholder="Eg: MCA"
-                  className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-black font-medium'
+                  className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-[#393f48] font-medium'
                   tabIndex={1}
                 />
                 {isOpen2 && (
                   <ul className="absolute z-20 mt-2 w-[9rem] xl:w-[9rem] flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
-                    {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-black" />) :
+                    {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-[#555d6b]" />) :
                       (searchValue.length === 0 ? (
                         <li className="py-1 px-4 text-gray-400">{deparment.length === 0 ? "Type..." : "No Department found"}</li>
                       ) : (
@@ -740,12 +742,12 @@ const AddMarks = ({ uName, year, currentSem }) => {
               </div>
 
               <div className=" space-y-2 bg-slate-500x`">
-                <h1 className="text-[#676060] text-lg">Course Code</h1>
+                <h1 className="text-[#555d6b] text-lg">Course Code</h1>
                 <select
                   value={courseCode}
                   onChange={handleCourseOnslect}
                   tabIndex={2}
-                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] font-medium rounded px-2 ${courseCode === '' ? 'text-gray-400' : 'text-black'}`}
+                  className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] font-medium rounded px-2 ${courseCode === '' ? 'text-gray-400' : 'text-[#555d6b]'}`}
                 >
                   <option value='' className="rounded mt-10">
                     Select Code
@@ -761,7 +763,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
 
               <div className=" space-y-3">
-                <h1 className="text-xl text-center font-medium text-[#676060]">
+                <h1 className="text-xl text-center font-medium text-[#555d6b]">
                   Year
                 </h1>
                 <div className=" flex space-x-4 items-end ">
@@ -832,7 +834,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
                   <div className=" flex items-end space-x-8">
 
                     <div className=" space-y-2">
-                      <h1 className="text-[#676060]">Register No</h1>
+                      <h1 className="text-[#555d6b]">Register No</h1>
                       <div className=" flex bg-[#F8FCFF] shadow-sm border h-10  rounded border-black px-2 items-center min-w-[100px] max-w-fit space-x-1">
                         <h1 className=" font-medium min-w-[55px]">{inYear}{deparment !== '' ? deparment : 'MCA'}</h1>
                         <input
@@ -844,7 +846,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
                           maxLength={3}
                           max={3}
                           required
-                          className="h-8 w-[2.5rem] pl-1  rounded text-black font-medium bg-[#F8FCFF]"
+                          className="h-8 w-[2.5rem] pl-1  rounded text-[#555d6b] font-medium bg-[#F8FCFF]"
                           style={{ border: 'none', outline: 'none' }}
                           tabIndex={3}
                         />
@@ -854,7 +856,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
                     </div>
 
                     <div className="flex space-y-2 flex-col ">
-                      <h1 className="text-[#676060] font-semibold">{examType === 'ASG1' ? 'OC1' : 'OC2'}</h1>
+                      <h1 className="text-[#555d6b] font-semibold">{examType === 'ASG1' ? 'OC1' : 'OC2'}</h1>
 
                       <input
                         type="text"
@@ -864,7 +866,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
                         maxLength={1}
                         tabIndex={4}
                         required
-                        className="bg-[#F8FCFF] shadow-sm border border-black   h-10 w-[6rem] xl:w-[6rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-black  placeholder-opacity-0 transition duration-200"
+                        className="bg-[#F8FCFF] shadow-sm border border-black   h-10 w-[6rem] xl:w-[6rem] rounded px-2  placeholder-gray-400 placeholder:text-gray-400   text-[#555d6b]  placeholder-opacity-0 transition duration-200"
                       />
                     </div>
 
@@ -896,7 +898,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
                   <div className=" flex space-x-5 items-end h-fit">
 
                     <div className=" space-y-2 flex flex-col justify-end h-fit">
-                      <h1 className="text-[#676060]">Register No</h1>
+                      <h1 className="text-[#555d6b]">Register No</h1>
                       <div className=" flex bg-[#F8FCFF] shadow-sm border h-10  rounded border-black px-2 items-center min-w-[100px] max-w-fit space-x-1">
                         <h1 className=" font-medium min-w-[55px]">{inYear}{deparment !== '' ? deparment : 'MCA'}</h1>
                         <input
@@ -908,7 +910,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
                           maxLength={3}
                           max={3}
                           required
-                          className="h-8 w-[2.5rem] pl-1  rounded text-black font-medium bg-[#F8FCFF]"
+                          className="h-8 w-[2.5rem] pl-1  rounded text-[#555d6b] font-medium bg-[#F8FCFF]"
                           style={{ border: 'none', outline: 'none' }}
                           tabIndex={3}
                         />
@@ -927,7 +929,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
                         value={marks['LOT']}
                         tabIndex={4}
                         onChange={(e) => handleMarkChange('LOT', e.target.value)}
-                        className={` shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium ${studentStatus === 'absent' ? 'opacity-25 bg-slate-500' : 'bg-[#F8FCFF]'}`}
+                        className={` shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-[#555d6b] font-medium ${studentStatus === 'absent' ? 'opacity-25 bg-slate-500' : 'bg-[#F8FCFF]'}`}
                       />
                     </div>
 
@@ -940,7 +942,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
                         disabled={studentStatus === 'absent'}
                         tabIndex={5}
                         onChange={(e) => handleMarkChange('MOT', e.target.value)}
-                        className={` shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium ${studentStatus === 'absent' ? 'opacity-25 bg-slate-500' : 'bg-[#F8FCFF]'}`}
+                        className={` shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-[#555d6b] font-medium ${studentStatus === 'absent' ? 'opacity-25 bg-slate-500' : 'bg-[#F8FCFF]'}`}
                       />
                     </div>
 
@@ -953,14 +955,14 @@ const AddMarks = ({ uName, year, currentSem }) => {
                         disabled={studentStatus === 'absent'}
                         tabIndex={6}
                         onChange={(e) => handleMarkChange('HOT', e.target.value)}
-                        className={` shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-black font-medium ${studentStatus === 'absent' ? 'opacity-25 bg-slate-500' : 'bg-[#F8FCFF]'}`}
+                        className={` shadow-sm border h-10 w-[7rem] border-black rounded px-2 text-[#555d6b] font-medium ${studentStatus === 'absent' ? 'opacity-25 bg-slate-500' : 'bg-[#F8FCFF]'}`}
                       />
                     </div>
 
 
                     <div className=" flex">
                       <button disabled={examType === 'ASG1' || examType === 'ASG2' ? true : false}
-                        className={`${examType === 'ASG1' || examType === 'ASG2' ? ' cursor-not-allowed' : 'opacity-100'} transition-all duration-300  shadow-sm border h-10  w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? ' bg-red-600 text-white' : 'text-black bg-slate-200'}`}
+                        className={`${examType === 'ASG1' || examType === 'ASG2' ? ' cursor-not-allowed' : 'opacity-100'} transition-all duration-300  shadow-sm border h-10  w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? ' bg-red-600 text-white' : 'text-[#555d6b] bg-slate-200'}`}
                         onClick={() => {
                           if (studentStatus === 'absent') {
                             setStudentStatus('');
@@ -1014,9 +1016,9 @@ const AddMarks = ({ uName, year, currentSem }) => {
               )
             }
             <div className=" flex w-full justify-center items-center px-[10rem] space-x-2">
-              <div className=" w-full h-[0.1px] bg-black bg-opacity-20"></div>
+              <div className=" w-full h-[0.1px] bg-slate-200 bg-opacity-20"></div>
               <p>OR</p>
-              <div className=" w-full h-[0.1px] bg-black bg-opacity-20"></div>
+              <div className=" w-full h-[0.1px] bg-slate-200 bg-opacity-20"></div>
 
             </div>
 
@@ -1110,7 +1112,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
                 <div className=" w-full justify-evenly flex">
                   <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
-                    <h1 className="text-[#676060]">Department :</h1>
+                    <h1 className="text-[#555d6b]">Department :</h1>
                     <input
                       type="text"
                       value={deparment}
@@ -1118,12 +1120,12 @@ const AddMarks = ({ uName, year, currentSem }) => {
                       onChange={departmentOnChange}
                       onFocus={handleDropdownToggle2}
                       placeholder="Eg: MCA"
-                      className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-black font-medium'
+                      className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-[#555d6b] font-medium'
                       tabIndex={111}
                     />
                     {isOpen2 && (
                       <ul className="absolute z-20 mt-2 w-[9rem] xl:w-[9rem] flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
-                        {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-black" />) :
+                        {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-[#555d6b]" />) :
                           (searchValue.length === 0 ? (
                             <li className="py-1 px-4 text-gray-400">{deparment.length === 0 ? "Type..." : "No Department found"}</li>
                           ) : (
@@ -1143,12 +1145,12 @@ const AddMarks = ({ uName, year, currentSem }) => {
                   </div>
 
                   <div className=" space-y-2 ">
-                    <h1 className="text-[#676060]">Course Code :</h1>
+                    <h1 className="text-[#555d6b]">Course Code :</h1>
                     <select
                       value={courseCode}
                       onChange={handleCourseOnslect}
                       tabIndex={112}
-                      className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] font-medium rounded px-2 ${courseCode === '' ? 'text-gray-400' : 'text-black'}`}
+                      className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] font-medium rounded px-2 ${courseCode === '' ? 'text-gray-400' : 'text-[#555d6b]'}`}
                     >
                       <option value='' className="rounded mt-10">
                         Select Code
@@ -1234,7 +1236,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
             </div>
             <div className=" w-full space-x-2 flex justify-between items-center font-medium ">
-              <div className="cursor-pointer text-[#4f72cc] hover:text-black transition-colors duration-300" onClick={handleDownload}>
+              <div className="cursor-pointer text-[#4f72cc] hover:text-[#555d6b] transition-colors duration-300" onClick={handleDownload}>
                 OBE Mark Entry Excel sheet
               </div>
 

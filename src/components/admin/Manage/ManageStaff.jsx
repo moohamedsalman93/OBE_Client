@@ -252,11 +252,11 @@ function ManageStaff({ year, currentSem }) {
           </div>
         </div>
 
-        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black font-medium rounded-lg text-white'>Add Staff</button>
+        <button onClick={() => setIsOpen(true)} className=' h-10 px-3 bg-black hover:shadow-md hover:shadow-black transition-all duration-300 font-medium rounded-lg text-white'>Add Staff</button>
       </div>
 
       <div className=' w-full grow flex flex-col items-center py-2'>
-        <div className=' w-[70%] font-semibold  px-2 grid grid-cols-6 h-11 bg-slate-300 place-content-center place-items-center rounded-lg'>
+        <div className=' w-[90%] font-semibold  px-2 grid grid-cols-6 h-11 bg-slate-300 place-content-center place-items-center rounded-lg'>
           <p className='text-start w-full'>S. No.</p>
           <p className='text-start w-full'>User ID</p>
           <p className='text-start w-full'>Staff Name</p>
@@ -265,24 +265,24 @@ function ManageStaff({ year, currentSem }) {
           <p className=' '>Password</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-11 absolute top-1/2' /> : (StaffData.length === 0 ? <div className=' font-medium mt-5'>No Data Found</div> : StaffData.map((item, index) =>
-          <div key={index} className={` w-[70%] px-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
+          <div key={index} className={` w-[90%] px-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
             <p className=' text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
             <p className='text-start w-full'>{item.uname}</p>
             <p className=' text-start truncate overflow-hidden w-full'>{item.name.toUpperCase()}</p>
             <div className=' flex space-x-2'>
               <div className=' flex space-x-3'>
-                <div className=' text-lg text-red-500 cursor-pointer ' onClick={() => handleDeletePop(index)}>
+                <div className=' text-lg hover:text-red-500 cursor-pointer ' onClick={() => handleDeletePop(index)}>
                   <ion-icon name="trash-outline"></ion-icon>
                 </div>
               </div>
 
             </div>
 
-            <div className=' bg-blue-500 px-4 py-1 rounded-md text-white cursor-pointer' onClick={() => handlePopup(index)}>
+            <div className=' bg-[#4f72cc] hover:shadow-md hover:shadow-[#4f72cc] transition-all duration-300  px-4 py-1 rounded-md text-white cursor-pointer' onClick={() => handlePopup(index)}>
               show
             </div>
 
-            <div className=' bg-black px-4 py-1 rounded-md text-white cursor-pointer' onClick={() => setisChangePassword(index)}>
+            <div className=' bg-black hover:shadow-md hover:shadow-black transition-all duration-300 px-4 py-1 rounded-md text-white cursor-pointer' onClick={() => setisChangePassword(index)}>
               Edit
             </div>
 
@@ -294,7 +294,7 @@ function ManageStaff({ year, currentSem }) {
       <div className=' h-10 w-full flex justify-center items-start relative'>
         {Total !== 0 && <Pagination active={Active} setActive={setActive} total={Total} />}
 
-        <button className=' px-4 py-2 bg-[#4f72cc] absolute right-3 bottom-2 rounded-md text-white font-medium ' onClick={() => setIsOpenImport(true)}>Import</button>
+        <button className=' px-4 py-2 bg-[#4f72cc] hover:shadow-md hover:shadow-[#4f72cc] transition-all duration-300 absolute right-3 bottom-2 rounded-md text-white font-medium ' onClick={() => setIsOpenImport(true)}>Import</button>
 
       </div>
 

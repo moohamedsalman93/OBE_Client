@@ -163,7 +163,7 @@ function ManageDepartment({ year,currentSem }) {
       </div>
 
       <div className=' w-full grow flex flex-col items-center py-2'>
-        <div className=' w-[70%] px-2 font-medium  grid grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+        <div className=' w-[90%] px-2 font-medium  grid grid-cols-6 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
           <p className=' text-start w-full'>S. No.</p>
           <p className=' text-start w-full'>Programme Code</p>
           <p className=' text-start w-full col-span-2'>Programme Name</p>
@@ -171,7 +171,7 @@ function ManageDepartment({ year,currentSem }) {
           <p className=' text-center w-full'>Action</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : CourseData.map((item, index) =>
-          <div key={index} className={` w-[70%] px-2 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
+          <div key={index} className={` w-[90%] px-4 font-medium text-sm grid grid-cols-6 h-11 border-b place-content-center place-items-center rounded-lg`}>
             <p className=' text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
             <p className=' text-start w-full'>{item.departmentCode}</p>
             <p className=' text-start col-span-2  truncate overflow-hidden w-full'>{item.name}</p>
