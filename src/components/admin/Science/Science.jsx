@@ -12,7 +12,7 @@ function Science({ year, currentSem }) {
 
   const [outComeData, setCourseData] = useState([]);
   const [isLoading, setIsloading] = useState(false);
-  const [currentTab, setCurrentTab] = useState("UG"); // State to control the current tab
+  const [currentTab, setCurrentTab] = useState("All"); // Set default tab to "All"
   const [Data, setData] = useState([0, 2])
 
 
@@ -38,9 +38,10 @@ function Science({ year, currentSem }) {
   const filteredData = outComeData.filter((item) => {
     if (currentTab === "UG") {
       return item.depCode.startsWith("U");
-    } else {
-      // Includes PG and other codes
+    } else if (currentTab === "PG") {
       return !item.depCode.startsWith("U");
+    } else {
+      return true; // Show all records for "All" tab
     }
   });
 
@@ -142,7 +143,16 @@ function Science({ year, currentSem }) {
 
     <div className="w-full xl:h-[45rem] 2xl:h-[39rem] overflow-y-auto space-y-2 flex flex-col items-center bg-white rounded-md shadow-md">
       <div className=" w-fit flex justify-start space-x-4 my-4 h-fit">
-
+      <button
+          className={`font-semibold h-10 px-2 ${
+            currentTab === "All"
+              ? "text-white bg-[#4f72cc] rounded-md"
+              : " bg-slate-200 rounded-md font-semibold"
+          }`}
+          onClick={() => setCurrentTab("All")}
+        >
+          All - Science
+        </button>
         <button
           className={`font-semibold  h-10 px-2 ${currentTab === "UG" ? "text-white bg-[#4f72cc] rounded-md" : " bg-slate-200 rounded-md font-semibold"}`}
           onClick={() => setCurrentTab("UG")}
