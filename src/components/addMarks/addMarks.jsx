@@ -13,7 +13,7 @@ import * as XLSX from 'xlsx';
 
 const api =  import.meta.env.VITE_APP_API_URL;
 
-const AddMarks = ({ uName, year, currentSem }) => {
+const AddMarks = ({ uName, year, currentSem,role }) => {
 
   //#region  Variables
   const dropdownRef2 = useRef(null);
@@ -30,6 +30,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
   const [examType, setExamType] = useState("C1");
   const [staffIntial, setStaffIntial] = useState('');
   const [Uname, setUname] = useState('');
+  const [Role, setRole] = useState('');
   const [studentStatus, setStudentStatus] = useState('');
   const [totalMarks, setTotalMarks] = useState(0);
   const [inYear, setInYear] = useState(year % 100)
@@ -121,7 +122,6 @@ const AddMarks = ({ uName, year, currentSem }) => {
     "MOT",
     "HOT",
   ];
-  const [value, setValue] = useState("");
 
   useEffect(() => {
     let token = localStorage.getItem('token');
@@ -131,6 +131,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
       const decode = jwtDecode(token);
       setStaffIntial(decode?.name)
       setUname(decode.uname)
+      setRole(decode.role)
     }
   }, [])
 
@@ -392,7 +393,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
   const departmentOnSelect = item => {
     setdepartment(item.departmentCode);
     setIsOpen2(false);
-    if (Uname === 'admin') {
+    if (Role === 'Admin') {
       getApi(`staff/searchCode?question=${item.departmentCode}&year=${year}&sem=${currentSem}`, setCourseData, setIsLoading2)
     } else {
       getStaffCourse(`staff/getStaff?department=${item.departmentCode}&uname=${Uname}&year=${year}&sem=${currentSem}`, setCourseData, setIsLoading2)
@@ -753,8 +754,8 @@ const AddMarks = ({ uName, year, currentSem }) => {
                   </option>
 
                   {CourseData.map((course, index) => (
-                    <option key={index} value={Uname === 'admin' ? course.code : course.courseCode} className="rounded font-medium">
-                      {Uname === 'admin' ? course.code : course.courseCode}
+                    <option key={index} value={Role === 'Admin' ? course.code : course.courseCode} className="rounded font-medium">
+                      {Role === 'Admin' ? course.code : course.courseCode}
                     </option>
                   ))}
                 </select>

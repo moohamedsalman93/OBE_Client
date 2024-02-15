@@ -289,7 +289,10 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
             </div>
 
           </div> :
+          <div className=" overflow-y-auto w-full h-full">
             <Outlet />
+          </div>
+            
           }
 
         </div>

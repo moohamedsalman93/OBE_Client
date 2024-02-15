@@ -435,10 +435,10 @@ function CourseOutcome({ userId, year, currentSem }) {
                         <div className="h-full w-full flex flex-col items-center justify-center text-base font-semibold">
                             <div className="w-fit h-fit relative">
                                 <img src={studentMarksImg} alt="" className=" w-[20rem] " />
-                                <div className=" absolute bottom-[9rem] text-center">
+                                {/* <div className=" absolute bottom-[9rem] text-center">
                                     <p>Enter Department and Course code to get</p>
                                     <p>Course OutCome</p>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
