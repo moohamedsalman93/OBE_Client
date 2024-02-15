@@ -961,7 +961,7 @@ const AddMarks = ({ uName, year, currentSem }) => {
 
                     <div className=" flex">
                       <button disabled={examType === 'ASG1' || examType === 'ASG2' ? true : false}
-                        className={`${examType === 'ASG1' || examType === 'ASG2' ? ' cursor-not-allowed' : 'opacity-100'} transition-all duration-300  shadow-sm border h-10  w-fit font-medium rounded-md px-2 ${studentStatus === 'absent' ? ' bg-red-600 text-white' : 'text-[#555d6b] bg-slate-200'}`}
+                        className={`${examType === 'ASG1' || examType === 'ASG2' ? ' cursor-not-allowed' : 'opacity-100'} transition-all duration-300  shadow-sm border h-10  w-fit font-medium rounded-md hover:bg-red-600   hover:text-white px-2 ${studentStatus === 'absent' ? ' bg-red-600 text-white' : 'text-black bg-slate-200'}`}
                         onClick={() => {
                           if (studentStatus === 'absent') {
                             setStudentStatus('');

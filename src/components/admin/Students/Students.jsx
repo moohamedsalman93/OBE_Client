@@ -53,9 +53,9 @@ function Students({ year, currentSem }) {
             <div className=" flex justify-start items-center space-x-5">
 
 
-                <span className="flex items-center space-x-2 font-normal">
+                <span className="flex items-center space-x-2 font-medium">
                     <h1>Register No :</h1>
-                    <input type="text" placeholder='23MCAXXX' value={regNo} onChange={(e) => setRegNo((e.target.value)?.toUpperCase())} className='border-2 p-2 rounded-md h-10' />
+                    <input type="text" placeholder='23MCAXXX' value={regNo} onChange={(e) => setRegNo((e.target.value)?.toUpperCase())} className='border-2 p-2 rounded-md h-10 w-[7rem]' />
                 </span>
 
                 <button className=" bg-[#4f72cc] h-8 px-4 rounded-md text-white font-medium hover:shadow-md hover:shadow-[#4f72cc] transition-all duration-300" onClick={() => handleGet()}>

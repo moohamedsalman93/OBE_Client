@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../assets/Logo.png";
+import logo from "../assets/Logo.jpeg";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-hot-toast";
@@ -12,7 +12,6 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
   const dateData = [2023, 2024, 2025, 2026, 2027, 2028];
-  const semData = ["odd", "even"];
 
   useEffect(() => {
     if (!token) {
@@ -51,7 +50,7 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
     {
       icon: "menu",
       name: "Dashboard",
-      path: "/Admin/"
+      path: "/Admin/Dashboard"
     },
     {
       icon: "add-circle",
@@ -64,15 +63,16 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
       name: "Manage",
       path: "/Admin/manage"
     },
-    {
-      icon: "documents",
-      name: "Reports",
-      path: "/Admin/reports"
-    },
+   
     {
       icon: "desktop",
       name: "Outcome",
       path: "/Admin/Outcome"
+    }, 
+    {
+      icon: "documents",
+      name: "Reports",
+      path: "/Admin/reports"
     },
 
   ]
@@ -83,11 +83,6 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
   }
   //#endregion
 
-  //#region handleCourseOnSem
-  const handleCourseOnSem = (e) => {
-    setCurrentSem(e.target.value)
-  }
-  //#endregion
 
   //#region hanledOnselectDate
   const handlesetOnDate = () => {
@@ -97,7 +92,7 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
           if (res?.status === 200) {
             setDate(res?.data.data)
             setCurrentYear(res?.data.data)
-            navigate('/');
+            navigate('/Dashboard');
             toast.success('Year set successfully')
           }
         })
@@ -115,8 +110,8 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
 
         <div className=" w-full space-y-4 flex flex-col justify-start items-center border border-white rounded-lg bg-white/75 shadow-lg shadow-black/5 bg-saturate-200 backdrop-blur-md">
           <div className="w-full flex justify-start space-x-2 items-start  py-2 px-3  rounded-md">
-            <img src={logo} alt="" className=" h-16 " />
-            <div className=" w-full h-22 space-y-2">
+            <img src={logo} alt="" className=" h-24 rounded " />
+            <div className=" w-full h-22 space-y-2 flex flex-col items-center">
               <p className=" text-lg font-bold">OBE Software</p>
               <p className=" font-medium">Admin</p>
 
@@ -145,7 +140,7 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
                     checked={currentSem === 'odd'}
                     onChange={() =>{
                       setCurrentSem('odd')
-                      navigate('/Admin/')
+                      navigate('/Admin/Dashboard')
                     } }
                     className="sr-only" // Hide the actual radio button
                   />
@@ -163,7 +158,7 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
                     checked={currentSem === 'even'}
                     onChange={() => {
                       setCurrentSem('even')
-                      navigate('/Admin/')
+                      navigate('/Admin/Dashboard')
                     }}
                     className="sr-only" // Hide the actual radio button
                   />
@@ -203,7 +198,7 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
 
         <div className=" w-full grow py-4 px-2 text-white space-y-3">
 
-          <div className=" w-full space-y-3 ">
+          <div className=" w-full flex flex-col justify-between h-full ">
 
 
 
@@ -212,17 +207,19 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
                 menus.map((item, index) =>
                   <NavLink
                     to={item.path}
+                    
                     className=' z-0 space-x-4 text-2xl pl-[5px] flex items-center h-[45px] transition-all duration-800 hover:bg-black hover:rounded-[5px] hover:bg-opacity-50' >
                     <ion-icon name={item.icon}></ion-icon>
-                    <label className=' text-center cursor-pointer text-base font-medium text-white relative z-10'>{item.name}</label>
+                    <label className=' text-center cursor-pointer text-base font-medium  relative z-10'>{item.name}</label>
                   </NavLink>
                 )
               }
 
             </div>
             <div onClick={handleLogOut} className=" transition-all  justify-center duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer bg-white  text-red-600 flex  items-center  rounded-[5px]">
+              
+              <p className=" text-base font-medium">Log Out</p>
               <ion-icon name="log-in"></ion-icon>
-              <p className=" text-sm font-medium">Log Out</p>
             </div>
 
           </div>

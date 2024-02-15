@@ -49,7 +49,7 @@ function App() {
 
         <Route path="/" element={<Home Role={Role} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} currentSem={currentSem} setCurrentSem={setCurrentSem} currentYear={currentYear} />} >
           {currentYear && date && (
-            <Route path="/" element={<Dashboard  year={date} currentSem={currentSem} Role={Role} />} />
+            <Route path="/Dashboard" element={<Dashboard  year={date} currentSem={currentSem} Role={Role} />} />
           )}
           <Route path="/addmarks" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
           <Route path="/Account" element={<Account userId={userId} year={date} currentSem={currentSem} />} />
@@ -60,7 +60,7 @@ function App() {
 
         <Route path="/Admin" element={<HomeAdmin Role={Role} date={date} setDate={setDate} year={currentYear} setCurrentYear={setCurrentYear} currentSem={currentSem} setCurrentSem={setCurrentSem} setRole={setRole} setuserName={setuserName} setuserId={setuserId} userId={userId} userName={userName} />} >
           {currentYear && date && (
-            <Route path="/Admin/" element={<Dashboard year={date} currentSem={currentSem} Role={Role}/>} />
+            <Route path="/Admin/Dashboard" element={<Dashboard year={date} currentSem={currentSem} Role={Role}/>} />
           )}
           <Route path="/Admin/addmarks" element={<AddMarks uName={userName} year={date} currentSem={currentSem} />} />
           <Route path="/Admin/Outcome" element={<Outcome year={date} currentSem={currentSem} />} />

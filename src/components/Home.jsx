@@ -9,18 +9,8 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
 
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
-  const [logOutBtn, setlogOutBtn] = useState(false);
   const [OpenInstruction, setOpenInstruction] = useState(false);
 
-  const handleLogOutbtn = () => {
-
-    if (logOutBtn == true) {
-      setlogOutBtn(false)
-    }
-    else {
-      setlogOutBtn(true)
-    }
-  }
 
   useEffect(() => {
     if (!token) {
@@ -45,7 +35,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
       }
 
       if (decodedToken.uname === 'admin') {
-        navigate('/Admin/');
+        navigate('/Admin/Dashboard');
       }
 
     } catch (error) {
@@ -66,7 +56,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
     {
       icon: "menu",
       name: "Dashboard",
-      path: "/"
+      path: "/Dashboard"
     },
     {
       icon: "add-circle",
@@ -145,7 +135,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
                       checked={currentSem === 'odd'}
                       onChange={() => {
                         setCurrentSem('odd')
-                        navigate('/')
+                        navigate('/Dashboard')
                       }}
                       className="sr-only" // Hide the actual radio button
                     />
@@ -163,7 +153,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
                       checked={currentSem === 'even'}
                       onChange={() => {
                         setCurrentSem('even')
-                        navigate('/')
+                        navigate('/Dashboard')
                       }}
                       className="sr-only" // Hide the actual radio button
                     />

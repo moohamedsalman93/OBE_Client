@@ -33,8 +33,7 @@ function Science({ year, currentSem }) {
     });
     return total / filteredData.length || 0;
   };
-
-  // Filter data based on the current tab
+    // Filter data based on the current tab
   const filteredData = outComeData.filter((item) => {
     if (currentTab === "UG") {
       return item.depCode.startsWith("U");

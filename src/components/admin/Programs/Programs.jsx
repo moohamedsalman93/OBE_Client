@@ -127,7 +127,7 @@ function Programs({ year, currentSem }) {
             <div className=' flex space-x-2 w-full justify-start items-center px-4 py-2 font-normal '>
 
                 <div className=' w-[20.5rem] relative flex items-center justify-end space-x-2' ref={dropdownRef2}>
-                    <h1 className="w-[8rem] ">Department :</h1>
+                    <h1 className="w-[8rem]  font-medium">Department :</h1>
                     <input
                         type="text"
                         value={deparment}

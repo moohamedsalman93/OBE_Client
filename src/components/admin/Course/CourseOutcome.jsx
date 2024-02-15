@@ -122,7 +122,7 @@ function AdminCourseOutcome({ year, currentSem }) {
         <div className=' w-full h-full p-5 bg-white rounded-lg shadow-md xl:h-[45rem] 2xl:h-[39rem]'>
             <div className=" flex justify-start items-center space-x-5">
 
-                <div className=' w-[19rem] relative font-normal flex items-center justify-end space-x-2' ref={dropdownRef2}>
+                <div className=' w-[20rem] relative font-medium flex items-center justify-end space-x-2' ref={dropdownRef2}>
                     <h1 className="">Department :</h1>
                     <input
                         type="text"
@@ -153,7 +153,7 @@ function AdminCourseOutcome({ year, currentSem }) {
                     )}
                 </div>
 
-                <span className="flex items-center space-x-2 font-normal">
+                <span className="flex items-center space-x-2 font-medium">
                     <h1>Course Code :</h1>
                     <select
                         value={courseCode}
@@ -178,9 +178,9 @@ function AdminCourseOutcome({ year, currentSem }) {
             </div>
 
             {outComeData.length !== 0 ?
-                (<div className=" px-5">
+                (<div className=" px-5 space-y-5">
 
-                    <div className=' w-full flex'>
+                    <div className=' w-full flex '>
 
                         <div className=" w-[50%] space-y-16 2xl:space-y-5">
                             <div className="mt-10 2xl:mt-5">
@@ -203,30 +203,31 @@ function AdminCourseOutcome({ year, currentSem }) {
 
                                                 <th className="border px-4 py-2 bg-[#e2e8f0]">No of student above 60%</th>
 
-                                                <td className="border px-4 py-2">{outComeData?.above40TCO?.TCO1}</td>
-                                                <td className="border px-4 py-2">{outComeData?.above40TCO?.TCO2}</td>
-                                                <td className="border px-4 py-2">{outComeData?.above40TCO?.TCO3}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40TCO?.TCO1}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40TCO?.TCO2}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40TCO?.TCO3}</td>
 
                                             </tr>
                                             <tr>
                                                 <th className="border px-4 py-2 bg-[#e2e8f0]">Percentage</th>
-                                                <td className="border px-4 py-2">{outComeData?.percentages?.TCO1}</td>
-                                                <td className="border px-4 py-2">{outComeData?.percentages?.TCO2}</td>
-                                                <td className="border px-4 py-2">{outComeData?.percentages?.TCO3}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentages?.TCO1}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentages?.TCO2}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentages?.TCO3}</td>
 
                                             </tr>
                                             <tr>
                                                 <th className="border px-4 py-2 bg-[#e2e8f0]">Attainment level</th>
-                                                <td className="border px-4 py-2">{outComeData?.attainLevels?.TCO1}</td>
-                                                <td className="border px-4 py-2">{outComeData?.attainLevels?.TCO2}</td>
-                                                <td className="border px-4 py-2">{outComeData?.attainLevels?.TCO3}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevels?.TCO1}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevels?.TCO2}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevels?.TCO3}</td>
 
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <div>
+
+                            <div className=' space-y-4'>
                                 <h1 className=" font-medium">Overall CO Attainment</h1>
 
                                 <table className="table-auto rounded-md border mt-2">
@@ -241,31 +242,22 @@ function AdminCourseOutcome({ year, currentSem }) {
                                     <tbody>
                                         <tr>
 
-                                            <td className="border px-4 py-2">{outComeData?.overAll?.CO1}</td>
-                                            <td className="border px-4 py-2">{outComeData?.overAll?.CO2}</td>
-                                            <td className="border px-4 py-2">{outComeData?.overAll?.CO3}</td>
+                                            <td className="border px-4 py-2 font-medium">{outComeData?.overAll?.CO1}</td>
+                                            <td className="border px-4 py-2 font-medium">{outComeData?.overAll?.CO2}</td>
+                                            <td className="border px-4 py-2 font-medium">{outComeData?.overAll?.CO3}</td>
 
                                         </tr>
                                     </tbody>
                                 </table>
 
-                                <div className=' space-y-3 mt-7'>
-                                    <h1 className=" px-4  "><span className=' font-medium text-[18px]'>Total no of student :</span> {Math.round(outComeData?.totalStudents)}</h1>
-                                    <h1 className=" px-4  "><span className=' font-medium text-[18px]'>Course Attainment Level :</span> {outComeData?.averageAttainLevel}
-                                        <span className={` font-bold px-2 ${outComeData?.averageAttainLevel < 1.5 ? ' text-red-600 ' : (outComeData?.averageAttainLevel > 2.5 ? ' text-green-600' : ' text-yellow-600')}`}>
-                                            {outComeData?.averageAttainLevel < 1.5 ? 'Low' : (outComeData?.averageAttainLevel > 2.5 ? 'High' : 'Moderate')}
-                                        </span>
-                                    </h1>
-                                    <h1 className=" px-4 "><span className=' font-medium text-[18px]'>Course Attainment Level - Direct Method (80%) :</span> {(outComeData?.direct80).toFixed(2)}</h1>
-                                    <h1 className=" px-4 "><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {(outComeData?.direct80).toFixed(2)}</h1>
 
-                                </div>
+
                             </div>
 
 
                         </div>
 
-                        <div className=" w-[50%] space-y-16 2xl:space-y-5">
+                        <div className=" w-[50%] space-y-16 2xl:space-y-5 pl-5">
                             <div className="mt-10 2xl:mt-5">
                                 <h1 className=" font-medium">ESE Attainment</h1>
                                 <div>
@@ -282,23 +274,23 @@ function AdminCourseOutcome({ year, currentSem }) {
                                         <tbody>
                                             <tr>
                                                 <th className="border px-4 py-2 bg-[#e2e8f0]">No of student above 60%</th>
-                                                <td className="border px-4 py-2">{outComeData?.above40ESECO?.ESECO1}</td>
-                                                <td className="border px-4 py-2">{outComeData?.above40ESECO?.ESECO2}</td>
-                                                <td className="border px-4 py-2">{outComeData?.above40ESECO?.ESECO3}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40ESECO?.ESECO1}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40ESECO?.ESECO2}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40ESECO?.ESECO3}</td>
 
                                             </tr>
                                             <tr>
                                                 <th className="border px-4 py-2 bg-[#e2e8f0]">Percentage</th>
-                                                <td className="border px-4 py-2">{outComeData?.percentagesESECO?.ESECO1}</td>
-                                                <td className="border px-4 py-2">{outComeData?.percentagesESECO?.ESECO2}</td>
-                                                <td className="border px-4 py-2">{outComeData?.percentagesESECO?.ESECO3}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentagesESECO?.ESECO1}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentagesESECO?.ESECO2}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentagesESECO?.ESECO3}</td>
 
                                             </tr>
                                             <tr>
                                                 <th className="border px-4 py-2 bg-[#e2e8f0]">Attainment level</th>
-                                                <td className="border px-4 py-2">{outComeData?.attainLevelsESECO?.ESECO1}</td>
-                                                <td className="border px-4 py-2">{outComeData?.attainLevelsESECO?.ESECO2}</td>
-                                                <td className="border px-4 py-2">{outComeData?.attainLevelsESECO?.ESECO3}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevelsESECO?.ESECO1}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevelsESECO?.ESECO2}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevelsESECO?.ESECO3}</td>
 
                                             </tr>
                                         </tbody>
@@ -324,21 +316,58 @@ function AdminCourseOutcome({ year, currentSem }) {
                                     <tbody>
                                         <tr>
 
-                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps1 || 0).toFixed(2)}</td>
-                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps2 || 0).toFixed(2)}</td>
-                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps3 || 0).toFixed(2)}</td>
-                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps4 || 0).toFixed(2)}</td>
-                                            <td className="border px-4 py-2">{(outComeData?.psoCOS?.ps5 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps1 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps2 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps3 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps4 || 0).toFixed(2)}</td>
+                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps5 || 0).toFixed(2)}</td>
 
                                         </tr>
                                     </tbody>
                                 </table>
-                                <h1 className=" px-4  pt-5"><span className=' font-medium text-[18px]'>The Mean PSA refers the PSO for that course :</span> {psa(outComeData)}</h1>
+
+                                {/* <div className=' h-full border p-4 grid grid-cols-6 mt-6 rounded-md shadow-md font-medium text-lg'>
+                                    <p className=' col-span-5'>The Mean PSA refers the PSO for that course :</p>
+                                    <p className=' font-bold text-[#4f72cc]'> {psa(outComeData)}</p>
+                                </div> */}
+
+
 
                             </div>
                         </div>
 
                     </div>
+                    <div className=' flex border p-4 rounded-lg shadow-md space-x-11 animate-slidein'>
+                        <div className=' grid grid-cols-6 font-medium text-lg  h-full'>
+
+                            <div className=' col-span-5 h-full flex-col flex justify-evenly'>
+                                <p className=' '>Total no of student :</p>
+                                <p>Course Attainment Level :</p>
+                                <p>Course Attainment Level - Direct Method (80%) :</p>
+                                <p>The Mean PSA refers the PSO for that course :</p>
+
+                            </div>
+
+                            <div className=' text-[#4f72cc] font-bold h-full flex-col flex justify-evenly'>
+                                <p> {Math.round(outComeData?.totalStudents)}</p>
+                                <p>{outComeData?.averageAttainLevel}
+                                    <span className={` font-bold px-2 ${outComeData?.averageAttainLevel < 1.5 ? ' text-red-600 ' : (outComeData?.averageAttainLevel > 2.5 ? ' text-green-600' : ' text-yellow-600')}`}>
+                                        {outComeData?.averageAttainLevel < 1.5 ? 'Low' : (outComeData?.averageAttainLevel > 2.5 ? 'High' : 'Moderate')}
+                                    </span>
+                                </p>
+                                <p>{(outComeData?.direct80).toFixed(2)}</p>
+                                <p>{(outComeData?.direct80).toFixed(2)}</p>
+                            </div>
+                        </div>
+
+                        <div className=' grid grid-cols-6 font-medium text-lg h-full'>
+
+                            <p className=' col-span-5'>The Mean PSA refers the PSO for that course :</p>
+                            <p className=' font-bold text-[#4f72cc]'> {psa(outComeData)}</p>
+                        </div>
+
+                    </div>
+
 
 
 

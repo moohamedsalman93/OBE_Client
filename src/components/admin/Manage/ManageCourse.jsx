@@ -221,9 +221,9 @@ function ManageCourse({ year, currentSem }) {
           <p className=' text-start w-full'>S. No.</p>
           <p className='text-start w-full'>Course Code</p>
           <p className=' col-span-2 text-start w-full'>Course Title</p>
-          <p className=' text-start w-full'>Dep Code</p>
+          <p className=' text-start w-full'>Dept Code</p>
           <p className=' text-center w-full'>Staff</p>
-          <p>Actions</p>
+          <p>Action</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : (CourseData.length === 0 ? <div className=' font-medium mt-5'>No Data found</div> :
           CourseData.map((item, index) =>
@@ -270,7 +270,7 @@ function ManageCourse({ year, currentSem }) {
 
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
                 <div className=' w-full space-x-2 flex items-center relative ' ref={dropdownRef2}>
-                  <h1 className="text-[#676060] w-[40%]">Dep Code :</h1>
+                  <h1 className="  w-[40%] font-medium">Dept Code :</h1>
                   <input
                     type="text"
                     value={deparment}
@@ -303,7 +303,7 @@ function ManageCourse({ year, currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Course Code :</h1>
+                  <h1 className="  w-[40%] font-medium">Course Code :</h1>
                   <input
                     type="text"
                     value={CourseCode}
@@ -315,7 +315,7 @@ function ManageCourse({ year, currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-start '>
-                  <h1 className="text-[#676060] w-[40%]">Course Title :</h1>
+                  <h1 className="  w-[40%] font-medium  ">Course Title :</h1>
                   <textarea
                     type="text"
                     value={CourseName}
@@ -347,23 +347,25 @@ function ManageCourse({ year, currentSem }) {
               <p className=' font-medium'>{CourseData[isPopup].name}</p>
             </div>
 
-            <div className="w-full grow max-h-[82%] flex flex-col">
+            <div className="w-full grow max-h-[82%] flex flex-col px-3">
               <div className=' w-full grow flex flex-col items-center py-4 overflow-hidden'>
-                <div className=' w-full font-semibold text-base grid grid-cols-4 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
-                  <p>S. No</p>
-                  <p>User ID</p>
+
+                <div className=' w-full font-semibold text-base px-3 grid grid-cols-4 h-12 bg-slate-300 place-content-center place-items-center rounded-lg'>
+                  <p className=' text-start w-full'>S. No</p>
+                  <p className=' text-start w-full'>User ID</p>
                   <div className=' col-span-2 flex justify-start w-full '>
                     Staff Name
                   </div>
                 </div>
+
                 {isLoading4 ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> :
-                  (<div className=' w-full h-[78%] overflow-y-scroll '>
+                  (<div className=' w-full h-[78%] overflow-y-auto '>
                     {
                       CourseData.length !== 0 ? StaffData.map((item, index) =>
-                        <div key={index} className={` w-full font-medium text-sm grid grid-cols-4 h-12 border-b place-content-center place-items-center rounded-lg`}>
-                          <p>{index + 1}</p>
-                          <p>{item?.uname}</p>
-                          <p className=' col-span-2 flex justify-start w-full pl-3'>{item?.staffName}</p>
+                        <div key={index} className={` w-full font-medium text-sm px-3 grid grid-cols-4 h-11 border-b place-content-center place-items-center`}>
+                          <p className=' w-full text-start'>{index + 1}</p>
+                          <p className=' w-full text-start'>{item?.uname}</p>
+                          <p className=' col-span-2 flex justify-start w-full'>{item?.staffName}</p>
 
                         </div>
                       ) : <div className=' w-full flex justify-center mt-5 font-medium'>Not found</div>
@@ -375,7 +377,7 @@ function ManageCourse({ year, currentSem }) {
 
             </div>
             <div className=' w-full flex justify-end'>
-              <button className=" px-4 py-2 rounded-md bg-[#4f72cc] text-white hover:shadow-lg hover:shadow-[#4f72cc] transition-all duration-700" onClick={() => setIsPopup(-1)}>Close</button>
+              <button className=" px-4 h-10 rounded-md bg-[#4f72cc] text-white font-medium hover:shadow-lg hover:shadow-[#4f72cc] transition-all duration-700" onClick={() => setIsPopup(-1)}>Close</button>
 
             </div>
 
@@ -423,7 +425,7 @@ function ManageCourse({ year, currentSem }) {
 
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
                 <div className=' w-full space-x-2 flex items-center relative ' ref={dropdownRef2}>
-                  <h1 className="text-[#676060] w-[40%]">Dep Code :</h1>
+                  <h1 className=" font-medium w-[40%]">Dept Code :</h1>
                   <input
                     type="text"
                     value={deparment}
@@ -457,7 +459,7 @@ function ManageCourse({ year, currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Course Code :</h1>
+                  <h1 className=" font-medium w-[40%]">Course Code :</h1>
                   <input
                     type="text"
                     value={CourseCode}
@@ -470,7 +472,7 @@ function ManageCourse({ year, currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-start '>
-                  <h1 className="text-[#676060] w-[40%]">Course Title :</h1>
+                  <h1 className=" font-medium w-[40%]">Course Title :</h1>
                   <textarea
                     type="text"
                     value={CourseName}
@@ -537,6 +539,7 @@ function ManageCourse({ year, currentSem }) {
                         </span>
                       </>
                     ) : (
+                      
                       <>
                         <p>Files to Upload</p>
 

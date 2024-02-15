@@ -156,7 +156,7 @@ function PSOreports({ year ,currentSem}) {
 
                             <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
                                 <div className=' w-full space-x-2 flex items-center relative ' ref={dropdownRef2}>
-                                    <h1 className="text-[#676060] w-[40%]">Department :</h1>
+                                    <h1 className="  w-[40%]">Department :</h1>
                                     <input
                                         type="text"
                                         value={deparment}

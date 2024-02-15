@@ -166,7 +166,7 @@ function ManageDepartment({ year,currentSem }) {
           <p className=' text-start w-full'>S. No.</p>
           <p className=' text-start w-full'>Programme Code</p>
           <p className=' text-start w-full col-span-2'>Programme Name</p>
-          <p className=' text-start w-full'>Catagory</p>
+          <p className=' text-start w-full'>Category</p>
           <p className=' text-center w-full'>Action</p>
         </div>
         {isLoading ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> : CourseData.map((item, index) =>
@@ -174,7 +174,7 @@ function ManageDepartment({ year,currentSem }) {
             <p className=' text-start w-full'>{index + 1 + (Active - 1) * 10}</p>
             <p className=' text-start w-full'>{item.departmentCode}</p>
             <p className=' text-start col-span-2  truncate overflow-hidden w-full'>{item.name}</p>
-            <p className=' text-start w-full'>{item.catagory}</p>
+            <p className=' text-start w-full'>{item.catagory.toUpperCase()}</p>
             <div className=' flex space-x-3'>
               <div className=' text-lg hover:text-blue-600 cursor-pointer' onClick={() => handleEditPopup(index)}>
                 <ion-icon name="create-outline"></ion-icon>
@@ -209,7 +209,7 @@ function ManageDepartment({ year,currentSem }) {
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Programmme Category :</h1>
+                  <h1 className="  w-[40%] font-medium">Programmme Category :</h1>
                   <select
                     value={Cat}
                     onChange={(e) => setCat(e.target.value)}
@@ -226,7 +226,7 @@ function ManageDepartment({ year,currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-center relative ' >
-                  <h1 className="text-[#676060] w-[40%]">Programme Code :</h1>
+                  <h1 className="  w-[40%] font-medium">Programme Code :</h1>
                   <input
                     type="text"
                     value={Code}
@@ -241,7 +241,7 @@ function ManageDepartment({ year,currentSem }) {
 
 
                 <div className=' w-full space-x-2 flex items-start '>
-                  <h1 className="text-[#676060] w-[40%]">Programme Name :</h1>
+                  <h1 className="  w-[40%] font-medium">Programme Name :</h1>
                   <textarea
                     type="text"
                     value={Name}
@@ -309,7 +309,7 @@ function ManageDepartment({ year,currentSem }) {
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Programme Category :</h1>
+                  <h1 className="  w-[40%] font-medium">Programme Category :</h1>
                   <select
                     value={Cat}
                     onChange={(e) => setCat(e.target.value)}
@@ -326,7 +326,7 @@ function ManageDepartment({ year,currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-center relative ' >
-                  <h1 className="text-[#676060] w-[40%]">Programme Code :</h1>
+                  <h1 className="  w-[40%] font-medium">Programme Code :</h1>
                   <input
                     type="text"
                     value={Code}
@@ -341,7 +341,7 @@ function ManageDepartment({ year,currentSem }) {
 
 
                 <div className=' w-full space-x-2 flex items-start '>
-                  <h1 className="text-[#676060] w-[40%]">Program Name :</h1>
+                  <h1 className="  w-[40%] font-medium">Program Name :</h1>
                   <textarea
                     type="text"
                     value={Name}

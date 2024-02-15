@@ -36,7 +36,7 @@ function LoginPage() {
                 if (res?.status === 200) {
                     toast.success('login success')
                     localStorage.setItem('token', res.data.success.data.token)
-                    Navigate('/')
+                    Navigate('/Dashboard')
                 } else {
                     toast.error('Wrong credentials please check')
                 }

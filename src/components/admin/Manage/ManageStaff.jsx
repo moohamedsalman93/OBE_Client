@@ -310,7 +310,7 @@ function ManageStaff({ year, currentSem }) {
               <div className=" w-full  grow flex flex-col space-y-2 justify-start items-center px-7 py-4">
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Staff Name :</h1>
+                  <h1 className="  w-[40%]">Staff Name :</h1>
                   <input
                     type="text"
                     value={Name}
@@ -321,7 +321,7 @@ function ManageStaff({ year, currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">User ID :</h1>
+                  <h1 className="  w-[40%]">User ID :</h1>
                   <input
                     type="text"
                     value={Code}
@@ -334,7 +334,7 @@ function ManageStaff({ year, currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-center '>
-                  <h1 className="text-[#676060] w-[40%]">Password :</h1>
+                  <h1 className="  w-[40%]">Password :</h1>
                   <input
                     type="text"
                     value={newPassword}
@@ -378,7 +378,7 @@ function ManageStaff({ year, currentSem }) {
                   <p>Action</p>
                 </div>
                 {isLoading4 ? <img src={loading} alt="" className=' h-12 w-12 absolute top-1/2' /> :
-                  (<div className=' w-full h-[78%] overflow-y-scroll '>
+                  (<div className=' w-full h-[78%] overflow-y-auto '>
                     {
                       CourseData.length !== 0 ? CourseData.map((item, index) =>
                         <div key={index} className={` w-full font-medium text-sm grid grid-cols-5 h-12 border-b place-content-center place-items-center rounded-lg`}>
@@ -404,7 +404,7 @@ function ManageStaff({ year, currentSem }) {
             <div className=" w-full space-x-2 flex justify-between font-medium ">
               <div className=' space-x-4 flex'>
                 <div className=' w-full space-x-2 flex items-center relative ' ref={dropdownRef2}>
-                  <h1 className="text-[#676060] w-[40%]">Course code :</h1>
+                  <h1 className="  w-[40%]">Course code :</h1>
                   <input
                     type="text"
                     value={addCourse}
@@ -491,7 +491,7 @@ function ManageStaff({ year, currentSem }) {
                 </div>
 
                 <div className=' w-full space-x-2 flex items-center relative ' ref={dropdownRef2}>
-                  <h1 className="text-[#676060] w-[40%]">Course code :</h1>
+                  <h1 className="  w-[40%]">Course code :</h1>
                   <input
                     type="text"
                     value={addCourse}
