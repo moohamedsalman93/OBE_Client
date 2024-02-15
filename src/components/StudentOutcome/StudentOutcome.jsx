@@ -89,9 +89,9 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
                 <div key={index} className={` text-start w-full px-4 font-medium text-sm gap-2 grid grid-cols-7 min-h-[45px] border-b place-content-center place-items-center ${index % 2 === 0 ? 'bg-slate-200' : ''}`}>
                   <p className=' text-start w-full'>{index + 1}</p>
                   <p className=" w-full text-start col-span-2">{item?.reg}</p>
-                  <p className=' text-start w-full'>{item?.averageAttainLevel?.Mot}</p>
-                  <p className=' text-start w-full'>{item?.averageAttainLevel?.Lot}</p>
-                  <p className=' text-start w-full'>{item?.averageAttainLevel?.Hot}</p>
+                  <p className=' text-start w-full'>{item?.averageAttainLevel?.Mot.toFixed(2)}</p>
+                  <p className=' text-start w-full'>{item?.averageAttainLevel?.Lot.toFixed(2)}</p>
+                  <p className=' text-start w-full'>{item?.averageAttainLevel?.Hot.toFixed(2)}</p>
                   <p className=' text-start w-full'>{item?.averageAttainLevel?.attain.toFixed(2)}</p>
                 </div>
 

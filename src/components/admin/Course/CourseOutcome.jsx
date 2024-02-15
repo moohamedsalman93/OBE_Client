@@ -178,7 +178,8 @@ function AdminCourseOutcome({ year, currentSem }) {
             </div>
 
             {outComeData.length !== 0 ?
-                (<div className=" px-5 space-y-5">
+                (
+                <div className=" px-5 space-y-5">
 
                     <div className=' w-full flex '>
 
@@ -337,11 +338,11 @@ function AdminCourseOutcome({ year, currentSem }) {
                         </div>
 
                     </div>
-                    <div className=' flex border p-4 rounded-lg shadow-md space-x-11 animate-slidein'>
-                        <div className=' grid grid-cols-6 font-medium text-lg  h-full'>
+                    <div className=' w-full flex border p-4 rounded-lg shadow-md  animate-slidein'>
+                        <div className=' grid grid-cols-6 font-medium text-lg w-[1/2]  h-full'>
 
                             <div className=' col-span-5 h-full flex-col flex justify-evenly'>
-                                <p className=' '>Total no of student :</p>
+                                <p className=' '>Total number of student :</p>
                                 <p>Course Attainment Level :</p>
                                 <p>Course Attainment Level - Direct Method (80%) :</p>
                                 <p>The Mean PSA refers the PSO for that course :</p>
@@ -360,9 +361,9 @@ function AdminCourseOutcome({ year, currentSem }) {
                             </div>
                         </div>
 
-                        <div className=' grid grid-cols-6 font-medium text-lg h-full'>
+                        <div className=' grid grid-cols-6 font-medium text-lg w-[1/2] h-full pl-5'>
 
-                            <p className=' col-span-5'>The Mean PSA refers the PSO for that course :</p>
+                            <p className=' col-span-5'>The Mean PSA refers the PSO for that course :  </p>
                             <p className=' font-bold text-[#4f72cc]'> {psa(outComeData)}</p>
                         </div>
 
@@ -371,17 +372,18 @@ function AdminCourseOutcome({ year, currentSem }) {
 
 
 
-                </div>)
+                </div>
+                )
                 :
                 (
                     <div className=' mt-5'>
                         <div className="h-full w-full flex flex-col items-center justify-center text-base font-semibold">
                             <div className="w-fit h-fit relative">
                                 <img src={studentMarksImg} alt="" className=" w-[20rem] " />
-                                <div className=" absolute bottom-[9rem] text-center">
+                                {/* <div className=" absolute bottom-[9rem] text-center">
                                     <p>Enter Department and Course code to get</p>
                                     <p>Course OutCome</p>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

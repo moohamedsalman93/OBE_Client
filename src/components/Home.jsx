@@ -34,7 +34,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
         navigate('/login');
       }
 
-      if (decodedToken.uname === 'admin') {
+      if (decodedToken.role === 'Admin') {
         navigate('/Admin/Dashboard');
       }
 

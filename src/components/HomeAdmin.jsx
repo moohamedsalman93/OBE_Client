@@ -36,6 +36,10 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
         navigate('/login');
       }
 
+      if (decodedToken.role === 'Staff') {
+        navigate('/Dashboard');
+      }
+
     } catch (error) {
       console.error('Error decoding token:', error);
     }

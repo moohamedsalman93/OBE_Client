@@ -209,10 +209,10 @@ function Programs({ year, currentSem }) {
                     <div className="h-full w-full flex flex-col items-center justify-center text-base font-semibold">
                         <div className="w-fit h-fit relative text-center">
                             <img src={studentMarksImg} alt="" className=" w-[20rem] " />
-                            <div className=" absolute bottom-[9rem] text-center w-[20rem]">
+                            {/* <div className=" absolute bottom-[9rem] text-center w-[20rem]">
                                 <p>Enter Department Code to get</p>
                                 <p>All Department's OutCome</p>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>)
