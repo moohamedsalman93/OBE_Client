@@ -11,9 +11,9 @@ import ExistingStudent from "./ExistingStudent";
 import jwtDecode from "jwt-decode";
 import * as XLSX from 'xlsx';
 
-const api =  import.meta.env.VITE_APP_API_URL;
+const api = import.meta.env.VITE_APP_API_URL;
 
-const AddMarks = ({ uName, year, currentSem,role }) => {
+const AddMarks = ({ uName, year, currentSem, role }) => {
 
   //#region  Variables
   const dropdownRef2 = useRef(null);
@@ -52,14 +52,21 @@ const AddMarks = ({ uName, year, currentSem,role }) => {
   const [progress, setProgress] = useState(0);
   const [isImportLoading, setIsImportLoading] = useState(false);
   const [presentYear, setPresentYear] = useState();
-  const myElementRef = useRef(null);
-
+  const uploading = progress > 0 && progress < 100;
+  const handleOpen = () => setOpen(!open);
+  const questions = [
+    "LOT",
+    "MOT",
+    "HOT",
+  ];
+  //#endregion
 
   const preventDefaultHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
+  //#region import excel
   const handleUpload = async () => {
 
     let extention = (fileList.name).split('.')[(fileList.name).split('.').length - 1]
@@ -80,49 +87,41 @@ const AddMarks = ({ uName, year, currentSem,role }) => {
     } else {
 
       const reader = new FileReader();
-    reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      if (workbook.SheetNames.includes('LMH')) {
-        const csv = XLSX.utils.sheet_to_csv(workbook.Sheets['LMH']);
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const datat = new FormData();
-        datat.append('Excel', blob, fileList.name.replace('.xlsx', '.csv'));
-        datat.append('depCode', deparment);
-        datat.append('courseCode', courseCode)
-        datat.append('year', year)
-        datat.append('staff', uName)
-        datat.append('sem', currentSem)
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        if (workbook.SheetNames.includes('LMH')) {
+          const csv = XLSX.utils.sheet_to_csv(workbook.Sheets['LMH']);
+          const blob = new Blob([csv], { type: 'text/csv' });
+          const datat = new FormData();
+          datat.append('Excel', blob, fileList.name.replace('.xlsx', '.csv'));
+          datat.append('depCode', deparment);
+          datat.append('courseCode', courseCode)
+          datat.append('year', year)
+          datat.append('staff', uName)
+          datat.append('sem', currentSem)
 
-        excelApi('staff/addMarksByExcel', datat, setProgress, setFileList, setIsImportLoading).then((res) => {
-          if (res?.status === 200) {
-            toast.success("Imported successfully", { duration: 1500 });
-            getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
-            setIsImportLoading(false)
-            setIsOpenImport(false)
-          }
-        })
-      } else {
-        toast.error('Sheet name must be LMH')
-      }
-    };
-    reader.readAsArrayBuffer(fileList);
+          excelApi('staff/addMarksByExcel', datat, setProgress, setFileList, setIsImportLoading).then((res) => {
+            if (res?.status === 200) {
+              toast.success("Imported successfully", { duration: 1500 });
+              getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
+              setIsImportLoading(false)
+              setIsOpenImport(false)
+            }
+          })
+        } else {
+          toast.error('Sheet name must be LMH')
+        }
+      };
+      reader.readAsArrayBuffer(fileList);
 
-    
+
     }
 
   };
+  //#endregion
 
-  const uploading = progress > 0 && progress < 100;
-
-  const handleOpen = () => setOpen(!open);
-
-  const questions = [
-    "LOT",
-    "MOT",
-    "HOT",
-  ];
-
+  //#region decode token
   useEffect(() => {
     let token = localStorage.getItem('token');
 
@@ -134,6 +133,7 @@ const AddMarks = ({ uName, year, currentSem,role }) => {
       setRole(decode.role)
     }
   }, [])
+  //#endregion
 
   //#region max mark:
   const markLimits = {
@@ -143,7 +143,6 @@ const AddMarks = ({ uName, year, currentSem,role }) => {
   };
 
   //#endregion
-
 
   //#region  markChange
   const handleMarkChange = (question, value) => {
@@ -309,10 +308,14 @@ const AddMarks = ({ uName, year, currentSem,role }) => {
                   handleClear()
                   setStudentStatus('')
                   if (examType === 'ASG1' || examType === 'ASG2') {
-
+                    setTimeout(() => {
+                      document.querySelector('[tabindex="4"]').focus();
+                    }, 0);
                   }
                   else {
-                    myElementRef.current.focus();
+                    setTimeout(() => {
+                      document.querySelector('[tabindex="4"]').focus();
+                    }, 0);
                   }
 
                 }
@@ -326,7 +329,7 @@ const AddMarks = ({ uName, year, currentSem,role }) => {
               }
             });
         } catch (err) {
-          if(err?.response){
+          if (err?.response) {
             toast.error(err?.response?.data?.msg, { duration: 1500 });
           }
           setIsLoading(false);
@@ -483,7 +486,7 @@ const AddMarks = ({ uName, year, currentSem,role }) => {
     let temp = {}
     setEditstudent(index)
     setRegNo(typeData[index].regNo.slice(-3))
-   
+
     if (examType === 'ASG1') {
       setAssignment(typeData[index].marks[0].ASG1)
     }
@@ -678,6 +681,68 @@ const AddMarks = ({ uName, year, currentSem,role }) => {
   };
   //#endregion
 
+  //#region export
+  const handleExportExcel = () => {
+    if (existingData?.length > 0) {
+      const data = existingData.map(item => ({
+        'Register Number': item?.regNo,
+        'Exam': 'CIA - I',
+        'OC': '',
+        'LOT': item?.marks[0]?.C1LOT,
+        'MOT': item?.marks[0]?.C1MOT,
+        'HOT': item?.marks[0]?.C1HOT,
+        'TOTAL ': item?.marks[0]?.C1LOT + item?.marks[0]?.C1MOT + item?.marks[0]?.C1HOT,
+      }, {
+        'Register Number': '',
+        'Exam': 'CIA - II',
+        'OC': '',
+        'LOT': item?.marks[0]?.C2LOT,
+        'MOT': item?.marks[0]?.C2MOT,
+        'HOT': item?.marks[0]?.C2HOT,
+        'TOTAL ': item?.marks[0]?.C2LOT + item?.marks[0]?.C2MOT + item?.marks[0]?.C2HOT,
+      }, {
+        'Register Number': '',
+        'Exam': 'Ass - I',
+        'OC': item?.marks[0]?.ASG1,
+        'LOT': item?.marks[0]?.ASGCO1,
+        'MOT': '',
+        'HOT': '',
+        'TOTAL ': item?.marks[0]?.ASGCO1,
+      }, {
+        'Register Number': '',
+        'Exam': 'Ass - II',
+        'OC': item?.marks[0]?.ASG2,
+        'LOT': item?.marks[0]?.ASGCO2,
+        'MOT': '',
+        'HOT': '',
+        'TOTAL ': item?.marks[0]?.ASGCO2,
+      }, {
+        'Register Number': '',
+        'Exam': 'Total',
+        'OC': '',
+        'LOT': item?.marks[0]?.C1LOT + item?.marks[0]?.C2LOT + item?.marks[0]?.ASGCO1 + item?.marks[0]?.ASGCO2,
+        'MOT': item?.marks[0]?.C1MOT + item?.marks[0]?.C2MOT,
+        'HOT': item?.marks[0]?.C1HOT + item?.marks[0]?.C2HOT,
+        'TOTAL ': item?.marks[0]?.C1LOT + item?.marks[0]?.C1MOT + item?.marks[0]?.C1HOT + item?.marks[0]?.C2LOT + item?.marks[0]?.C2MOT + item?.marks[0]?.C2HOT + item?.marks[0]?.ASGCO1 + item?.marks[0]?.ASGCO2,
+      }, {
+        'Register Number': '',
+        'Exam': 'ESE',
+        'OC': '',
+        'LOT': item?.marks[0]?.ESELOT,
+        'MOT': item?.marks[0]?.ESEMOT,
+        'HOT': item?.marks[0]?.ESEHOT,
+        'TOTAL ': item?.marks[0]?.ESELOT + item?.marks[0]?.ESEMOT + item?.marks[0]?.ESEHOT,
+      }));
+
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "LMH");
+      XLSX.writeFile(wb, courseCode + ".xlsx");
+    } else {
+      toast.error('Existing student marks not found');
+    }
+  }
+  //#endregion
 
   return (
     <div className=" w-full h-full  relative  flex justify-center items-center font-medium">
@@ -1022,11 +1087,17 @@ const AddMarks = ({ uName, year, currentSem,role }) => {
 
             </div>
 
-            <div className=' w-fit flex justify-center items-end h-fit'>
+            <div className=' w-fit flex justify-center items-end h-fit space-x-4'>
               <button className=' px-4 py-2 bg-[#4f72cc] rounded-md text-white font-medium flex  items-center space-x-2' onClick={() => setIsOpenImport(true)}>
                 <ion-icon name="cloud-upload"></ion-icon>
                 <p>
                   Import Excel
+                </p>
+              </button>
+              <button className=' px-4 py-2 bg-[#3b9a3b] rounded-md text-white font-medium flex  items-center space-x-2' onClick={() => handleExportExcel()}>
+                <ion-icon name="cloud-download"></ion-icon>
+                <p>
+                  Export Excel
                 </p>
               </button>
             </div>

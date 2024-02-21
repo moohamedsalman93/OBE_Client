@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getApi, getStudentOutcomeApi } from "../../api/api";
 import loading from "../../assets/loading.svg";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 export const StudentOutcome = ({ userId, year, currentSem }) => {
 
@@ -8,6 +10,9 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
   const [StudentData, setStudentData] = useState([]);
   const [isLoading1, setIsLoading1] = useState(false);
   const [outComeData, setOutcomeData] = useState([]);
+  const [low, setlow] = useState(0);
+  const [med, setmedium] = useState(0);
+  const [high, sethigh] = useState(0);
 
   //#region useEffect
   useEffect(() => {
@@ -30,10 +35,26 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
       `staff/EachStudentOutcome?code=${data.code}&dep=${data.department}&sem=${currentSem}&year=${year}`,
       setOutcomeData
     ).then((res) => {
-     
+
     });
+    setlow(0)
+    setmedium(0)
+    sethigh(0)
   };
   //#endregion
+
+  useEffect(() => {
+    outComeData.forEach(item => {
+      if (item?.averageAttainLevel?.attain.toFixed(2) > 2.5) {
+        sethigh(prevHigh => prevHigh + 1);
+      } else if (item?.averageAttainLevel?.attain.toFixed(2) < 1.5) {
+        setlow(prevLow => prevLow + 1);
+      } else {
+        setmedium(prevMed => prevMed + 1);
+      }
+    });
+  }, [outComeData]);
+
 
   return (
     <div className=" w-full h-full p-5 overflow-hidden">
@@ -70,7 +91,7 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
         </button>
       </div>
 
-      <div className="w-full flex flex-col items-center py-4 mt-5">
+      <div className="w-full flex flex-col items-center py-4 mt-5 space-y-4 overflow-y-auto xl:h-[47rem]">
 
 
 
@@ -101,7 +122,51 @@ export const StudentOutcome = ({ userId, year, currentSem }) => {
           </div>
 
         </div>
+
+        {outComeData.length !== 0 && (
+          <div className="w-full flex justify-evenly mt-10">
+
+            <div className="w-[180px] space-y-2">
+              <CircularProgressbar value={low} maxValue={outComeData.length} text={low} styles={{
+                path: {
+                  stroke: 'red',
+                },
+                text: {
+                  fill: 'red',
+                },
+              }} />
+              <p className=" w-full text-center font-medium text-red-600">Low</p>
+            </div>
+
+            <div className="w-[180px]">
+              <CircularProgressbar value={med} maxValue={outComeData.length} text={med}  styles={{
+                path: {
+                  stroke: 'orange',
+                },
+                text: {
+                  fill: 'orange',
+                },
+              }} />
+               <p className=" w-full text-center font-medium text-orange-400">Modurate</p>
+            </div>
+
+            <div className="w-[180px]">
+              <CircularProgressbar value={high} maxValue={outComeData.length} text={high} styles={{
+                path: {
+                  stroke: 'green',
+                },
+                text: {
+                  fill: 'green',
+                },
+              }} />
+               <p className=" w-full text-center font-medium text-green-800">High</p>
+            </div>
+
+          </div>
+        )}
+
       </div>
+
 
     </div>
   );

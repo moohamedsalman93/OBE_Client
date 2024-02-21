@@ -360,12 +360,11 @@ function CourseOutcome({ userId, year, currentSem }) {
                                     <table className="table-auto rounded-md border mt-2">
                                         <thead className="bg-black text-white">
                                             <tr>
-
-                                                <th className="px-4 py-2 border">CO1</th>
-                                                <th className="px-4 py-2 border">CO2</th>
-                                                <th className="px-4 py-2 border">CO3</th>
-                                                <th className="px-4 py-2 border">CO4</th>
-                                                <th className="px-4 py-2 border">CO5</th>
+                                                <th className="px-4 py-2 border">PSA 1</th>
+                                                <th className="px-4 py-2 border">PSA 2</th>
+                                                <th className="px-4 py-2 border">PSA 3</th>
+                                                <th className="px-4 py-2 border">PSA 4</th>
+                                                <th className="px-4 py-2 border">PSA 5</th>
 
                                             </tr>
                                         </thead>
@@ -400,7 +399,8 @@ function CourseOutcome({ userId, year, currentSem }) {
                                     <p className=' '>Total no of student :</p>
                                     <p>Course Attainment Level :</p>
                                     <p>Course Attainment Level - Direct Method (80%) :</p>
-                                    <p>The Mean PSA refers the PSO for that course :</p>
+                                 
+                                    <p>The Mean Program Specific Attainment :</p>
 
                                 </div>
 
@@ -412,16 +412,9 @@ function CourseOutcome({ userId, year, currentSem }) {
                                         </span>
                                     </p>
                                     <p>{(outComeData?.direct80).toFixed(2)}</p>
-                                    <p>{(outComeData?.direct80).toFixed(2)}</p>
+                                    <p className=' font-bold text-[#4f72cc]'> {psa(outComeData)}</p>    
                                 </div>
                             </div>
-
-                            <div className=' grid grid-cols-6 font-medium text-lg w-[1/2] h-full pl-5 '>
-
-                                <p className=' col-span-5'>The Mean PSA refers the PSO for that course :  </p>
-                                <p className=' font-bold text-[#4f72cc]'> {psa(outComeData)}</p>
-                            </div>
-
                         </div>
 
 

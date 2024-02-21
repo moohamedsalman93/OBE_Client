@@ -179,20 +179,61 @@ function AdminCourseOutcome({ year, currentSem }) {
 
             {outComeData.length !== 0 ?
                 (
-                <div className=" px-5 space-y-5">
+                    <div className=" px-5 space-y-5">
 
-                    <div className=' w-full flex '>
+                        <div className=' w-full flex '>
 
-                        <div className=" w-[50%] space-y-16 2xl:space-y-5">
-                            <div className="mt-10 2xl:mt-5">
-                                <h1 className=" font-medium">CIA Attainment</h1>
-                                {/* CIA I */}
-                                <div>
-                                    {/* <h1 className="py-2">CIA I</h1> */}
+                            <div className=" w-[50%] space-y-16 2xl:space-y-5">
+                                <div className="mt-10 2xl:mt-5">
+                                    <h1 className=" font-medium">CIA Attainment</h1>
+                                    {/* CIA I */}
+                                    <div>
+                                        {/* <h1 className="py-2">CIA I</h1> */}
+                                        <table className="table-auto rounded-md border mt-2">
+                                            <thead className="bg-black text-white">
+                                                <tr>
+                                                    <th className="px-4 py-2 border"></th>
+                                                    <th className="px-4 py-2 border">LOT</th>
+                                                    <th className="px-4 py-2 border">MOT</th>
+                                                    <th className="px-4 py-2 border">HOT</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+
+                                                    <th className="border px-4 py-2 bg-[#e2e8f0]">No of student above 60%</th>
+
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.above40TCO?.TCO1}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.above40TCO?.TCO2}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.above40TCO?.TCO3}</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th className="border px-4 py-2 bg-[#e2e8f0]">Percentage</th>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.percentages?.TCO1}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.percentages?.TCO2}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.percentages?.TCO3}</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th className="border px-4 py-2 bg-[#e2e8f0]">Attainment level</th>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.attainLevels?.TCO1}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.attainLevels?.TCO2}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.attainLevels?.TCO3}</td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div className=' space-y-4'>
+                                    <h1 className=" font-medium">Overall CO Attainment</h1>
+
                                     <table className="table-auto rounded-md border mt-2">
                                         <thead className="bg-black text-white">
                                             <tr>
-                                                <th className="px-4 py-2 border"></th>
                                                 <th className="px-4 py-2 border">LOT</th>
                                                 <th className="px-4 py-2 border">MOT</th>
                                                 <th className="px-4 py-2 border">HOT</th>
@@ -202,177 +243,128 @@ function AdminCourseOutcome({ year, currentSem }) {
                                         <tbody>
                                             <tr>
 
-                                                <th className="border px-4 py-2 bg-[#e2e8f0]">No of student above 60%</th>
-
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40TCO?.TCO1}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40TCO?.TCO2}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40TCO?.TCO3}</td>
-
-                                            </tr>
-                                            <tr>
-                                                <th className="border px-4 py-2 bg-[#e2e8f0]">Percentage</th>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentages?.TCO1}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentages?.TCO2}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentages?.TCO3}</td>
-
-                                            </tr>
-                                            <tr>
-                                                <th className="border px-4 py-2 bg-[#e2e8f0]">Attainment level</th>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevels?.TCO1}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevels?.TCO2}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevels?.TCO3}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.overAll?.CO1}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.overAll?.CO2}</td>
+                                                <td className="border px-4 py-2 font-medium">{outComeData?.overAll?.CO3}</td>
 
                                             </tr>
                                         </tbody>
                                     </table>
+
+
+
                                 </div>
-                            </div>
-
-                            <div className=' space-y-4'>
-                                <h1 className=" font-medium">Overall CO Attainment</h1>
-
-                                <table className="table-auto rounded-md border mt-2">
-                                    <thead className="bg-black text-white">
-                                        <tr>
-                                            <th className="px-4 py-2 border">LOT</th>
-                                            <th className="px-4 py-2 border">MOT</th>
-                                            <th className="px-4 py-2 border">HOT</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-
-                                            <td className="border px-4 py-2 font-medium">{outComeData?.overAll?.CO1}</td>
-                                            <td className="border px-4 py-2 font-medium">{outComeData?.overAll?.CO2}</td>
-                                            <td className="border px-4 py-2 font-medium">{outComeData?.overAll?.CO3}</td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-
 
 
                             </div>
 
+                            <div className=" w-[50%] space-y-16 2xl:space-y-5 pl-5">
+                                <div className="mt-10 2xl:mt-5">
+                                    <h1 className=" font-medium">ESE Attainment</h1>
+                                    <div>
+                                        <table className="table-auto rounded-md border mt-2">
+                                            <thead className="bg-black text-white">
+                                                <tr>
+                                                    <th className="px-4 py-2 border"></th>
+                                                    <th className="px-4 py-2 border">LOT</th>
+                                                    <th className="px-4 py-2 border">MOT</th>
+                                                    <th className="px-4 py-2 border">HOT</th>
 
-                        </div>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th className="border px-4 py-2 bg-[#e2e8f0]">No of student above 60%</th>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.above40ESECO?.ESECO1}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.above40ESECO?.ESECO2}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.above40ESECO?.ESECO3}</td>
 
-                        <div className=" w-[50%] space-y-16 2xl:space-y-5 pl-5">
-                            <div className="mt-10 2xl:mt-5">
-                                <h1 className=" font-medium">ESE Attainment</h1>
+                                                </tr>
+                                                <tr>
+                                                    <th className="border px-4 py-2 bg-[#e2e8f0]">Percentage</th>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.percentagesESECO?.ESECO1}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.percentagesESECO?.ESECO2}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.percentagesESECO?.ESECO3}</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <th className="border px-4 py-2 bg-[#e2e8f0]">Attainment level</th>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.attainLevelsESECO?.ESECO1}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.attainLevelsESECO?.ESECO2}</td>
+                                                    <td className="border px-4 py-2 font-medium">{outComeData?.attainLevelsESECO?.ESECO3}</td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
                                 <div>
+                                    <h1 className=" font-medium"> PSA - the level of attainment</h1>
+
                                     <table className="table-auto rounded-md border mt-2">
                                         <thead className="bg-black text-white">
                                             <tr>
-                                                <th className="px-4 py-2 border"></th>
-                                                <th className="px-4 py-2 border">LOT</th>
-                                                <th className="px-4 py-2 border">MOT</th>
-                                                <th className="px-4 py-2 border">HOT</th>
+
+                                                <th className="px-4 py-2 border">CO1</th>
+                                                <th className="px-4 py-2 border">CO2</th>
+                                                <th className="px-4 py-2 border">CO3</th>
+                                                <th className="px-4 py-2 border">CO4</th>
+                                                <th className="px-4 py-2 border">CO5</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <th className="border px-4 py-2 bg-[#e2e8f0]">No of student above 60%</th>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40ESECO?.ESECO1}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40ESECO?.ESECO2}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.above40ESECO?.ESECO3}</td>
 
-                                            </tr>
-                                            <tr>
-                                                <th className="border px-4 py-2 bg-[#e2e8f0]">Percentage</th>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentagesESECO?.ESECO1}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentagesESECO?.ESECO2}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.percentagesESECO?.ESECO3}</td>
-
-                                            </tr>
-                                            <tr>
-                                                <th className="border px-4 py-2 bg-[#e2e8f0]">Attainment level</th>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevelsESECO?.ESECO1}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevelsESECO?.ESECO2}</td>
-                                                <td className="border px-4 py-2 font-medium">{outComeData?.attainLevelsESECO?.ESECO3}</td>
+                                                <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps1 || 0).toFixed(2)}</td>
+                                                <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps2 || 0).toFixed(2)}</td>
+                                                <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps3 || 0).toFixed(2)}</td>
+                                                <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps4 || 0).toFixed(2)}</td>
+                                                <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps5 || 0).toFixed(2)}</td>
 
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
-                            </div>
 
-                            <div>
-                                <h1 className=" font-medium"> PSA - the level of attainment</h1>
-
-                                <table className="table-auto rounded-md border mt-2">
-                                    <thead className="bg-black text-white">
-                                        <tr>
-
-                                            <th className="px-4 py-2 border">CO1</th>
-                                            <th className="px-4 py-2 border">CO2</th>
-                                            <th className="px-4 py-2 border">CO3</th>
-                                            <th className="px-4 py-2 border">CO4</th>
-                                            <th className="px-4 py-2 border">CO5</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-
-                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps1 || 0).toFixed(2)}</td>
-                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps2 || 0).toFixed(2)}</td>
-                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps3 || 0).toFixed(2)}</td>
-                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps4 || 0).toFixed(2)}</td>
-                                            <td className="border px-4 py-2 font-medium">{(outComeData?.psoCOS?.ps5 || 0).toFixed(2)}</td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                {/* <div className=' h-full border p-4 grid grid-cols-6 mt-6 rounded-md shadow-md font-medium text-lg'>
+                                    {/* <div className=' h-full border p-4 grid grid-cols-6 mt-6 rounded-md shadow-md font-medium text-lg'>
                                     <p className=' col-span-5'>The Mean PSA refers the PSO for that course :</p>
                                     <p className=' font-bold text-[#4f72cc]'> {psa(outComeData)}</p>
                                 </div> */}
 
 
 
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div className=' w-full flex border py-4 px-2 rounded-lg shadow-md  animate-slidein'>
+                            <div className=' grid grid-cols-6 font-medium text-lg w-[1/2]  h-full'>
+
+                                <div className=' col-span-5 h-full flex-col flex justify-evenly'>
+                                    <p className=' '>Total no of student :</p>
+                                    <p>Course Attainment Level :</p>
+                                    <p>Course Attainment Level - Direct Method (80%) :</p>
+
+                                    <p>The Mean Program Specific Attainment :</p>
+
+                                </div>
+
+                                <div className=' text-[#4f72cc] font-bold h-full flex-col flex justify-evenly'>
+                                    <p> {Math.round(outComeData?.totalStudents)}</p>
+                                    <p>{outComeData?.averageAttainLevel}
+                                        <span className={` font-bold px-2 ${outComeData?.averageAttainLevel < 1.5 ? ' text-red-600 ' : (outComeData?.averageAttainLevel > 2.5 ? ' text-green-600' : ' text-yellow-600')}`}>
+                                            {outComeData?.averageAttainLevel < 1.5 ? 'Low' : (outComeData?.averageAttainLevel > 2.5 ? 'High' : 'Moderate')}
+                                        </span>
+                                    </p>
+                                    <p>{(outComeData?.direct80).toFixed(2)}</p>
+                                    <p className=' font-bold text-[#4f72cc]'> {psa(outComeData)}</p>
+                                </div>
                             </div>
                         </div>
 
                     </div>
-                    <div className=' w-full flex border p-4 rounded-lg shadow-md  animate-slidein'>
-                        <div className=' grid grid-cols-6 font-medium text-lg w-[1/2]  h-full'>
-
-                            <div className=' col-span-5 h-full flex-col flex justify-evenly'>
-                                <p className=' '>Total number of student :</p>
-                                <p>Course Attainment Level :</p>
-                                <p>Course Attainment Level - Direct Method (80%) :</p>
-                                <p>The Mean PSA refers the PSO for that course :</p>
-
-                            </div>
-
-                            <div className=' text-[#4f72cc] font-bold h-full flex-col flex justify-evenly'>
-                                <p> {Math.round(outComeData?.totalStudents)}</p>
-                                <p>{outComeData?.averageAttainLevel}
-                                    <span className={` font-bold px-2 ${outComeData?.averageAttainLevel < 1.5 ? ' text-red-600 ' : (outComeData?.averageAttainLevel > 2.5 ? ' text-green-600' : ' text-yellow-600')}`}>
-                                        {outComeData?.averageAttainLevel < 1.5 ? 'Low' : (outComeData?.averageAttainLevel > 2.5 ? 'High' : 'Moderate')}
-                                    </span>
-                                </p>
-                                <p>{(outComeData?.direct80).toFixed(2)}</p>
-                                <p>{(outComeData?.direct80).toFixed(2)}</p>
-                            </div>
-                        </div>
-
-                        <div className=' grid grid-cols-6 font-medium text-lg w-[1/2] h-full pl-5'>
-
-                            <p className=' col-span-5'>The Mean PSA refers the PSO for that course :  </p>
-                            <p className=' font-bold text-[#4f72cc]'> {psa(outComeData)}</p>
-                        </div>
-
-                    </div>
-
-
-
-
-                </div>
                 )
                 :
                 (
