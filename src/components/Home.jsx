@@ -4,12 +4,100 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-hot-toast";
 import '../App.css'
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+} from "@material-tailwind/react";
+import {
+  DocumentDuplicateIcon,
+  AcademicCapIcon,
+  UserIcon
+} from "@heroicons/react/24/solid";
+
+
+export function UG() {
+  return (
+    <div className=" h-fit w-full flex flex-col  font-medium">
+      <p>UAR - BA ARABIC</p>
+      <p>UBA - BBA BAUSINESS ADMINISTRATION</p>
+      <p>UBO - B.Sc BOTANY</p>
+      <p>UBT - B.Sc BIOTECHNOLOGY</p>
+      <p>UCO - B.com COMMERCE</p>
+      <p>UCH - B.Sc CHEMISTRY</p>
+      <p>UCA - BCA COMPUTER APPLICAIONS</p>
+      <p>UCS - B.Sc COMPUTER SCIENCE</p>
+      <p>UEC - BA ECONOMICS</p>
+      <p>UEN - BA ENGLISH</p>
+      <p>UFT - B.Sc FASHION TECHNOLOGY AND COSTUME DESIGNING</p>
+      <p>UHS - BA HISTORY</p>
+      <p>UHM - B.Sc HOTEL MANAGEMENT AND CATERING SCIENCE</p>
+      <p>UIT - B.Sc INFORMATION TECHNOLOGY</p>
+      <p>UMA - B.Sc MATHEMATICS</p>
+      <p>UMB - B.Sc MICROBIOLOGY</p>
+      <p>UND - B.Sc NUTRITION AND DIETICS</p>
+      <p>UPH - B.Sc PHYSICS</p>
+      <p>UTA - BA TAMIL</p>
+      <p>UVC - B.Sc VISUAL COMMUNICATION</p>
+      <p>UZO - B.Sc ZOOLOGY</p>
+    </div>
+  )
+}
+
+export function PG() {
+  return (
+    <div className=" h-fit w-full flex flex-col  font-medium">
+      <p>PAR	-	MA	ARABIC</p>
+      <p>PBO	-	M.Sc	BOTANY</p>
+      <p>PBT	-	M.Sc	BIOTECHNOLOGY</p>
+      <p>PCO	-	M.Com	COMMERCE</p>
+      <p>PCH	-	M.Sc	CHEMISTRY</p>
+      <p>PCS	-	M.Sc	COMPUTER SCIENCE</p>
+      <p>PEC	-	M.A	ECONOMICS</p>
+      <p>PEN	-	M.A	ENGLISH</p>
+      <p>PFT	-	M.Sc	FASHION TECHNOLOGY</p>
+      <p>PHS	-	M.A	HISTORY</p>
+      <p>PIT	-	M.Sc	INFORMATION TECHNOLOGY</p>
+      <p>PMA	-	M.Sc	MATHEMATICS</p>
+      <p>PMB	-	M.Sc	MICROBIOLOGY</p>
+      <p>PND	-	M.Sc	NUTRITION AND DIETICS</p>
+      <p>PPH	-	M.Sc	PHYSICS</p>
+      <p>PTA	-	M.A	TAMIL</p>
+      <p>PZO	-	M.Sc	ZOOLOGY</p>
+      <p>MBA	-	MBA	BUSINESS ADMINISTRATION</p>
+      <p>MCA	-	MCA	COMPUTER APPLICAIONS</p>
+
+    </div>
+  )
+}
+
 
 function Home({ Role, setRole, setuserName, userName, setuserId, userId, currentSem, setCurrentSem, currentYear }) {
 
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
   const [OpenInstruction, setOpenInstruction] = useState(false);
+  const [OpenCodeExpansion, setOpenCodeExpansion] = useState(false);
+  const [activeTab, setActiveTab] = React.useState("UG");
+
+  const data = [
+    {
+      label: "UG Code",
+      value: "UG",
+      icon: DocumentDuplicateIcon,
+      desc: <UG/>
+    },
+
+    {
+      label: "PG Code",
+      value: "PG",
+      icon: AcademicCapIcon,
+      desc: <PG/>,
+    },
+
+  ];
 
 
   useEffect(() => {
@@ -94,7 +182,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
       <div className=" w-full flex h-full  relative">
 
         <div className=" animate-slideinjmc w-[19%] absolute border-r border-white left-0 top-0 h-full z-10  p-1 flex flex-col bg-gradient-to-br from-[#4f72cc] to-[#58caea] ">
-        {/* <div className=" animate-slideinjmc w-[19%] absolute border-r border-white left-0 top-0 h-full z-10  p-1 flex flex-col bg-[#3b5f9c] "></div> */}
+          {/* <div className=" animate-slideinjmc w-[19%] absolute border-r border-white left-0 top-0 h-full z-10  p-1 flex flex-col bg-[#3b5f9c] "></div> */}
           <div className=" w-full h-fit space-y-4 flex flex-col justify-between items-center border border-white rounded-lg bg-white/75 py-2 px-3 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
 
             <div className="w-full flex justify-start space-x-1 items-start ">
@@ -182,11 +270,6 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
                   )
                 }
 
-                <div onClick={handleLogOut} className=" transition-all duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer bg-white  text-red-600 flex justify-center  items-center  rounded-[5px]">
-                  <ion-icon name="log-in"></ion-icon>
-                  <p className=" text-base font-bold">Log Out</p>
-                </div>
-
               </div>
 
               <div className=" flex space-x-2 text-lg items-center cursor-pointer justify-center animate-bounce text-black" onClick={() => setOpenInstruction(true)}>
@@ -194,14 +277,24 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
                 <p className=" text-base font-medium">How to Enter the Marks</p>
               </div>
 
+              <div className=" flex space-x-2 text-lg items-center cursor-pointer justify-center text-black" onClick={() => setOpenCodeExpansion(true)}>
+                <ion-icon name="alert-circle"></ion-icon>
+                <p className=" text-base font-medium">Dept Code Expansion</p>
+              </div>
+
             </div>
 
+          </div>
+
+          <div onClick={handleLogOut} className=" transition-all duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer bg-white  text-red-600 flex justify-center  items-center  rounded-[5px]">
+            <ion-icon name="log-in"></ion-icon>
+            <p className=" text-base font-bold">Log Out</p>
           </div>
 
         </div>
 
         <div className="  w-full pl-[20%] bg-gradient-to-r from-slate-200 to-white h-full overflow-y-auto">
-          {OpenInstruction ? <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+          {OpenInstruction && <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
             <div className=" w-[60%] h-[85%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
               <div className=" relative w-full px-4 py-2">
                 <p className=" text-xl font-semibold text-[#3b5f9c]">Please follow the instructions to enter the marks</p>
@@ -288,12 +381,53 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
               </div>
             </div>
 
-          </div> :
+          </div>}
+
+          {OpenCodeExpansion && <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+            <div className=" w-[60%] h-[85%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+              <div className=" relative w-full px-4 py-2">
+                <p className=" text-xl font-semibold text-[#3b5f9c]">Department Code Expansion</p>
+                <div onClick={() => setOpenCodeExpansion(false)} className=" text-4xl text-red-600 animate-bounce bg-white cursor-pointer rounded-full  flex items-center  absolute right-[-20px] top-[-20px]">
+                  <ion-icon name="close-circle"></ion-icon>
+                </div>
+              </div>
+              <Tabs value={activeTab} className=' py-2 h-full'>
+
+                <TabsHeader className=' ml-4 shadow-md  z-0  w-96 bg-white' indicatorProps={{
+                  className: "bg-[#4f72cc] text-white",
+                }}>
+                  {data.map(({ label, value, icon }) => (
+                    <Tab key={value} value={value} onClick={() => setActiveTab(value)}
+                      className={activeTab === value ? "text-white" : ""}>
+                      <div className="flex items-center gap-2 font-medium">
+                        {React.createElement(icon, { className: "w-5 h-5" })}
+                        {label}
+                      </div>
+                    </Tab>
+                  ))}
+                </TabsHeader>
+
+                <TabsBody className=' w-full h-full flex flex-col ' animate={{
+                  initial: { y: 250 },
+                  mount: { y: 0 },
+                  unmount: { y: 250 },
+                }}>
+                  {data.map(({ value, desc }) => (
+                    <TabPanel key={value} value={value}>
+                      {desc}
+                    </TabPanel>
+                  ))}
+                </TabsBody>
+              </Tabs>
+            </div>
+
+          </div>}
+
           <div className=" overflow-y-auto w-full h-full">
             <Outlet />
           </div>
-            
-          }
+
+
 
         </div>
 
