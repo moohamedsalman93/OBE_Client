@@ -56,7 +56,7 @@ function Manage({year,currentSem}) {
                     </Tab>
                 ))}
             </TabsHeader>
-            <TabsBody className=' w-full h-full flex flex-col ' animate={{
+            <TabsBody className=' w-full h-full flex flex-col  md:overflow-y-auto xl:overflow-y-hidden' animate={{
                 initial: { y: 250 },
                 mount: { y: 0 },
                 unmount: { y: 250 },

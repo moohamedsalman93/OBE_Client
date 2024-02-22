@@ -673,8 +673,8 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = "/data/sampleMark.xlxs";
-    link.setAttribute('download');
+    link.href = "/data/sampleMark.xlsx";
+    link.setAttribute('download', 'OBEMarkEntryExcelsheet.xlsx');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

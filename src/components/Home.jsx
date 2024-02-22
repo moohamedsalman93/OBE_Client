@@ -20,7 +20,7 @@ import {
 
 export function UG() {
   return (
-    <div className=" h-fit w-full flex flex-col  font-medium">
+    <div className=" h-full w-full flex flex-col  font-medium overflow-y-auto  ">
       <p>UAR - BA ARABIC</p>
       <p>UBA - BBA BAUSINESS ADMINISTRATION</p>
       <p>UBO - B.Sc BOTANY</p>
@@ -48,7 +48,7 @@ export function UG() {
 
 export function PG() {
   return (
-    <div className=" h-fit w-full flex flex-col  font-medium">
+    <div className=" h-fit w-full flex flex-col  font-medium overflow-y-auto">
       <p>PAR	-	MA	ARABIC</p>
       <p>PBO	-	M.Sc	BOTANY</p>
       <p>PBT	-	M.Sc	BIOTECHNOLOGY</p>
@@ -254,7 +254,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
             </div>
           </div>
 
-          <div className=" w-full grow py-4 px-2 text-white">
+          <div className=" w-full grow py-4 px-2 text-white overflow-y-auto">
             <div className=" w-full space-y-7">
 
 
