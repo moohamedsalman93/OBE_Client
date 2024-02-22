@@ -684,60 +684,75 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
   //#region export
   const handleExportExcel = () => {
     if (existingData?.length > 0) {
-      const data = existingData.map(item => ({
-        'Register Number': item?.regNo,
-        'Exam': 'CIA - I',
-        'OC': '',
-        'LOT': item?.marks[0]?.C1LOT,
-        'MOT': item?.marks[0]?.C1MOT,
-        'HOT': item?.marks[0]?.C1HOT,
-        'TOTAL ': item?.marks[0]?.C1LOT + item?.marks[0]?.C1MOT + item?.marks[0]?.C1HOT,
-      }, {
-        'Register Number': '',
-        'Exam': 'CIA - II',
-        'OC': '',
-        'LOT': item?.marks[0]?.C2LOT,
-        'MOT': item?.marks[0]?.C2MOT,
-        'HOT': item?.marks[0]?.C2HOT,
-        'TOTAL ': item?.marks[0]?.C2LOT + item?.marks[0]?.C2MOT + item?.marks[0]?.C2HOT,
-      }, {
-        'Register Number': '',
-        'Exam': 'Ass - I',
-        'OC': item?.marks[0]?.ASG1,
-        'LOT': item?.marks[0]?.ASGCO1,
-        'MOT': '',
-        'HOT': '',
-        'TOTAL ': item?.marks[0]?.ASGCO1,
-      }, {
-        'Register Number': '',
-        'Exam': 'Ass - II',
-        'OC': item?.marks[0]?.ASG2,
-        'LOT': item?.marks[0]?.ASGCO2,
-        'MOT': '',
-        'HOT': '',
-        'TOTAL ': item?.marks[0]?.ASGCO2,
-      }, {
-        'Register Number': '',
-        'Exam': 'Total',
-        'OC': '',
-        'LOT': item?.marks[0]?.C1LOT + item?.marks[0]?.C2LOT + item?.marks[0]?.ASGCO1 + item?.marks[0]?.ASGCO2,
-        'MOT': item?.marks[0]?.C1MOT + item?.marks[0]?.C2MOT,
-        'HOT': item?.marks[0]?.C1HOT + item?.marks[0]?.C2HOT,
-        'TOTAL ': item?.marks[0]?.C1LOT + item?.marks[0]?.C1MOT + item?.marks[0]?.C1HOT + item?.marks[0]?.C2LOT + item?.marks[0]?.C2MOT + item?.marks[0]?.C2HOT + item?.marks[0]?.ASGCO1 + item?.marks[0]?.ASGCO2,
-      }, {
-        'Register Number': '',
-        'Exam': 'ESE',
-        'OC': '',
-        'LOT': item?.marks[0]?.ESELOT,
-        'MOT': item?.marks[0]?.ESEMOT,
-        'HOT': item?.marks[0]?.ESEHOT,
-        'TOTAL ': item?.marks[0]?.ESELOT + item?.marks[0]?.ESEMOT + item?.marks[0]?.ESEHOT,
-      }));
+      const data = [];
+
+      existingData?.map(item => (
+        data.push({
+          'Register Number': item?.regNo,
+          'Exam': 'CIA - I',
+          'OC': '',
+          'LOT': item?.marks[0]?.C1LOT,
+          'MOT': item?.marks[0]?.C1MOT,
+          'HOT': item?.marks[0]?.C1HOT,
+          'TOTAL ': item?.marks[0]?.C1LOT + item?.marks[0]?.C1MOT + item?.marks[0]?.C1HOT,
+        },
+          {
+            'Register Number': '',
+            'Exam': 'CIA - II',
+            'OC': '',
+            'LOT': item?.marks[0]?.C2LOT,
+            'MOT': item?.marks[0]?.C2MOT,
+            'HOT': item?.marks[0]?.C2HOT,
+            'TOTAL ': item?.marks[0]?.C2LOT + item?.marks[0]?.C2MOT + item?.marks[0]?.C2HOT,
+          },
+
+          {
+            'Register Number': '',
+            'Exam': 'Ass - I',
+            'OC': item?.marks[0]?.ASG1,
+            'LOT': item?.marks[0]?.ASGCO1,
+            'MOT': '',
+            'HOT': '',
+            'TOTAL ': item?.marks[0]?.ASGCO1,
+          },
+
+          {
+            'Register Number': '',
+            'Exam': 'Ass - II',
+            'OC': item?.marks[0]?.ASG2,
+            'LOT': item?.marks[0]?.ASGCO2,
+            'MOT': '',
+            'HOT': '',
+            'TOTAL ': item?.marks[0]?.ASGCO2,
+          },
+
+          {
+            'Register Number': '',
+            'Exam': 'Total',
+            'OC': '',
+            'LOT': item?.marks[0]?.C1LOT + item?.marks[0]?.C2LOT + item?.marks[0]?.ASGCO1 + item?.marks[0]?.ASGCO2,
+            'MOT': item?.marks[0]?.C1MOT + item?.marks[0]?.C2MOT,
+            'HOT': item?.marks[0]?.C1HOT + item?.marks[0]?.C2HOT,
+            'TOTAL ': item?.marks[0]?.C1LOT + item?.marks[0]?.C1MOT + item?.marks[0]?.C1HOT + item?.marks[0]?.C2LOT + item?.marks[0]?.C2MOT + item?.marks[0]?.C2HOT + item?.marks[0]?.ASGCO1 + item?.marks[0]?.ASGCO2,
+          },
+
+          {
+            'Register Number': '',
+            'Exam': 'ESE',
+            'OC': '',
+            'LOT': item?.marks[0]?.ESELOT,
+            'MOT': item?.marks[0]?.ESEMOT,
+            'HOT': item?.marks[0]?.ESEHOT,
+            'TOTAL ': item?.marks[0]?.ESELOT + item?.marks[0]?.ESEMOT + item?.marks[0]?.ESEHOT,
+          }
+
+        )
+      ));
 
       const ws = XLSX.utils.json_to_sheet(data);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "LMH");
-      XLSX.writeFile(wb, courseCode + ".xlsx");
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.writeFile(wb, courseCode + year + ".xlsx");
     } else {
       toast.error('Existing student marks not found');
     }
