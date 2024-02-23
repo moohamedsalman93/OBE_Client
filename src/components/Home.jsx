@@ -20,55 +20,107 @@ import {
 
 export function UG() {
   return (
-    <div className=" h-full w-full flex flex-col  font-medium overflow-y-auto  ">
-      <p>UAR - BA ARABIC</p>
-      <p>UBA - BBA BAUSINESS ADMINISTRATION</p>
-      <p>UBO - B.Sc BOTANY</p>
-      <p>UBT - B.Sc BIOTECHNOLOGY</p>
-      <p>UCO - B.com COMMERCE</p>
-      <p>UCH - B.Sc CHEMISTRY</p>
-      <p>UCA - BCA COMPUTER APPLICAIONS</p>
-      <p>UCS - B.Sc COMPUTER SCIENCE</p>
-      <p>UEC - BA ECONOMICS</p>
-      <p>UEN - BA ENGLISH</p>
-      <p>UFT - B.Sc FASHION TECHNOLOGY AND COSTUME DESIGNING</p>
-      <p>UHS - BA HISTORY</p>
-      <p>UHM - B.Sc HOTEL MANAGEMENT AND CATERING SCIENCE</p>
-      <p>UIT - B.Sc INFORMATION TECHNOLOGY</p>
-      <p>UMA - B.Sc MATHEMATICS</p>
-      <p>UMB - B.Sc MICROBIOLOGY</p>
-      <p>UND - B.Sc NUTRITION AND DIETICS</p>
-      <p>UPH - B.Sc PHYSICS</p>
-      <p>UTA - BA TAMIL</p>
-      <p>UVC - B.Sc VISUAL COMMUNICATION</p>
-      <p>UZO - B.Sc ZOOLOGY</p>
-    </div>
+    <div className=" h-96 w-full flex flex-col  font-medium overflow-y-auto  ">
+    <div class="h-96 overflow-auto ">
+    <div class="grid grid-cols-2 gap-1 w-fit">
+        <div  className="font-bold text-xl">Department Code</div>
+          <div  className="font-bold text-xl">Department</div>
+          <div>UAR</div>
+          <div>BA ARABIC</div>
+          <div>UBA</div>
+          <div>BBA BAUSINESS ADMINISTRATION</div>
+          <div>UBO</div>
+          <div>B.Sc BOTANY</div>
+          <div>UBT</div>
+          <div>B.Sc BIOTECHNOLOGY</div>
+          <div>UCO</div>
+          <div>B.com COMMERCE</div>
+          <div>UCH</div>
+          <div>B.Sc CHEMISTRY</div>
+          <div>UCA</div>
+          <div>BCA COMPUTER APPLICAIONS</div>
+          <div>UCS</div>
+          <div>B.Sc COMPUTER SCIENCE</div>
+          <div>UEC</div>
+          <div>BA ECONOMICS</div>
+          <div>UEN</div>
+          <div>BA ENGLISH</div>
+          <div>UFT</div>
+          <div>B.Sc FASHION TECHNOLOGY AND COSTUME DESIGNING</div>
+          <div>UHS</div>
+          <div>BA HISTORY</div>
+          <div>UHM</div>
+          <div>B.Sc HOTEL MANAGEMENT AND CATERING SCIENCE</div>
+          <div>UIT</div>
+          <div>B.Sc INFORMATION TECHNOLOGY</div>
+          <div>UMA</div>
+          <div>B.Sc MATHEMATICS</div>
+          <div>UMB</div>
+          <div>B.Sc MICROBIOLOGY</div>
+          <div>UND</div>
+          <div>B.Sc NUTRITION AND DIETICS</div>
+          <div>UPH</div>
+          <div>B.Sc PHYSICS</div>
+          <div>UTA</div>
+          <div>BA TAMIL</div>
+          <div>UVC</div>
+          <div>B.Sc VISUAL COMMUNICATION</div>
+          <div>UZO</div>
+          <div>B.Sc ZOOLOGY</div>
+        </div>
+      </div>
+    </div> 
+
   )
 }
 
 export function PG() {
   return (
-    <div className=" h-fit w-full flex flex-col  font-medium overflow-y-auto">
-      <p>PAR	-	MA	ARABIC</p>
-      <p>PBO	-	M.Sc	BOTANY</p>
-      <p>PBT	-	M.Sc	BIOTECHNOLOGY</p>
-      <p>PCO	-	M.Com	COMMERCE</p>
-      <p>PCH	-	M.Sc	CHEMISTRY</p>
-      <p>PCS	-	M.Sc	COMPUTER SCIENCE</p>
-      <p>PEC	-	M.A	ECONOMICS</p>
-      <p>PEN	-	M.A	ENGLISH</p>
-      <p>PFT	-	M.Sc	FASHION TECHNOLOGY</p>
-      <p>PHS	-	M.A	HISTORY</p>
-      <p>PIT	-	M.Sc	INFORMATION TECHNOLOGY</p>
-      <p>PMA	-	M.Sc	MATHEMATICS</p>
-      <p>PMB	-	M.Sc	MICROBIOLOGY</p>
-      <p>PND	-	M.Sc	NUTRITION AND DIETICS</p>
-      <p>PPH	-	M.Sc	PHYSICS</p>
-      <p>PTA	-	M.A	TAMIL</p>
-      <p>PZO	-	M.Sc	ZOOLOGY</p>
-      <p>MBA	-	MBA	BUSINESS ADMINISTRATION</p>
-      <p>MCA	-	MCA	COMPUTER APPLICAIONS</p>
-
+    <div className=" h-96 w-full flex flex-col  font-medium overflow-y-auto">
+     <div class="h-96 overflow-auto">
+        <div class="grid grid-cols-2 gap-1 w-5/6">
+          <div className="font-bold text-xl ">Department Code</div>
+          <div className="font-bold text-xl ">Department</div>
+          <div>PAR</div>
+          <div>MA ARABIC</div>
+          <div>PBO</div>
+          <div>M.Sc BOTANY</div>
+          <div>PBT</div>
+          <div>M.Sc BIOTECHNOLOGY</div>
+          <div>PCO</div>
+          <div>M.Com COMMERCE</div>
+          <div>PCH</div>
+          <div>M.Sc CHEMISTRY</div>
+          <div>PCS</div>
+          <div>M.Sc COMPUTER SCIENCE</div>
+          <div>PEC</div>
+          <div>M.A ECONOMICS</div>
+          <div>PEN</div>
+          <div>M.A ENGLISH</div>
+          <div>PFT</div>
+          <div>M.Sc FASHION TECHNOLOGY</div>
+          <div>PHS</div>
+          <div>M.A HISTORY</div>
+          <div>PIT</div>
+          <div>M.Sc INFORMATION TECHNOLOGY</div>
+          <div>PMA</div>
+          <div>M.Sc MATHEMATICS</div>
+          <div>PMB</div>
+          <div>M.Sc MICROBIOLOGY</div>
+          <div>PND</div>
+          <div>M.Sc NUTRITION AND DIETICS</div>
+          <div>PPH</div>
+          <div>M.Sc PHYSICS</div>
+          <div>PTA</div>
+          <div>M.A TAMIL</div>
+          <div>PZO</div>
+          <div>M.Sc ZOOLOGY</div>
+          <div>MBA</div>
+          <div>MBA BUSINESS ADMINISTRATION</div>
+          <div>MCA</div>
+          <div>MCA COMPUTER APPLICAIONS</div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -279,7 +331,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
 
               <div className=" flex space-x-2 text-lg items-center cursor-pointer justify-center text-black" onClick={() => setOpenCodeExpansion(true)}>
                 <ion-icon name="alert-circle"></ion-icon>
-                <p className=" text-base font-medium">Dept Code Expansion</p>
+                <p className=" text-base font-medium">Department Code </p>
               </div>
 
             </div>
@@ -384,9 +436,9 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
           </div>}
 
           {OpenCodeExpansion && <div className=" fixed z-50 w-screen h-screen  top-0 right-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-            <div className=" w-[60%] h-[85%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
+            <div className=" w-[60%] h-[75%] rounded-lg bg-white shadow-2xl antialiased p-2 flex flex-col">
               <div className=" relative w-full px-4 py-2">
-                <p className=" text-xl font-semibold text-[#3b5f9c]">Department Code Expansion</p>
+                <p className=" text-xl font-semibold text-[#3b5f9c]">Department Code</p>
                 <div onClick={() => setOpenCodeExpansion(false)} className=" text-4xl text-red-600 animate-bounce bg-white cursor-pointer rounded-full  flex items-center  absolute right-[-20px] top-[-20px]">
                   <ion-icon name="close-circle"></ion-icon>
                 </div>
