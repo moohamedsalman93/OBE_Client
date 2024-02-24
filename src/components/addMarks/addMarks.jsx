@@ -137,8 +137,8 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
 
   //#region max mark:
   const markLimits = {
-    LOT: { min: 0, max: 29 },
-    MOT: { min: 0, max: 36 },
+    LOT: { min: 0, max: 25 },
+    MOT: { min: 0, max: 40 },
     HOT: { min: 0, max: 10 },
   };
 
@@ -751,7 +751,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
 
       const ws = XLSX.utils.json_to_sheet(data);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.utils.book_append_sheet(wb, ws, "LMH");
       XLSX.writeFile(wb, courseCode + year + ".xlsx");
     } else {
       toast.error('Existing student marks not found');
