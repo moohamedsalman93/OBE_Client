@@ -403,6 +403,14 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
                     •	Input the marks for LOT (Low-Order Thinking), MOT (Middle Order Thinking), and HOT (Higher-Order Thinking).
                     <br />
                     •	For discontinued students, select NOR or Skip the register number.
+                    <br />
+                    <div className="text-orange-500 font-bold">
+                    • LOT (Sum of marks of Q. Nos 1 to 20) 
+                    <br />
+                    • MOT (Sum of marks of Q. Nos 21 to 27)
+                    <br />
+                    • HOT (mark of Q. No 28).
+                    </div>
                   </p>
                 </div>
 
