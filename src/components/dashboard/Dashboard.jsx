@@ -87,7 +87,7 @@ function Dashboard({ year, currentSem, Role }) {
     series: [
       {
         name: "Sales",
-        data: Role === 'Admin' ? [ugarts || 0, ugscience || 0, pgarts || 0, pgscience || 0, ((ugarts + ugscience + pgarts + pgscience) / 4 || 0)] : [2, 3, 1, 2.1, 0.5],
+        data: [ugarts || 0, ugscience || 0, pgarts || 0, pgscience || 0, ((ugarts + ugscience + pgarts + pgscience) / 4 || 0)] ,
 
       },
     ],
