@@ -220,12 +220,13 @@ function HomeAdmin({ setRole, setuserName, setuserId, date, setDate, year, setCu
               }
 
             </div>
-            <div onClick={handleLogOut} className=" transition-all  justify-center duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer bg-white  text-red-600 flex  items-center  rounded-[5px]">
-              
-              <p className=" text-base font-medium">Log Out</p>
-              <ion-icon name="log-in"></ion-icon>
+            <div className="pb-20">
+              <div onClick={handleLogOut} className=" transition-all  justify-center duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer bg-white  text-red-600 flex  items-center  rounded-[5px]">
+                
+                <p className=" text-base font-medium">Log Out</p>
+                <ion-icon name="log-in"></ion-icon>
+              </div>
             </div>
-
           </div>
 
 

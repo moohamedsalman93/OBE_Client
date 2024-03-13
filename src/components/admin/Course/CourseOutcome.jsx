@@ -229,7 +229,7 @@ function AdminCourseOutcome({ year, currentSem }) {
                                 </div>
 
                                 <div className=' space-y-4'>
-                                    <h1 className=" font-medium">Overall CO Attainment</h1>
+                                    <h1 className=" font-medium">Overall Course Outcome Attainment</h1>
 
                                     <table className="table-auto rounded-md border mt-2">
                                         <thead className="bg-black text-white">
@@ -306,11 +306,11 @@ function AdminCourseOutcome({ year, currentSem }) {
                                         <thead className="bg-black text-white">
                                             <tr>
 
-                                                <th className="px-4 py-2 border">CO1</th>
-                                                <th className="px-4 py-2 border">CO2</th>
-                                                <th className="px-4 py-2 border">CO3</th>
-                                                <th className="px-4 py-2 border">CO4</th>
-                                                <th className="px-4 py-2 border">CO5</th>
+                                                <th className="px-4 py-2 border">PSA1</th>
+                                                <th className="px-4 py-2 border">PSA2</th>
+                                                <th className="px-4 py-2 border">PSA3</th>
+                                                <th className="px-4 py-2 border">PSA4</th>
+                                                <th className="px-4 py-2 border">PSA5</th>
 
                                             </tr>
                                         </thead>

@@ -337,12 +337,12 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
             </div>
 
           </div>
-
-          <div onClick={handleLogOut} className=" transition-all duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer bg-white  text-red-600 flex justify-center  items-center  rounded-[5px]">
-            <ion-icon name="log-in"></ion-icon>
-            <p className=" text-base font-bold">Log Out</p>
+          <div className=" pb-16">
+            <div onClick={handleLogOut} className=" transition-all duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer bg-white  text-red-600 flex justify-center  items-center  rounded-[5px]">
+              <ion-icon name="log-in"></ion-icon>
+              <p className=" text-base font-bold">Log Out</p>
+            </div>
           </div>
-
         </div>
 
         <div className="  w-full pl-[20%] bg-gradient-to-r from-slate-200 to-white h-full overflow-y-auto">
