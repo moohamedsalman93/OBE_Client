@@ -337,7 +337,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
             </div>
 
           </div>
-          <div className=" pb-16">
+          <div className=" pb-10">
             <div onClick={handleLogOut} className=" transition-all duration-300 space-x-4 w-full h-10 text-2xl  cursor-pointer bg-white  text-red-600 flex justify-center  items-center  rounded-[5px]">
               <ion-icon name="log-in"></ion-icon>
               <p className=" text-base font-bold">Log Out</p>
