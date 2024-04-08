@@ -66,6 +66,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
     e.stopPropagation();
   };
 
+
   //#region import excel
   const handleUpload = async () => {
 
@@ -104,7 +105,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
           excelApi('staff/addMarksByExcel', datat, setProgress, setFileList, setIsImportLoading).then((res) => {
             if (res?.status === 200) {
               toast.success("Imported successfully", { duration: 1500 });
-              getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
+              getCourseApi(`staff/getMarkByCode?code=${courseCode.split('-')[0]}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
               setIsImportLoading(false)
               setIsOpenImport(false)
             }
@@ -125,12 +126,16 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
   useEffect(() => {
     let token = localStorage.getItem('token');
 
-
     if (token) {
       const decode = jwtDecode(token);
       setStaffIntial(decode?.name)
       setUname(decode.uname)
       setRole(decode.role)
+
+      if (decode.role !== 'Admin') {
+        getStaffCourse(`staff/getStaff?department=&uname=${decode.uname}&year=${year}&sem=${currentSem}`, setCourseData, setIsLoading2)
+      }
+
     }
   }, [])
   //#endregion
@@ -256,7 +261,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
         const newDataforMark = {
           regNo: String((year - (presentYear - 1)) % 100) + deparment + regNo,
           department: deparment,
-          code: courseCode,
+          code: courseCode.split('-')[0],
           claass: deparment,
           section: "A",
           status: statusStudent,
@@ -299,7 +304,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
                 setIsLoading(false);
 
                 toast.success("Mark saved successfully", { duration: 1500 });
-                getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
+                getCourseApi(`staff/getMarkByCode?code=${courseCode.split('-')[0]}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
                 if (editStudent === -1) {
                   const last3Digits = parseInt(regNo, 10);
                   const newLast3Digits = (last3Digits + 1).toString().padStart(3, "0");
@@ -341,7 +346,6 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
 
   };
   //#endregion
-
 
   //#region Handle Outside Click
   const handleOutsideClick2 = event => {
@@ -446,6 +450,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
     setExistingData()
     handleClear()
     setRegNo("")
+    setdepartment((prev) => Role === 'Admin' ? prev : e.target.value.split('-')[1]);
   }
   //#endregion
 
@@ -457,7 +462,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
         handleClear()
         setRegNo("")
         setInYear((year - (y - 1)) % 100)
-        getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (y - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
+        getCourseApi(`staff/getMarkByCode?code=${courseCode.split('-')[0]}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (y - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
       }
       else {
         toast.error('Select Course Code')
@@ -572,7 +577,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
     DeleteApi('staff/deleteMark?year=' + year, { id: markId, exam: examType }, setIsLoading).then(res => {
       if (res?.status === 200) {
         toast.success('mark deleted successfully')
-        getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
+        getCourseApi(`staff/getMarkByCode?code=${courseCode.split('-')[0]}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
         handleClear()
         setRegNo('')
         setEditstudent(-1)
@@ -654,7 +659,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
   useEffect(() => {
     setActive(1)
     if (courseCode && deparment && year) {
-      getCourseApi(`staff/getMarkByCode?code=${courseCode}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
+      getCourseApi(`staff/getMarkByCode?code=${courseCode.split('-')[0]}&department=${deparment}&sortby=${SortBy}&sem=${currentSem}&year=${year}&inyear=${(year - (presentYear - 1)) % 100}`, setExistingData, setTotal, setIsLoading3)
     }
 
   }, [SortBy])
@@ -788,38 +793,41 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
             </div>
 
             <div className=" flex flex-wrap justify-start w-full items-start  gap-10">
-              <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
-                <h1 className="text-[#555d6b] text-lg">Department </h1>
-                <input
-                  type="text"
-                  value={deparment}
-                  maxLength={3}
-                  onChange={departmentOnChange}
-                  onFocus={handleDropdownToggle2}
-                  placeholder="Eg: MCA"
-                  className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-[#393f48] font-medium'
-                  tabIndex={1}
-                />
-                {isOpen2 && (
-                  <ul className="absolute z-20 mt-2 w-[9rem] xl:w-[9rem] flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
-                    {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-[#555d6b]" />) :
-                      (searchValue.length === 0 ? (
-                        <li className="py-1 px-4 text-gray-400">{deparment.length === 0 ? "Type..." : "No Department found"}</li>
-                      ) : (
-                        searchValue.map((item, index) => (
-                          <li
-                            key={item.id}
-                            onClick={() => departmentOnSelect(item)}
-                            className={`py-1 px-4 cursor-pointer ${index === focusedOptionIndex ? 'bg-blue-200 w-full flex justify-center' : ''}`}
-                          >
-                            {item.departmentCode}
-                          </li>
+              {Role === 'Admin' &&
+                <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
+                  <h1 className="text-[#555d6b] text-lg">Department </h1>
+                  <input
+                    type="text"
+                    value={deparment}
+                    maxLength={3}
+                    onChange={departmentOnChange}
+                    onFocus={handleDropdownToggle2}
+                    placeholder="Eg: MCA"
+                    className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-[#393f48] font-medium'
+                    tabIndex={1}
+                  />
+                  {isOpen2 && (
+                    <ul className="absolute z-20 mt-2 w-[9rem] xl:w-[9rem] flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
+                      {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-[#555d6b]" />) :
+                        (searchValue.length === 0 ? (
+                          <li className="py-1 px-4 text-gray-400">{deparment.length === 0 ? "Type..." : "No Department found"}</li>
+                        ) : (
+                          searchValue.map((item, index) => (
+                            <li
+                              key={item.id}
+                              onClick={() => departmentOnSelect(item)}
+                              className={`py-1 px-4 cursor-pointer ${index === focusedOptionIndex ? 'bg-blue-200 w-full flex justify-center' : ''}`}
+                            >
+                              {item.departmentCode}
+                            </li>
+                          ))
                         ))
-                      ))
-                    }
-                  </ul>
-                )}
-              </div>
+                      }
+                    </ul>
+                  )}
+                </div>
+              }
+
 
               <div className=" space-y-2 bg-slate-500x`">
                 <h1 className="text-[#555d6b] text-lg">Course Code</h1>
@@ -834,8 +842,8 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
                   </option>
 
                   {CourseData.map((course, index) => (
-                    <option key={index} value={Role === 'Admin' ? course.code : course.courseCode} className="rounded font-medium">
-                      {Role === 'Admin' ? course.code : course.courseCode}
+                    <option key={index} value={Role === 'Admin' ? course.code : course.courseCode + '-' + course.depCode} className="rounded font-medium">
+                      {Role === 'Admin' ? course.code : course.courseCode + '-' + course.depCode}
                     </option>
                   ))}
                 </select>

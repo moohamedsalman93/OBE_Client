@@ -57,7 +57,7 @@ function ManageCourse({ year, currentSem }) {
       if (res?.status === 200) {
         setIsImportLoading(false)
         toast.success(res.data.success, { duration: 1500 });
-        getCourseApi(`staff/getAllCourses?page=1&year=` + year + '&sem=' + currentSem, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=1&year=` + year + '&sem=' + currentSem + '&question=', setCourseData, setTotal, setIsLoading)
         setIsOpenImport(false)
       }
     })
@@ -68,7 +68,7 @@ function ManageCourse({ year, currentSem }) {
 
 
   useEffect(() => {
-    getCourseApi(`staff/getAllCourses?page=${Active}&year=` + year + '&sem=' + currentSem, setCourseData, setTotal, setIsLoading)
+    getCourseApi(`staff/getAllCourses?page=${Active}&year=` + year + '&sem=' + currentSem + '&question=', setCourseData, setTotal, setIsLoading)
   }, [Active])
 
   //#region search
@@ -112,7 +112,7 @@ function ManageCourse({ year, currentSem }) {
       name: CourseName,
       depCode: deparment,
       year: year,
-      sem:currentSem
+      sem: currentSem
     }
 
     AddNewCourse(data, setIsLoading3).then((res) => {
@@ -123,7 +123,7 @@ function ManageCourse({ year, currentSem }) {
         setCourseName('');
         setdepartment('');
         setIsEdit(-1);
-        getCourseApi(`staff/getAllCourses?page=1&year=` + year + '&sem='+currentSem, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=1&year=` + year + '&sem=' + currentSem + '&question=', setCourseData, setTotal, setIsLoading)
       }
       // else {
       //   toast.error('Please try again later')
@@ -151,7 +151,7 @@ function ManageCourse({ year, currentSem }) {
       if (res?.status === 200) {
         setIsDeletePopup(-1)
         toast.success(res.data.success)
-        getCourseApi(`staff/getAllCourses?page=${Active}&sem=${currentSem}&year=` + year, setCourseData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllCourses?page=${Active}&sem=${currentSem}&year=` + year + '&question=', setCourseData, setTotal, setIsLoading)
       }
     })
   }
@@ -539,7 +539,7 @@ function ManageCourse({ year, currentSem }) {
                         </span>
                       </>
                     ) : (
-                      
+
                       <>
                         <p>Files to Upload</p>
 

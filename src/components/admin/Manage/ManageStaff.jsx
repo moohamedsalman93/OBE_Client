@@ -82,7 +82,7 @@ function ManageStaff({ year, currentSem }) {
   const uploading = progress > 0 && progress < 100;
 
   useEffect(() => {
-    getCourseApi(`staff/getAllStaff?page=${Active}`, setStaffData, setTotal, setIsLoading)
+    getCourseApi(`staff/getAllStaff?page=${Active}&question=`, setStaffData, setTotal, setIsLoading)
   }, [Active])
 
 
@@ -103,7 +103,7 @@ function ManageStaff({ year, currentSem }) {
         setIsOpen(false);
         setAddNewCourse(res.data.createdStaff)
         setAssignInstantPopup(true);
-        getCourseApi(`staff/getAllStaff?page=${Active}`, setStaffData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllStaff?page=${Active}&question=`, setStaffData, setTotal, setIsLoading)
       }
     })
   }
@@ -185,7 +185,7 @@ function ManageStaff({ year, currentSem }) {
       if (res?.status === 200) {
         setIsDeletePopup(-1)
         toast.success(res.data.success)
-        getCourseApi(`staff/getAllStaff?page=${Active}`, setStaffData, setTotal, setIsLoading)
+        getCourseApi(`staff/getAllStaff?page=${Active}&question=`, setStaffData, setTotal, setIsLoading)
       }
     })
   }
