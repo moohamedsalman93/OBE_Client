@@ -627,6 +627,14 @@ function ManageStaff({ year, currentSem }) {
                     setFileList(e.dataTransfer.files[0]); // Set the fileList state with an array containing only the first file
                     setShouldHighlight(false);
                   }}
+                  onClick={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.onchange = (e) => {
+                      setFileList(e.target.files[0]);
+                    };
+                    input.click();
+                  }}
                 >
                   <div className="flex flex-col items-center">
                     {!fileList ? (

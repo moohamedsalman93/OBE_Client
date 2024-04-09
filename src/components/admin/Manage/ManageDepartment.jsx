@@ -382,6 +382,14 @@ function ManageDepartment({ year,currentSem }) {
 
                 <div
                   className="w-[70%] h-[50%] p-4 grid place-content-center cursor-pointer bg-blue-50 text-[#4f72cc] rounded-lg hover:bg-blue-100 border-4 border-dashed border-violet-100 hover:border-[#4f72cc] transition-colors"
+                  onClick={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.onchange = (e) => {
+                      setFileList(e.target.files[0]);
+                    };
+                    input.click();
+                  }}
                   onDragOver={(e) => {
                     preventDefaultHandler(e);
                     setShouldHighlight(true);
@@ -396,7 +404,6 @@ function ManageDepartment({ year,currentSem }) {
                   }}
                   onDrop={(e) => {
                     preventDefaultHandler(e);
-                    // Get the first file from the dropped files
                     setFileList(e.dataTransfer.files[0]); // Set the fileList state with an array containing only the first file
                     setShouldHighlight(false);
                   }}

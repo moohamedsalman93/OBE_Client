@@ -1280,6 +1280,15 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
                     setFileList(e.dataTransfer.files[0]); // Set the fileList state with an array containing only the first file
                     setShouldHighlight(false);
                   }}
+                  onClick={() => {
+                    const fileInput = document.createElement('input');
+                    fileInput.setAttribute('type', 'file');
+                    fileInput.setAttribute('accept', '.xlsx');
+                    fileInput.onchange = (e) => {
+                      setFileList(e.target.files[0]);
+                    };
+                    fileInput.click();
+                  }}
                 >
                   <div className="flex flex-col items-center">
                     {!fileList ? (
