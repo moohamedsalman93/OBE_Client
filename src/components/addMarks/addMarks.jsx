@@ -1114,13 +1114,13 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
               <button className=' px-4 py-2 bg-[#4f72cc] rounded-md text-white font-medium flex  items-center space-x-2' onClick={() => setIsOpenImport(true)}>
                 <ion-icon name="cloud-upload"></ion-icon>
                 <p>
-                  Import Excel
+                  Upload the Mark Details
                 </p>
               </button>
               <button className=' px-4 py-2 bg-[#3b9a3b] rounded-md text-white font-medium flex  items-center space-x-2' onClick={() => handleExportExcel()}>
                 <ion-icon name="cloud-download"></ion-icon>
                 <p>
-                  Export Excel
+                  Download the Mark Report
                 </p>
               </button>
             </div>
