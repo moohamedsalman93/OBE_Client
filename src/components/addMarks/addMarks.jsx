@@ -97,7 +97,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
           const datat = new FormData();
           datat.append('Excel', blob, fileList.name.replace('.xlsx', '.csv'));
           datat.append('depCode', deparment);
-          datat.append('courseCode', courseCode)
+          datat.append('courseCode', courseCode.split('-')[0])
           datat.append('year', year)
           datat.append('staff', uName)
           datat.append('sem', currentSem)
@@ -276,7 +276,7 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
         const newDataforAss = {
           regNo: String((year - (presentYear - 1)) % 100) + deparment + regNo,
           department: deparment,
-          code: courseCode,
+          code: courseCode.split('-')[0],
           claass: deparment,
           section: "A",
           status: statusStudent,
@@ -603,14 +603,13 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
   const handleGetreg = () => {
 
     const params = {
-      code: courseCode,
+      code: courseCode.split('-')[0],
       department: deparment,
       regNo: String(inYear) + deparment + regNo,
       year: year,
       sem: currentSem
     }
 
-    let temp = {}
 
     if (regNo && deparment && courseCode) {
       const temp = {}
@@ -1205,45 +1204,47 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
               <div className=" w-full  grow flex  flex-col justify-evenly items-center">
 
                 <div className=" w-full justify-evenly flex">
-                  <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
-                    <h1 className="text-[#555d6b]">Department :</h1>
-                    <input
-                      type="text"
-                      value={deparment}
-                      maxLength={3}
-                      onChange={departmentOnChange}
-                      onFocus={handleDropdownToggle2}
-                      placeholder="Eg: MCA"
-                      className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-[#555d6b] font-medium'
-                      tabIndex={111}
-                    />
-                    {isOpen2 && (
-                      <ul className="absolute z-20 mt-2 w-[9rem] xl:w-[9rem] flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
-                        {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-[#555d6b]" />) :
-                          (searchValue.length === 0 ? (
-                            <li className="py-1 px-4 text-gray-400">{deparment.length === 0 ? "Type..." : "No Department found"}</li>
-                          ) : (
-                            searchValue.map((item, index) => (
-                              <li
-                                key={item.id}
-                                onClick={() => departmentOnSelect(item)}
-                                className={`py-1 px-4 cursor-pointer ${index === focusedOptionIndex ? 'bg-blue-200 w-full flex justify-center' : ''}`}
-                              >
-                                {item.departmentCode}
-                              </li>
+                  {Role === 'Admin' &&
+                    <div className='w-[9rem] space-y-2 xl:w-[9rem] ' ref={dropdownRef2}>
+                      <h1 className="text-[#555d6b]">Department :</h1>
+                      <input
+                        type="text"
+                        value={deparment}
+                        maxLength={3}
+                        onChange={departmentOnChange}
+                        onFocus={handleDropdownToggle2}
+                        placeholder="Eg: MCA"
+                        className='bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] xl:w-[9rem] rounded px-2 text-[#555d6b] font-medium'
+                        tabIndex={111}
+                      />
+                      {isOpen2 && (
+                        <ul className="absolute z-20 mt-2 w-[9rem] xl:w-[9rem] flex flex-col items-center min-h-min max-h-[20rem] overflow-y-hidden  bg-white border border-gray-300 rounded-md shadow-md">
+                          {isLoading2 ? (<img src={loading} alt="" className=" w-8 h-8 animate-spin text-[#555d6b]" />) :
+                            (searchValue.length === 0 ? (
+                              <li className="py-1 px-4 text-gray-400">{deparment.length === 0 ? "Type..." : "No Department found"}</li>
+                            ) : (
+                              searchValue.map((item, index) => (
+                                <li
+                                  key={item.id}
+                                  onClick={() => departmentOnSelect(item)}
+                                  className={`py-1 px-4 cursor-pointer ${index === focusedOptionIndex ? 'bg-blue-200 w-full flex justify-center' : ''}`}
+                                >
+                                  {item.departmentCode}
+                                </li>
+                              ))
                             ))
-                          ))
-                        }
-                      </ul>
-                    )}
-                  </div>
+                          }
+                        </ul>
+                      )}
+                    </div>
+                  }
 
                   <div className=" space-y-2 ">
                     <h1 className="text-[#555d6b]">Course Code :</h1>
                     <select
                       value={courseCode}
                       onChange={handleCourseOnslect}
-                      tabIndex={112}
+                      tabIndex={2}
                       className={`bg-[#F8FCFF] shadow-sm border h-10 w-[9rem] font-medium rounded px-2 ${courseCode === '' ? 'text-gray-400' : 'text-[#555d6b]'}`}
                     >
                       <option value='' className="rounded mt-10">
@@ -1251,8 +1252,8 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
                       </option>
 
                       {CourseData.map((course, index) => (
-                        <option key={index} value={Uname === 'admin' ? course.code : course.courseCode} className="rounded font-medium">
-                          {Uname === 'admin' ? course.code : course.courseCode}
+                        <option key={index} value={Role === 'Admin' ? course.code : course.courseCode + '-' + course.depCode} className="rounded font-medium">
+                          {Role === 'Admin' ? course.code : course.courseCode + '-' + course.depCode}
                         </option>
                       ))}
                     </select>
@@ -1304,31 +1305,35 @@ const AddMarks = ({ uName, year, currentSem, role }) => {
 
                         <span >{fileList.name}</span>;
 
-                        <div className="flex gap-2 mt-2">
-                          <button
-                            className="bg-[#4f72cc] text-violet-50 px-2 py-1 rounded-md w-full"
 
-                            onClick={() => handleUpload()}
-                          >
-                            {uploading
-                              ? `Uploading...  ( ${progress.toFixed(2)}% )`
-                              : "Upload"}
-                          </button>
-                          {!uploading && (
-                            <button
-                              className="border border-[#4f72cc] px-2 py-1 rounded-md"
-                              onClick={() => {
-                                setFileList(null);
-                              }}
-                            >
-                              Clear
-                            </button>
-                          )}
-                        </div>
                       </>
                     )}
                   </div>
                 </div>
+                {
+                  fileList && (<div className="flex gap-2 mt-2">
+                    <button
+                      className="bg-[#4f72cc] text-violet-50 px-2 py-1 rounded-md w-full"
+
+                      onClick={() => handleUpload()}
+                    >
+                      {uploading
+                        ? `Uploading...  ( ${progress.toFixed(2)}% )`
+                        : "Upload"}
+                    </button>
+                    {!uploading && (
+                      <button
+                        className="border border-[#4f72cc] px-2 py-1 rounded-md"
+                        onClick={() => {
+                          setFileList(null);
+                        }}
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>)
+                }
+
 
               </div>
               <div className=' w-full flex justify-center items-center absolute top-10'>
