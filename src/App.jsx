@@ -15,6 +15,7 @@ import Outcome from './components/admin/Outcome';
 import AboutUs from './components/AboutUs';
 import Dashboard from './components/dashboard/Dashboard';
 import { StudentOutcome } from './components/StudentOutcome/StudentOutcome';
+import DeniedPage from './components/DeniedPage';
 
 
 
@@ -69,6 +70,7 @@ function App() {
         </Route>
 
         <Route path="/login" exact element={<LoginPage />} />
+        <Route path="/denied" exact element={<DeniedPage />} />
         <Route path="/AboutUs" exact element={<AboutUs />} />
       </Routes>
     </BrowserRouter>

@@ -16,15 +16,18 @@ import {
   AcademicCapIcon,
   UserIcon
 } from "@heroicons/react/24/solid";
+import axios from 'axios';
+
+export const api = import.meta.env.VITE_APP_API_URL;
 
 
 export function UG() {
   return (
     <div className=" h-96 w-full flex flex-col  font-medium overflow-y-auto  ">
-    <div class="h-96 overflow-auto ">
-    <div class="grid grid-cols-2 gap-1 w-fit">
-        <div  className="font-bold text-xl">Department Code</div>
-          <div  className="font-bold text-xl">Department</div>
+      <div class="h-96 overflow-auto ">
+        <div class="grid grid-cols-2 gap-1 w-fit">
+          <div className="font-bold text-xl">Department Code</div>
+          <div className="font-bold text-xl">Department</div>
           <div>UAR</div>
           <div>BA ARABIC</div>
           <div>UBA</div>
@@ -69,7 +72,7 @@ export function UG() {
           <div>B.Sc ZOOLOGY</div>
         </div>
       </div>
-    </div> 
+    </div>
 
   )
 }
@@ -77,7 +80,7 @@ export function UG() {
 export function PG() {
   return (
     <div className=" h-96 w-full flex flex-col  font-medium overflow-y-auto">
-     <div class="h-96 overflow-auto">
+      <div class="h-96 overflow-auto">
         <div class="grid grid-cols-2 gap-1 w-5/6">
           <div className="font-bold text-xl ">Department Code</div>
           <div className="font-bold text-xl ">Department</div>
@@ -139,51 +142,64 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
       label: "UG Code",
       value: "UG",
       icon: DocumentDuplicateIcon,
-      desc: <UG/>
+      desc: <UG />
     },
 
     {
       label: "PG Code",
       value: "PG",
       icon: AcademicCapIcon,
-      desc: <PG/>,
+      desc: <PG />,
     },
 
   ];
 
 
   useEffect(() => {
-    if (!token) {
-      navigate('/login');
-      return;
-    }
-
-
-    try {
-
-      let decodedToken = jwtDecode(token);
-      let currentTime = Date.now() / 1000;
-
-      setRole(decodedToken.role)
-      setuserName(decodedToken.name)
-      setuserId(decodedToken.uname)
-
-      if (decodedToken.exp < currentTime) {
-        toast.error("Token Expired Directing To Login!", { theme: 'colored', autoclose: 1 });
-        localStorage.removeItem('token');
-        navigate('/login');
+    const checkServerHealth = async () => {
+      try {
+        const response = await axios.get(api + `/health`);
+        return response.status;
+      } catch (error) {
+        console.error('Error checking server health:', error);
+        return null; // Return null or appropriate error code
       }
-
-      if (decodedToken.role === 'Admin') {
-        navigate('/Admin/Dashboard');
+    };
+  
+    const verifyAndNavigate = async () => {
+      const status = await checkServerHealth();
+      if (status === 200) {
+        if (!token) {
+          navigate('/login');
+          return;
+        }
+  
+        try {
+          let decodedToken = jwtDecode(token);
+          let currentTime = Date.now() / 1000;
+  
+          setRole(decodedToken.role);
+          setuserName(decodedToken.name);
+          setuserId(decodedToken.uname);
+  
+          if (decodedToken.exp < currentTime) {
+            toast.error("Token Expired Directing To Login!", { theme: 'colored', autoclose: 1 });
+            localStorage.removeItem('token');
+            navigate('/login');
+          }
+  
+          if (decodedToken.role === 'Admin') {
+            navigate('/Admin/Dashboard');
+          }
+        } catch (error) {
+          console.error('Error decoding token:', error);
+        }
+      } else {
+        navigate("/denied");
       }
-
-    } catch (error) {
-      console.error('Error decoding token:', error);
-
-    }
-
-
+    };
+  
+    verifyAndNavigate();
   }, [token, navigate]);
 
   const handleLogOut = () => {
@@ -405,11 +421,11 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
                     •	For discontinued students, select NOR or Skip the register number.
                     <br />
                     <div className="text-orange-500 font-bold">
-                    • LOT (Sum of marks of Q. Nos 1 to 20) 
-                    <br />
-                    • MOT (Sum of marks of Q. Nos 21 to 27)
-                    <br />
-                    • HOT (mark of Q. No 28).
+                      • LOT (Sum of marks of Q. Nos 1 to 20)
+                      <br />
+                      • MOT (Sum of marks of Q. Nos 21 to 27)
+                      <br />
+                      • HOT (mark of Q. No 28).
                     </div>
                   </p>
                 </div>
