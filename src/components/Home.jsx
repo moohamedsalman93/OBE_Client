@@ -158,7 +158,7 @@ function Home({ Role, setRole, setuserName, userName, setuserId, userId, current
   useEffect(() => {
     const checkServerHealth = async () => {
       try {
-        const response = await axios.get(api + `/health`);
+        const response = await axios.get(api + `health`);
         return response.status;
       } catch (error) {
         console.error('Error checking server health:', error);
